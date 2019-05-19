@@ -15,9 +15,9 @@ public interface AutomatoInterface extends Remote
      
     public void setRegra        ( )throws RemoteException;
     
-    public void setEstIni       ( )throws RemoteException;
+    public void setEstInicial       ( )throws RemoteException;
     
-    public void setEstadosFinais( )throws RemoteException;
+    public void setConjuntoEstadosFinais( )throws RemoteException;
 
     public void checaPalavra    ( )throws RemoteException;
 
