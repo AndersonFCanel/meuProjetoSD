@@ -3,7 +3,6 @@ package AFD;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -30,7 +29,6 @@ public class AFD_Compiladores_Trabalho
          * Trecho responsável por receber o conjunto de simbolos(Alfabeto) e armazenar o
          * mesmo sem os caracteres desnecessários em um array de char.
          */
-        //String alfabeto = "{a,b}";
         String alfabeto  = entrarConjuntoCaracteres_Alfabeto  (          );
         boolean validAlf = verificaConjuntoCaracteres_Alfabeto( alfabeto );
 
@@ -65,27 +63,26 @@ public class AFD_Compiladores_Trabalho
          * de int, convertendo a posição de um estado fornecido no conjunto em um valor
          * numérico, em ordem crescente correspondente a ordem dos estados fornecidos.
          */
-        String conjuntoDeEstadosTerminaisEnaoTerminais = "{A,B}";
-       
-        boolean validEst = false;
-
-        conjuntoDeEstadosTerminaisEnaoTerminais = entraConjuntoEstado      (                                         );
-        validEst                                = verificaEst   ( conjuntoDeEstadosTerminaisEnaoTerminais );
-        validEst                                = checkEstEquals( conjuntoDeEstadosTerminaisEnaoTerminais );
+        boolean validEst                                = false;
+        String  conjuntoDeEstadosTerminaisEnaoTerminais = entraConjuntoEstado( );
+        
+        validEst = verificaEst   ( conjuntoDeEstadosTerminaisEnaoTerminais );
+        validEst = checkEstEquals( conjuntoDeEstadosTerminaisEnaoTerminais );
 
         while ( validEst ) 
         {
-            conjuntoDeEstadosTerminaisEnaoTerminais = entraConjuntoEstado( );
-            validEst = verificaEst( conjuntoDeEstadosTerminaisEnaoTerminais );
+            conjuntoDeEstadosTerminaisEnaoTerminais = entraConjuntoEstado(                                         );
+            validEst                                = verificaEst        ( conjuntoDeEstadosTerminaisEnaoTerminais );
 
             if( validEst )
             {
                 JOptionPane.showMessageDialog( null, "Dados invalidos!!!\n" + "Tente novamente.", 
-                		                       "TENTE NOVAMENTE", JOptionPane.WARNING_MESSAGE);
+                		                       "TENTE NOVAMENTE", JOptionPane.WARNING_MESSAGE );
             }
         }
         
         conjuntoDeEstadosTerminaisImprime       = conjuntoDeEstadosTerminaisEnaoTerminais;
+        
         conjuntoDeEstadosTerminaisEnaoTerminais = removeNulos( conjuntoDeEstadosTerminaisEnaoTerminais );// Removendo {,}
 
         int estados              = conjuntoDeEstadosTerminaisEnaoTerminais.length( );
@@ -95,10 +92,8 @@ public class AFD_Compiladores_Trabalho
         for ( Character ch : conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( ) )
         {
             conjuntoDeEstadosMap.put( a, ch.toString( ) );
-            // IMPRIMINDO CONJUNTO DE ESTADOS NO CONSOLE
             conjuntoDeEstados[ a ] = a;
             a++;
-
         }
         
         /**
@@ -106,21 +101,20 @@ public class AFD_Compiladores_Trabalho
          * transição (Regra de Produção), funciona da seguinte forma: 
          * # ESTADO (LADO ESQUERDO), CONSOME (CENTRO); VAI PARA ESTADO (LADO DIREITO)#
          */
-        tutorialTransicao();
+        tutorialTransicao( );
        
         String    delta     = null;
         String[ ] funcDelta = new String[ conjuntodeSimbolos_Alfabeto.length  * 
                                           conjuntoDeEstadosTerminaisEnaoTerminais.length( ) ];
 
         boolean valFunc = false;
-        int     c       = 0,
-        		cont1   = 0;
+        int     c       = 0;
         
         for1: for (c = 0; c < ( conjuntodeSimbolos_Alfabeto.length *
                                 conjuntoDeEstadosTerminaisEnaoTerminais.length( ) ); c++ ) 
         {
             delta = entraFuncaoTransicao( );
-
+ 
             try 
             {
                 if ( delta.equals( null ) ) 
@@ -162,7 +156,6 @@ public class AFD_Compiladores_Trabalho
             if ( valFunc ) 
             {
                 funcDelta[ c ] = delta;
-                cont1++;
             } 
             else
             {
@@ -251,7 +244,7 @@ public class AFD_Compiladores_Trabalho
          * e não Terminais)e armazenando estes valores em um array de tipo int. 
          */
         
-     // ENTRA COM ESTADOS FINAIS
+        // ENTRA COM ESTADOS FINAIS
      		boolean validEstFim = false;
      		String conjuntoEstadosTerminais = JOptionPane.showInputDialog(null, "\nEntre com o conjunto dos estados finais F:"
      				+ "\nCada estado deve ser separado por virgula, sem espaços.\nEX: q0,q1,q2 ... e1,e2,e3 ...");
@@ -539,7 +532,7 @@ public class AFD_Compiladores_Trabalho
         boolean validador = false;
 
         // Entrada Vazia
-        if ( alfabeto.equals(" ") || alfabeto.length() < 1 || !alfabeto.isEmpty( ) )
+        if ( alfabeto.equals(" ") || alfabeto.length() < 1 || !alfabeto.isEmpty( ) || alfabeto.length() > 3 )
         {
             JOptionPane.showMessageDialog(null, "Tamanho do alfabeto inferior ao permitido!", "WARNING",
                     JOptionPane.WARNING_MESSAGE);
@@ -596,7 +589,7 @@ public class AFD_Compiladores_Trabalho
     {
         String estados = JOptionPane.showInputDialog(null,
                 "ATENÇÃO AO MODELO DE INSERÇÃO NO CONJUNTO DE ESTADOS\nCada estado deve ser "
-                        + "separado por virgula, sem espaço.\n" + "EX: A,B,C ... e1,e2,e3...");
+                        + "separado por virgula, sem espaço.\n" + "EX: A,B,C ... e1,e2,e3...\nQuantidade máxima permitida = 3");
         return estados;
     }
     
@@ -658,77 +651,37 @@ public class AFD_Compiladores_Trabalho
         // VERIFICADOR DE ENTRADA DE DADOS PARA O CONJUNTO DE ESTADOS
         private static boolean verificaEst(String estados) {
             boolean validador = false;
-            // CLIQUE NO BOTAO CANCELAR
-
-            // try {
-            // if (estados.equals(null)) {
-            // }
-            // } catch (Exception e) {
-            // entradaInvalida();
-            // JOptionPane.showMessageDialog(null, "Não permitida a saida nesse etapa!");
-            // return validador = true;
-            // }
-
+            
             // ESTADO COM TAMANHO INFERIOR AO PERMITIDO, 0.
-            if ( estados.length( ) < 1 || estados.equals("") ){
-                JOptionPane.showMessageDialog(null, "Tamanho do conjunto inferior ao permitido!");
-                entradaInvalida();
+            if ( estados.length( ) < 1 || estados.length( ) > 3 || estados.equals( " " ) || estados.isEmpty( ) )
+            {
+                JOptionPane.showMessageDialog( null, "Tamanho do conjunto inferior ao permitido!" );
+                entradaInvalida( );
                 return validador = true;
             }
 
             // INSERÇÃO DE ESTADOS NÃO PODE COMEÇAR PELA VIRGULA.
-            if (estados.charAt(0) == ',')
+            if ( estados.charAt( 0 ) == ',' )
             {
-                JOptionPane.showMessageDialog(null, "Não começe a inserção pela virgula");
-                entradaInvalida();
+                JOptionPane.showMessageDialog(null, "Não começe a inserção pela virgula" );
+                entradaInvalida( );
                 return validador = true;
             }
 
-            // VALIDADOR DE FORMATAÇÃO DO CONJUNTO DE ESTADOS
-            /**ValidadorDeEstados: for ( int w = 0; w < estados.length(); w++)
-            {
-                w++;
-                w++; 
-                if (w == estados.length()) {
-                    break ValidadorDeEstados;
-                }
-                validarVirgulaEstadoAte9Estados: if (estados.length() <= 29) {
-                    if (estados.charAt(w) != ',') {
-                        JOptionPane.showMessageDialog(null, "Fora do modelo permitido!", "WARNING",
-                                JOptionPane.WARNING_MESSAGE);
-                        return validador = true;
-                        // w=estados.length();
-                    } else {
-                        validador = false;
-                    }
-                }
-
-                validarVirgulaEstadoAcima10Estados: if (estados.length() >= 30) {
-                    w++;
-                    if (estados.charAt(w) != ',') {
-                        JOptionPane.showMessageDialog(null, "Fora do modelo permitido!", "WARNING",
-                                JOptionPane.WARNING_MESSAGE);
-                        return validador = true;
-                        // w=estados.length();
-                    } else {
-                        validador = false;
-                    }
-                }
-
-            }*/
-
             // ESTADOS IGUIAS
-            if (!checkEstEquals(estados)) 
+            if( !checkEstEquals( estados ) ) 
             {
-                JOptionPane.showMessageDialog(null, "Entrada VERIFICADA");
+                JOptionPane.showMessageDialog( null, "Entrada VERIFICADA" );
             }
             return validador;// = false;
         }
 
-        // ESTADOS IGUAIS --- CORRIGIR VALIDADOR DE ESTADOS
-        private static boolean checkEstEquals(String estados) {
-            try {
-                if (estados.equals(null))
+        // ESTADOS IGUAIS --- CORRIGIR VALIDADOR DE ESTADOS **************************************************
+        private static boolean checkEstEquals(String estados) 
+        {
+            try 
+            {
+                if ( estados.equals( null ) )
                 {
                 }
             }
@@ -736,14 +689,19 @@ public class AFD_Compiladores_Trabalho
             {
                 return true;
             }
-            String[ ] estAux = estados.split(",");
+            
+            String[ ] estAux = estados.split( "," );
 
-            for (int i = 0; i < estAux.length; i++) {
-                for (int j = i + 1; j < estAux.length; j++) {
-                    if (estAux[i].equals(estAux[j])) {
-                        JOptionPane.showMessageDialog(null, "Existem elementos iguais no conjunto!", "WARNING",
-                                JOptionPane.WARNING_MESSAGE);
+            for ( int i = 0; i < estAux.length; i++ )
+            {
+                for ( int j = i + 1; j < estAux.length; j++ ) 
+                {
+                    if ( estAux[ i ].equals( estAux[ j ] ) )
+                    {
+                        JOptionPane.showMessageDialog( null, "Existem elementos iguais no conjunto!", "WARNING",
+                                                              JOptionPane.WARNING_MESSAGE );
                         i = estAux.length;
+                        
                         return true;
                     }
                 }
@@ -752,7 +710,7 @@ public class AFD_Compiladores_Trabalho
             return false;
         }
 
-     // ENTRA ESTADO INICIAL
+        // ENTRA ESTADO INICIAL
     	private static String entraEstIN( String conjuntoDeEstados ) 
     	{
     		boolean validador = true;
