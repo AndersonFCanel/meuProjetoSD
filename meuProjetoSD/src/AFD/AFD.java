@@ -8,20 +8,19 @@ import javax.swing.JOptionPane;
 
 /* @Anderson Ferreira Canel 
  * 
- *  * Este código é capaz de verificar a aceitação de uma palavra por um dado autômato,
- * caso queira verificar a aceitação  de outras palavras por outros autômatos altere a 
- * regra de produção e os conjuntos de estados e símbolos hardcoded.
+ *  * Este código é capaz de verificar a aceitação de 
+ *    uma palavra por um autômato informado dinâmicamente.
  * */
 
-public class AFD_Compiladores_Trabalho
+public class AFD
 {
-    static HashMap<Integer, String> conjuntoDeEstadosMap       = new HashMap<Integer, String>( );
-    static HashMap<Integer, String> conjuntoDeEstadosFinaisMap = new HashMap<Integer, String>( );
+    private static HashMap<Integer, String> conjuntoDeEstadosMap       = new HashMap<Integer, String>( );
+            static HashMap<Integer, String> conjuntoDeEstadosFinaisMap = new HashMap<Integer, String>( );
 
-    static String alfabetoImprime;
-    static String conjuntoDeEstadosTerminaisImprime;
-    static String estIniImprime;
-    static String conjEstTermImprime;
+    private static String alfabetoImprime;
+    private static String conjuntoDeEstadosTerminaisImprime;
+    private static String estIniImprime;
+    private static String conjEstTermImprime;
 
     public static void main( String[ ] args ) 
     {
@@ -37,10 +36,7 @@ public class AFD_Compiladores_Trabalho
             alfabeto = entrarConjuntoCaracteres_Alfabeto  (          );
             validAlf = verificaConjuntoCaracteres_Alfabeto( alfabeto );
 
-            if ( validAlf ) 
-                JOptionPane.showMessageDialog( null, "Dados invalidos!!!\n" + "Tente novamente.", 
-                	                            	 "TENTE NOVAMENTE", JOptionPane.WARNING_MESSAGE );
-            else 
+            if ( !validAlf )  
                 entradaValidada( );
         }
         
@@ -48,6 +44,7 @@ public class AFD_Compiladores_Trabalho
         
         alfabeto = removeNulos    ( alfabeto );// Removendo {,}
         
+        //Poderia ser um array de object, caso cada elemento do conjunto fosse um conjunto de simbolos
         Character[ ]conjuntodeSimbolos_Alfabeto = new Character[ alfabeto.length( ) ];
         int z = 0;
      
@@ -63,26 +60,20 @@ public class AFD_Compiladores_Trabalho
          * de int, convertendo a posição de um estado fornecido no conjunto em um valor
          * numérico, em ordem crescente correspondente a ordem dos estados fornecidos.
          */
-        boolean validEst                                = false;
         String  conjuntoDeEstadosTerminaisEnaoTerminais = entraConjuntoEstado( );
         
-        validEst = verificaEst   ( conjuntoDeEstadosTerminaisEnaoTerminais );
-        validEst = checkEstEquals( conjuntoDeEstadosTerminaisEnaoTerminais );
+        boolean validEst = verificaEst( conjuntoDeEstadosTerminaisEnaoTerminais );
 
         while ( validEst ) 
         {
             conjuntoDeEstadosTerminaisEnaoTerminais = entraConjuntoEstado(                                         );
             validEst                                = verificaEst        ( conjuntoDeEstadosTerminaisEnaoTerminais );
-
-            if( validEst )
-            {
-                JOptionPane.showMessageDialog( null, "Dados invalidos!!!\n" + "Tente novamente.", 
-                		                       "TENTE NOVAMENTE", JOptionPane.WARNING_MESSAGE );
-            }
+            
+            if( !validEst )
+            	 entradaValidada( );
         }
         
-        conjuntoDeEstadosTerminaisImprime       = conjuntoDeEstadosTerminaisEnaoTerminais;
-        
+        conjuntoDeEstadosTerminaisImprime       = conjuntoDeEstadosTerminaisEnaoTerminais;    
         conjuntoDeEstadosTerminaisEnaoTerminais = removeNulos( conjuntoDeEstadosTerminaisEnaoTerminais );// Removendo {,}
 
         int estados              = conjuntoDeEstadosTerminaisEnaoTerminais.length( );
@@ -103,91 +94,37 @@ public class AFD_Compiladores_Trabalho
          */
         tutorialTransicao( );
        
-        String    delta     = null;
-        String[ ] funcDelta = new String[ conjuntodeSimbolos_Alfabeto.length  * 
-                                          conjuntoDeEstadosTerminaisEnaoTerminais.length( ) ];
-
-        boolean valFunc = false;
-        int     c       = 0;
         
-        for1: for (c = 0; c < ( conjuntodeSimbolos_Alfabeto.length *
-                                conjuntoDeEstadosTerminaisEnaoTerminais.length( ) ); c++ ) 
-        {
-            delta = entraFuncaoTransicao( );
- 
-            try 
-            {
-                if ( delta.equals( null ) ) 
-                {
-                }
-            }
-            catch ( Exception e )
-            {
-                entradaInvalida();
-                JOptionPane.showMessageDialog( null, "Para sair use a tecla 's'!" );
-                c--;
-                continue for1;
-            }
+        String[ ] conjuntoFuncaoDeTransicaoDeEstados = new String[ conjuntodeSimbolos_Alfabeto.length  * 
+                                                                   conjuntoDeEstadosTerminaisEnaoTerminais.length( ) ];
 
-            if ( "S".equalsIgnoreCase( delta ) ) 
-            {
-                break for1;
-            }
-
-            if ( "I".equalsIgnoreCase( delta ) ) 
-            {
-                tutorialTransicao( );
-                c--;
-                continue for1;
-            }
-
-            if ( "A".equalsIgnoreCase( delta ) ) 
-            {
-                JOptionPane.showMessageDialog(null,"Transições informadas até o momento:\n" + 
-                                                    Arrays.toString( funcDelta ) );
-                c--;
-                continue for1;
-            }
-
-            valFunc = true; //checkFunc(delta, conjuntoDeEstadosTerminaisEnaoTerminais);
-            // valFunc2 = checkEqualsFunc(delta, alfArray,
-            // estArray,funcDeltaAux); //CORRIGIR VALIDADOR
-
-            if ( valFunc ) 
-            {
-                funcDelta[ c ] = delta;
-            } 
-            else
-            {
-                entradaInvalida( );
-                c--;
-            }
-        }
-        //String[ ] funcDelta  = {"A,a;A", "A,b;A", "B,a;A", "B,b;A"};
+        conjuntoFuncaoDeTransicaoDeEstados = montarConjuntoFuncTran( conjuntodeSimbolos_Alfabeto.length  * 
+                                                                     conjuntoDeEstadosTerminaisEnaoTerminais.length( ) );
         
-        String[ ] estadoPartidaS  = new String[ funcDelta.length ];
-        String[ ] caracConsumidoS = new String[ funcDelta.length ];
-        String[ ] estadoDestinoS  = new String[ funcDelta.length ];
+        String[ ] estadoPartidaS  = new String[ conjuntoFuncaoDeTransicaoDeEstados.length ];
+        String[ ] caracConsumidoS = new String[ conjuntoFuncaoDeTransicaoDeEstados.length ];
+        String[ ] estadoDestinoS  = new String[ conjuntoFuncaoDeTransicaoDeEstados.length ];
 
-        int [ ] estadoPartida = new int [ funcDelta.length ];
-        int [ ] estadoDestino = new int [ funcDelta.length ];
-        char[ ] le            = new char[ funcDelta.length ];
+        int [ ] estadoPartida = new int [ conjuntoFuncaoDeTransicaoDeEstados.length ];
+        int [ ] estadoDestino = new int [ conjuntoFuncaoDeTransicaoDeEstados.length ];
+        char[ ] le            = new char[ conjuntoFuncaoDeTransicaoDeEstados.length ];
 
-        for (int i = 0; i < funcDelta.length; i++)
+        //
+        for (int i = 0; i < conjuntoFuncaoDeTransicaoDeEstados.length; i++)
         {
-            if (funcDelta[i] == null)
+            if (conjuntoFuncaoDeTransicaoDeEstados[i] == null)
             {
                 break;
             }
-            String[ ] p1 = funcDelta[ i ].split( ";" );
-            String[ ] p2 = p1       [ 0 ].split( "," );
+            String[ ] p1 = conjuntoFuncaoDeTransicaoDeEstados[ i ].split( ";" );
+            String[ ] p2 = p1                                [ 0 ].split( "," );
             
             estadoPartidaS [ i ] = p2[ 0 ];
             caracConsumidoS[ i ] = p2[ 1 ];
             estadoDestinoS [ i ] = p1[ 1 ];
         }
 
-        for( int p = 0; p < funcDelta.length; p++ )
+        for( int p = 0; p < conjuntoFuncaoDeTransicaoDeEstados.length; p++ )
         {
             String aux = estadoPartidaS[ p ];
             int    h   = 0;
@@ -197,7 +134,6 @@ public class AFD_Compiladores_Trabalho
                 for (int j = 0; j < ( conjuntodeSimbolos_Alfabeto.length  *
                                       conjuntoDeEstadosTerminaisEnaoTerminais.length( ) ); j++ )
                 {
-
                     if ( estadoPartidaS[ j ].equals( ch.toString( ) ) ) 
                     {
                          estadoPartida[ j ] = h;
@@ -207,7 +143,6 @@ public class AFD_Compiladores_Trabalho
                 for( int j = 0; j < ( conjuntodeSimbolos_Alfabeto.length *
                                       conjuntoDeEstadosTerminaisEnaoTerminais.length( ) ); j++ )
                 {
-
                     if( estadoDestinoS[ j ].equals( ch.toString( ) ) )
                     {
                         estadoDestino[ j ] = h;
@@ -215,7 +150,6 @@ public class AFD_Compiladores_Trabalho
                 }
                 h++;
             }
-
             aux     = caracConsumidoS[ p ];
             le[ p ] = aux.charAt( 0 );
         }
@@ -258,7 +192,7 @@ public class AFD_Compiladores_Trabalho
      			if (lista.contains(estFin[i]))
      			{
      				validEstFim = verificaEst(conjuntoEstadosTerminais);
-     				validEstFim = checkEstEquals(conjuntoEstadosTerminais);
+     				validEstFim = verificaConjuntoEstados(conjuntoEstadosTerminais);
      			}
      			else
      			{
@@ -278,7 +212,7 @@ public class AFD_Compiladores_Trabalho
      				if (lista.contains(estFin[i]))
      				{
      					validEstFim = verificaEst(conjuntoEstadosTerminais);
-     					validEstFim = checkEstEquals(conjuntoEstadosTerminais);
+     					validEstFim = verificaConjuntoEstados(conjuntoEstadosTerminais);
      				}
      				else
      				{
@@ -373,7 +307,7 @@ public class AFD_Compiladores_Trabalho
 
                 for ( int p = 0; p < palavra.length; p++ )
                 {
-                    for ( int k = 0; k < funcDelta.length; k++ ) 
+                    for ( int k = 0; k < conjuntoFuncaoDeTransicaoDeEstados.length; k++ ) 
                     {
                         if ( ( palavra[p] == le[k]) && (estadoPartida[k] == estadoa ) )
                         {
@@ -424,10 +358,91 @@ public class AFD_Compiladores_Trabalho
     
     
     
+    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    //%---------------METODOS UTILIZADOS NO CÓDIGO------------%
+    //%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     
-    // ---------------METODOS UTILIZADOS NO CÓDIGO------------
+    
+    /*
+     ****************************************************************
+     *MÉTODOS PARA ENTRADA DE DADOS 
+     ****************************************************************
+     */
+    private static String entrarConjuntoCaracteres_Alfabeto( ) 
+    {
+        String alfabeto = JOptionPane.showInputDialog( null,
+                "Entre com o alfabeto Σ:\nCada caracter deve ser separado por virgula, "
+                + "sem espaço.\nEX: a,b,c,d,e ...\n"
+                + "Lembre-se, tratando de conjunto não são permitidos elementos duplicados."
+                + "\nTamanho permitido:\n"
+                + "       Mínimo = 1(um)   elemento. \n"
+                + "       Máximo = 3(três) elementos.\n");
+        return alfabeto;
+    }
+
     /**
-     * IMPRIME CONJUNTOS E REGRAS DE PRODUÇÃO
+     * JOptionPane para conjunto ESTADOS
+     * @return
+     */
+    private static String entraConjuntoEstado( )
+    {
+        String estados = JOptionPane.showInputDialog(null,
+                "ATENÇÃO AO MODELO DE INSERÇÃO NO CONJUNTO DE ESTADOS\nCada estado deve ser "
+                        + "separado por virgula, sem espaço.\n" + "EX: A,B,C ... e1,e2,e3...\n"
+        		+ "Lembre-se, tratando de conjunto não são permitidos elementos duplicados."
+                + "\nTamanho permitido:\n"
+                + "       Mínimo = 1(um)   elemento. \n"
+                + "       Máximo = 3(três) elementos.\n");
+        return estados;
+    }
+    
+    // ENTRADA DA FUNÇÃO DE TRANSIÇAO
+    private static String entraFuncaoTransicao( ) 
+    {
+
+        String delta = JOptionPane.showInputDialog(null,
+                "\nEntre com as transiçãos de estado (δ: Q × Σ → Q):\n" + "\nPara ver o tutorial  novamente : 'i'"
+                        + "\nPara sair : 's'" + "\nVer entradas anteriores 'a'" + "\n ");
+        return delta;
+    }
+
+    
+    /*
+     ****************************************************************
+     *  METODOS DE IMPRESSÃO DE INFORMAÇOES
+     ****************************************************************
+     */
+    
+    // ENTRADA INVALIDA
+    private static void entradaInvalida ()
+    {
+        JOptionPane.showMessageDialog(null, "ENTRADA INVALIDA", "WARNING", JOptionPane.WARNING_MESSAGE);
+    }
+    
+    // ENTRADA VALIDA
+    private static void entradaValidada( ) {
+        JOptionPane.showMessageDialog(null, "Entrada VERIFICADA\n");
+    }
+    
+    
+    // TUTORIAL DE ENTRADA PARA FUNȿO DE TRANSIȃO
+    private static void tutorialTransicao( ) 
+    {
+        JOptionPane.showMessageDialog(null, 
+        		"       * Conjunto de regras de transição (Regra de Produção), funciona da seguinte forma: *\n" + 
+        		"         {* # ESTADO (LADO ESQUERDO), CONSOME (CENTRO); VAI PARA ESTADO (LADO DIREITO)# *}"
+        		+ "\n\nATENÇÃO AOS PASSOS PARA ENTRADA DA FUNÇÃO DE TRANSIÇÃO DE ESTADOS\n"
+                + "PASSO 1: Primeiro entre com o estado inicial - EX: q0\n" 
+        		+ "PASSO 2: DIGITE UMA VIRGULA \",\"\n"
+                + "PASSO 3: Entre com o caracter a ser consumido pelo estado inicial - EX: a\n"
+                + "PASSO 4: DIGITE PONTO E VIRGULA. \";\"\n" + "PASSO 5: Entre com o estado de destino - EX: q1\n"
+                + "PASSO 6: APERTE ENTER\n" + "A entrada pode ser verificada com a inserção da letra i + enter\n"
+                		+ "e a mesma deve estar da forma do exemplo abaixo:\n"
+                + "EX: q0,a;q1", "WARNING", JOptionPane.WARNING_MESSAGE);
+    }
+    
+    /**
+     * 
      * @param alf
      * @param est
      * @param estadoPartida
@@ -436,9 +451,10 @@ public class AFD_Compiladores_Trabalho
      * @param estIn
      * @param conjuntoEstadosFinais
      */
-    private static void imprimirAutomato(String alf, String est, int[ ] estadoPartida, int[ ] estadoDestino, char[ ] le,
-            String estIn, String conjuntoEstadosFinais) {
-
+    private static void imprimirAutomato( String alf, String est, int[ ] estadoPartida, int[ ] estadoDestino, char[ ] le,
+            String estIn, String conjuntoEstadosFinais) 
+    {
+    
         String[ ] estP = new String[estadoPartida.length];
         ;
         int b = 0;
@@ -446,7 +462,7 @@ public class AFD_Compiladores_Trabalho
             estP[b] = conjuntoDeEstadosMap.get(key);
             b++;
         }
-
+    
         String[ ] estD = new String[estadoDestino.length];
         ;
         int c = 0;
@@ -454,7 +470,7 @@ public class AFD_Compiladores_Trabalho
             estD[c] = conjuntoDeEstadosMap.get(key);
             c++;
         }
-
+    
         JOptionPane.showMessageDialog(null,
                 "**************************************************\n" + "\tIMPRIMINDO DADOS DO AUTOMATO\n"
                         + "\t\t\t ==>NOTAÇÃO UTILIZADA <== \n" + "\tO conjunto de simbolos - alfabeto: Σ \n"
@@ -467,85 +483,38 @@ public class AFD_Compiladores_Trabalho
                         + Arrays.toString(estD) + "\n" + "" + "\tq0  = " + estIn + "\n" + "" + "\tF   = "
                         + conjuntoEstadosFinais + "\n" + "" + "**************************************************");
     }
-
-    /**
-     * VERIFICA SE PALAVRA PERTENCE AO ALFABETO
-     * @param palavra
-     * @param alf
-     * @return
-     */
-    private static boolean VerificaPalavra(String palavra, Character[ ] alf) {
-        int cont = 0;
-        for (int x = 0; x < palavra.length(); x++) {
-            Character caracPalavra = palavra.charAt(x);
-            for (int y = 0; y < alf.length; y++) {
-                if (caracPalavra.equals(alf[y])) {
-                    cont++;
-                }
-            }
-        }
-
-        if (cont == palavra.length()) {
-            return true;
-        } else {
-            JOptionPane.showMessageDialog(null,
-                    "A palavra \"" + palavra
-                            + "\" contém simbolos não pertencentes ao conjunto de simbolos (alfabeto,Σ= "
-                            + alfabetoImprime + ")!",
-                    "WARNING", JOptionPane.WARNING_MESSAGE);
-            return false;
-        }
-    }
-
-    /**
-     * REMOVE CARACTERES DE FORMATAÇÃO DO CONJUNTO, EX: {,}
-     * @param conjunto
-     * @return
-     */
-    public static String removeNulos(String conjunto) {
-        String[ ] nulos = { "{", "}", "," };// identificando carateres de formatação do conjunto
-        for (String n : nulos) {
-            conjunto = conjunto.replace(n, "");
-        }
-        return conjunto;
-
-    }
     
-    //--------------------------------------------
-    //--------------------------------------------
-    //--------------------------------------------
-    //--------------------------------------------
-    //--------------------------------------------
+    
+    
+    
+    /* 
+     * ***************************************************************
+     * METODOS VALIDADORES
+     * ***************************************************************
+    */
+    
     /**
-     * JOptionPane para conjunto  ALFABETO
+     * 
+     * @param alfabeto
      * @return
      */
-    private static String entrarConjuntoCaracteres_Alfabeto( ) 
-    {
-        String alfabeto = JOptionPane.showInputDialog( null,
-                "Entre com o alfabeto Σ:\nCada caracter deve ser separado por virgula, sem espaço.\nEX: a,b,c,d,e ...\nQuantidade máxima permitida = 3\n");
-        return alfabeto;
-    }
-    
     private static boolean verificaConjuntoCaracteres_Alfabeto( String alfabeto ) 
     {
         boolean validador = false;
-
+    
         // Entrada Vazia
-        if ( alfabeto.equals(" ") || alfabeto.length() < 1 || !alfabeto.isEmpty( ) || alfabeto.length() > 3 )
+        if ( alfabeto.equals(" ") || alfabeto.length( ) < 1 || alfabeto.isEmpty( ) || alfabeto.length( ) > 5 )//5 porque conta as duas virgulas
         {
-            JOptionPane.showMessageDialog(null, "Tamanho do alfabeto inferior ao permitido!", "WARNING",
+            JOptionPane.showMessageDialog(null, "ENTRADA INVALIDA\n"+"Tamanho do alfabeto fora do range permitido!", "WARNING",
                     JOptionPane.WARNING_MESSAGE);
-            entradaInvalida();
             return validador = true;
         }
-
+    
         // Entrada iniciando pela virgula
         if ( alfabeto.charAt(0) == ',' ) 
         {
-            JOptionPane.showMessageDialog(null, "Não começe a inserção pela virgula", "WARNING",
+            JOptionPane.showMessageDialog(null, "ENTRADA INVALIDA\n"+"Não começe a inserção pela virgula", "WARNING",
                                           JOptionPane.WARNING_MESSAGE);
-            entradaInvalida();
         }
         
         // Caracteres iguais, exeção de ','
@@ -568,175 +537,234 @@ public class AFD_Compiladores_Trabalho
             {
                 if ( alfabeto.charAt( k ) == alfabeto.charAt( j ) ) 
                 {
-                    entradaInvalida( );
-                    JOptionPane.showMessageDialog( null, "Você entrou com caracteres iguais no alfabeto!\n"
+                    JOptionPane.showMessageDialog( null, "ENTRADA INVALIDA\n"+"Você entrou com caracteres iguais no alfabeto!\n"
                             + alfabeto.charAt( k ) + " = " + alfabeto.charAt( j ), "WARNING", JOptionPane.WARNING_MESSAGE );
                     return validador = true;
                 }
             }
-
+    
         }
         JOptionPane.showMessageDialog( null, "ENTRADA VERIFICADA" );
         
         return validador;
     }
-
+    
+     /**
+      * VERIFICADOR DE ENTRADA DE DADOS PARA O CONJUNTO DE ESTADOS
+      * @param estados
+      * @return
+      */
+    private static boolean verificaEst( String estados ) 
+    {
+        boolean validador = false;
+        
+        // ESTADO COM TAMANHO INFERIOR AO PERMITIDO, = 0 ou >5.
+        if ( estados.length( ) < 1 || estados.length( ) > 5 || estados.equals( " " ) || estados.isEmpty( ) )//5 porque conta as duas virgulas
+        {
+            JOptionPane.showMessageDialog( null, "ENTRADA INVALIDA\n"+"Tamanho do conjunto fora do range permitido!" );
+            return validador = true;
+        }
+    
+        // INSERÇÃO DE ESTADOS NÃO PODE COMEÇAR PELA VIRGULA.
+        if ( estados.charAt( 0 ) == ',' )
+        {
+            JOptionPane.showMessageDialog(null,"ENTRADA INVALIDA\n"+ "Não começe a inserção pela virgula" );
+            return validador = true;
+        }
+    
+        // ESTADOS IGUIAS
+        if( !verificaConjuntoEstados( estados ) ) 
+        {
+            JOptionPane.showMessageDialog( null, "Entrada VERIFICADA" );
+        }
+        else
+        {
+        	return validador = true;
+        }
+        
+        return validador;// = false;
+    }
+    
+    // ===>>>#####ESTADOS IGUAIS --- CORRIGIR VALIDADOR DE ESTADOS 
+    private static boolean verificaConjuntoEstados(String estados) 
+    {
+        try 
+        {
+            if ( estados.equals( null ) )
+            {
+            }
+        }
+        catch (Exception e) 
+        {
+            return true;
+        }
+        
+        String[ ] estAux = estados.split( "," );
+    
+        for ( int i = 0; i < estAux.length; i++ )
+        {
+            for ( int j = i + 1; j < estAux.length; j++ ) 
+            {
+                if ( estAux[ i ].equals( estAux[ j ] ) )
+                {
+                    JOptionPane.showMessageDialog( null,  "ENTRADA INVALIDA\n"+ "Existem elementos iguais no conjunto!", "WARNING",
+                                                          JOptionPane.WARNING_MESSAGE );
+                    i = estAux.length;
+                    
+                    return true;
+                }
+            }
+        }
+    
+        return false;
+    }
+    
+   
     /**
-     * JOptionPane para conjunto de estado
+     * ENTRA ESTADO INICIAL
+     * @param conjuntoDeEstados
      * @return
      */
-    private static String entraConjuntoEstado( )
+    private static String entraEstIN( String conjuntoDeEstados ) 
     {
-        String estados = JOptionPane.showInputDialog(null,
-                "ATENÇÃO AO MODELO DE INSERÇÃO NO CONJUNTO DE ESTADOS\nCada estado deve ser "
-                        + "separado por virgula, sem espaço.\n" + "EX: A,B,C ... e1,e2,e3...\nQuantidade máxima permitida = 3");
-        return estados;
+    	boolean validador = true;
+    	   		
+    	String estadoInicial;
+    	do {
+    		estadoInicial = JOptionPane.showInputDialog( null, "ESTADO INICIAL:\nEntre com o estado inicial q0: " );
+    
+    		if (conjuntoDeEstados.contains( estadoInicial ) ) 
+    		{
+      			validador = false;
+    		}
+    		else
+    		{
+    			validador = true;
+    			JOptionPane.showMessageDialog( null, "Estado no inexistente no conjunto de estados." );
+    		}
+    
+    	} while ( validador );
+    
+    	return estadoInicial;
     }
     
-    // ENTRADA DA FUNÇÃO DE TRANSIÇAO
-    private static String entraFuncaoTransicao() {
-
-        String delta = JOptionPane.showInputDialog(null,
-                "\nEntre com as transiçãos de estado (δ: Q × Σ → Q):\n" + "\nPara ver o tutorial  novamente : 'i'"
-                        + "\nPara sair : 's'" + "\nVer entradas anteriores 'a'" + "\n ");
-        return delta;
-    }
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-  
-        // ---- METODOS DE IMPRESSÃO DE INFORMAÇOES -
-
-        // ENTRADA INVALIDA
-        private static void entradaInvalida() {
-            JOptionPane.showMessageDialog(null, "ENTRADA INVALIDA", "WARNING", JOptionPane.WARNING_MESSAGE);
+    /**
+     * VERIFICA SE PALAVRA PERTENCE AO ALFABETO
+     * @param palavra
+     * @param alf
+     * @return
+     */
+    private static boolean VerificaPalavra(String palavra, Character[ ] alf) {
+        int cont = 0;
+        for (int x = 0; x < palavra.length(); x++) {
+            Character caracPalavra = palavra.charAt(x);
+            for (int y = 0; y < alf.length; y++) {
+                if (caracPalavra.equals(alf[y])) {
+                    cont++;
+                }
+            }
         }
-
-        // ENTRADA VALIDA
-        private static void entradaValidada() {
-            JOptionPane.showMessageDialog(null, "Entrada VERIFICADA\n");
-        }
-
-
-        // TUTORIAL DE ENTRADA PARA FUNȿO DE TRANSIȃO
-        private static void tutorialTransicao() {
-            JOptionPane.showMessageDialog(null, "ATENÇÃO AO MODELO PARA ENTRADA DA FUNÇÃO DE TRANSIÇÃO DE ESTADOS\n"
-                    + "PASSO 1: Primeiro entre com o estado inicial - EX: q0\n" + "PASSO 2: DIGITE UMA VIRGULA \",\"\n"
-                    + "PASSO 3: Entre com o caracter a ser consumido pelo estado inicial - EX: a\n"
-                    + "PASSO 4: DIGITE PONTO E VIRGULA. \";\"\n" + "PASSO 5: Entre com o estado de destino - EX: q1\n"
-                    + "PASSO 6: APERTE ENTER\n" + "A entrada deve estar da forma do exemplo abaixo\n" + "EX: q0,a;q1",
+    
+        if (cont == palavra.length()) {
+            return true;
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    "A palavra \"" + palavra
+                            + "\" contém simbolos não pertencentes ao conjunto de simbolos (alfabeto,Σ= "
+                            + alfabetoImprime + ")!",
                     "WARNING", JOptionPane.WARNING_MESSAGE);
-        }
-
-               
-      
-       
-        
-        // ---------METEDOS VALIDADORES
-
-    
-
-        // VERIFICADOR DE ENTRADA DE DADOS PARA O CONJUNTO DE ESTADOS
-        private static boolean verificaEst(String estados) {
-            boolean validador = false;
-            
-            // ESTADO COM TAMANHO INFERIOR AO PERMITIDO, 0.
-            if ( estados.length( ) < 1 || estados.length( ) > 3 || estados.equals( " " ) || estados.isEmpty( ) )
-            {
-                JOptionPane.showMessageDialog( null, "Tamanho do conjunto inferior ao permitido!" );
-                entradaInvalida( );
-                return validador = true;
-            }
-
-            // INSERÇÃO DE ESTADOS NÃO PODE COMEÇAR PELA VIRGULA.
-            if ( estados.charAt( 0 ) == ',' )
-            {
-                JOptionPane.showMessageDialog(null, "Não começe a inserção pela virgula" );
-                entradaInvalida( );
-                return validador = true;
-            }
-
-            // ESTADOS IGUIAS
-            if( !checkEstEquals( estados ) ) 
-            {
-                JOptionPane.showMessageDialog( null, "Entrada VERIFICADA" );
-            }
-            return validador;// = false;
-        }
-
-        // ESTADOS IGUAIS --- CORRIGIR VALIDADOR DE ESTADOS **************************************************
-        private static boolean checkEstEquals(String estados) 
-        {
-            try 
-            {
-                if ( estados.equals( null ) )
-                {
-                }
-            }
-            catch (Exception e) 
-            {
-                return true;
-            }
-            
-            String[ ] estAux = estados.split( "," );
-
-            for ( int i = 0; i < estAux.length; i++ )
-            {
-                for ( int j = i + 1; j < estAux.length; j++ ) 
-                {
-                    if ( estAux[ i ].equals( estAux[ j ] ) )
-                    {
-                        JOptionPane.showMessageDialog( null, "Existem elementos iguais no conjunto!", "WARNING",
-                                                              JOptionPane.WARNING_MESSAGE );
-                        i = estAux.length;
-                        
-                        return true;
-                    }
-                }
-            }
-
             return false;
         }
+    }
+    
+    
+    
+    /*
+     ****************************************************************
+     * MÉTODOS UTIL'S
+     ****************************************************************
+     */ 
+    
+    /**
+    * REMOVE CARACTERES DE FORMATAÇÃO DO CONJUNTO, EX: {,}
+    * @param conjunto
+    * @return
+    */
+   public static String removeNulos(String conjunto) {
+       String[ ] nulos = { "{", "}", "," };// identificando carateres de formatação do conjunto
+       for (String n : nulos) {
+           conjunto = conjunto.replace(n, "");
+       }
+       return conjunto;
 
-        // ENTRA ESTADO INICIAL
-    	private static String entraEstIN( String conjuntoDeEstados ) 
-    	{
-    		boolean validador = true;
-    		   		
-    		String estadoInicial;
-    		do {
-    			estadoInicial = JOptionPane.showInputDialog( null, "ESTADO INICIAL:\nEntre com o estado inicial q0: " );
-
-    			if (conjuntoDeEstados.contains( estadoInicial ) ) 
-    			{
-          			validador = false;
-    			}
-      			else
-    			{
-    				validador = true;
-    				JOptionPane.showMessageDialog( null, "Estado no inexistente no conjunto de estados." );
-    			}
-
-    		} while ( validador );
-
-    		return estadoInicial;
-    	}
- 
-    	// SPLIT PARA SEPARAR ENTRADAS QUE CONTEM VIRGULA
-    	private static String[] splitVirgula(String valor) {
-    		return valor.split(",");// Divide a String quando ocorrer ","
-    	}
+   }
+   
+    // SPLIT PARA SEPARAR ENTRADAS QUE CONTEM VIRGULA
+    private static String[] splitVirgula( String valor )
+    {
+    	return valor.split(",");// Divide a String quando ocorrer ","
+    }
         
+    
+    
+    
+    private static String[] montarConjuntoFuncTran( int i ) 
+    {
+    	String    funcaoDeTransicao                  = null;
+    	String[ ] conjuntoFuncaoDeTransicaoDeEstados = new String[ i ];
+    	boolean valFunc = false;
+        
+        for1: for (int c = 0; c < i; c++ ) 
+        {
+            funcaoDeTransicao = entraFuncaoTransicao( );
+ 
+            try 
+            {
+                if ( funcaoDeTransicao.equals( null ) ) 
+                {
+                }
+            }
+            catch ( Exception e )
+            {
+                JOptionPane.showMessageDialog( null, "ENTRADA INVALIDA\n"+"Para sair use a tecla 's'!" );
+                c--;
+                continue for1;
+            }
+
+            if ( "S".equalsIgnoreCase( funcaoDeTransicao ) ) 
+            {
+                break for1;
+            }
+
+            if ( "I".equalsIgnoreCase( funcaoDeTransicao ) ) 
+            {
+                tutorialTransicao( );
+                c--;
+                continue for1;
+            }
+
+            if ( "A".equalsIgnoreCase( funcaoDeTransicao ) ) 
+            {
+                JOptionPane.showMessageDialog(null,"Transições informadas até o momento:\n" + 
+                                                    Arrays.toString( conjuntoFuncaoDeTransicaoDeEstados ) );
+                c--;
+                continue for1;
+            }
+
+            valFunc = true; //checkFunc(delta, conjuntoDeEstadosTerminaisEnaoTerminais);
+            // valFunc2 = checkEqualsFunc(delta, alfArray,
+            // estArray,funcDeltaAux); //CORRIGIR VALIDADOR
+
+            if ( valFunc ) 
+            {
+                conjuntoFuncaoDeTransicaoDeEstados[ c ] = funcaoDeTransicao;
+            } 
+            else
+            {
+                entradaInvalida( );
+                c--;
+            }
+        }
+		return conjuntoFuncaoDeTransicaoDeEstados;
+    }
 }
