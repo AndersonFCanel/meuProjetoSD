@@ -1,4 +1,4 @@
-package com.suamSD.servidor;
+package AFD;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
  *    uma palavra por um autômato informado dinâmicamente.
  * */
 
-public class AFD
+public class AFDmain
 {
     private static HashMap<Integer, String> conjuntoDeEstadosMap       = new HashMap<Integer, String>( );
             static HashMap<Integer, String> conjuntoDeEstadosFinaisMap = new HashMap<Integer, String>( );
@@ -21,192 +21,166 @@ public class AFD
     private static String conjuntoDeEstadosTerminaisImprime;
     private static String estIniImprime;
     private static String conjEstTermImprime;
-    
-    private static String       conjuntoDeEstadosTerminaisEnaoTerminais;
-    private static Character[ ] conjuntodeSimbolos_Alfabeto;
-    private static String       estadoIni;
-    public  static String       conjuntoEstadosTerminais; 
-    
-    private  static int       estadoi;
-    private  static int   [ ] estadosf;
-    private  static int   [ ] estadoPartida ;
-    private  static int   [ ] estadoDestino ;
-    private  static char  [ ] le            ;
-    private  static String[ ] conjuntoFuncaoDeTransicaoDeEstados;
-      
-    
-    /**
-        * Trecho responsável por receber o conjunto de simbolos(Alfabeto) e armazenar o
-        * mesmo sem os caracteres desnecessários em um array de char.
-        * @return 
-        */
-        public void setAlfabeto( ) 
+
+    public static void main( String[ ] args ) 
+    {
+        /**
+         * Trecho responsável por receber o conjunto de simbolos(Alfabeto) e armazenar o
+         * mesmo sem os caracteres desnecessários em um array de char.
+         */
+        String alfabeto  = entrarConjuntoCaracteres_Alfabeto  (          );
+        boolean validAlf = verificaConjuntoCaracteres_Alfabeto( alfabeto );
+
+        while ( validAlf )
         {
-        	String alfabeto  = entrarConjuntoCaracteres_Alfabeto  (          );
-            boolean validAlf = verificaConjuntoCaracteres_Alfabeto( alfabeto );
+            alfabeto = entrarConjuntoCaracteres_Alfabeto  (          );
+            validAlf = verificaConjuntoCaracteres_Alfabeto( alfabeto );
 
-            while ( validAlf )
-            {
-                alfabeto = entrarConjuntoCaracteres_Alfabeto  (          );
-                validAlf = verificaConjuntoCaracteres_Alfabeto( alfabeto );
-
-                if ( !validAlf )  
-                    entradaValidada( );
-            }
-            
-            alfabetoImprime = alfabeto;
-            
-            alfabeto = removeNulos    ( alfabeto );// Removendo {,}
-            
-            //Poderia ser um array de object, caso cada elemento do conjunto fosse um conjunto de simbolos
-            conjuntodeSimbolos_Alfabeto = new Character[ alfabeto.length( ) ];
-            int z = 0;
-         
-            for( char ch : alfabeto.toCharArray( ) )   
-            {
-                conjuntodeSimbolos_Alfabeto[ z ] = ch;
-                z++;
-            }
+            if ( !validAlf )  
+                entradaValidada( );
         }
         
-       /**
-        * Trecho responsável por receber o conjunto de estados (Terminais e não
-        * Terminais), e armazenar o mesmo sem os caracteres desnecessários em um array
-        * de int, convertendo a posição de um estado fornecido no conjunto em um valor
-        * numérico, em ordem crescente correspondente a ordem dos estados fornecidos.
-        * @return 
-        */
-       public void setEstados( )
+        alfabetoImprime = alfabeto;
+        
+        alfabeto = removeNulos    ( alfabeto );// Removendo {,}
+        
+        //Poderia ser um array de object, caso cada elemento do conjunto fosse um conjunto de simbolos
+        Character[ ]conjuntodeSimbolos_Alfabeto = new Character[ alfabeto.length( ) ];
+        int z = 0;
+     
+        for( char ch : alfabeto.toCharArray( ) )   
         {
-            conjuntoDeEstadosTerminaisEnaoTerminais = entraConjuntoEstado( );
-            
-            boolean validEst = verificaEst( conjuntoDeEstadosTerminaisEnaoTerminais );
+            conjuntodeSimbolos_Alfabeto[ z ] = ch;
+            z++;
+        }
+        
+        /**
+         * Trecho responsável por receber o conjunto de estados (Terminais e não
+         * Terminais), e armazenar o mesmo sem os caracteres desnecessários em um array
+         * de int, convertendo a posição de um estado fornecido no conjunto em um valor
+         * numérico, em ordem crescente correspondente a ordem dos estados fornecidos.
+         */
+        String  conjuntoDeEstadosTerminaisEnaoTerminais = entraConjuntoEstado( );
+        
+        boolean validEst = verificaEst( conjuntoDeEstadosTerminaisEnaoTerminais );
 
-            while ( validEst ) 
+        while ( validEst ) 
+        {
+            conjuntoDeEstadosTerminaisEnaoTerminais = entraConjuntoEstado(                                         );
+            validEst                                = verificaEst        ( conjuntoDeEstadosTerminaisEnaoTerminais );
+            
+            if( !validEst )
+            	 entradaValidada( );
+        }
+        
+        conjuntoDeEstadosTerminaisImprime       = conjuntoDeEstadosTerminaisEnaoTerminais;    
+        conjuntoDeEstadosTerminaisEnaoTerminais = removeNulos( conjuntoDeEstadosTerminaisEnaoTerminais );// Removendo {,}
+
+        int estados              = conjuntoDeEstadosTerminaisEnaoTerminais.length( );
+        int[ ] conjuntoDeEstados = new int[ estados ];
+        int a = 0;
+        
+        for ( Character ch : conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( ) )
+        {
+            conjuntoDeEstadosMap.put( a, ch.toString( ) );
+            conjuntoDeEstados[ a ] = a;
+            a++;
+        }
+        
+        /**
+         * Trecho responsável por receber entrada do conjunto de regras de
+         * transição (Regra de Produção), funciona da seguinte forma: 
+         * # ESTADO (LADO ESQUERDO), CONSOME (CENTRO); VAI PARA ESTADO (LADO DIREITO)#
+         */
+        tutorialTransicao( );
+       
+        
+        String[ ] conjuntoFuncaoDeTransicaoDeEstados = new String[ conjuntodeSimbolos_Alfabeto.length  * 
+                                                                   conjuntoDeEstadosTerminaisEnaoTerminais.length( ) ];
+
+        conjuntoFuncaoDeTransicaoDeEstados = montarConjuntoFuncTran( conjuntodeSimbolos_Alfabeto.length  * 
+                                                                     conjuntoDeEstadosTerminaisEnaoTerminais.length( ) );
+        
+        String[ ] estadoPartidaS  = new String[ conjuntoFuncaoDeTransicaoDeEstados.length ];
+        String[ ] caracConsumidoS = new String[ conjuntoFuncaoDeTransicaoDeEstados.length ];
+        String[ ] estadoDestinoS  = new String[ conjuntoFuncaoDeTransicaoDeEstados.length ];
+
+        int [ ] estadoPartida = new int [ conjuntoFuncaoDeTransicaoDeEstados.length ];
+        int [ ] estadoDestino = new int [ conjuntoFuncaoDeTransicaoDeEstados.length ];
+        char[ ] le            = new char[ conjuntoFuncaoDeTransicaoDeEstados.length ];
+
+        //
+        for (int i = 0; i < conjuntoFuncaoDeTransicaoDeEstados.length; i++)
+        {
+            if (conjuntoFuncaoDeTransicaoDeEstados[i] == null)
             {
-                conjuntoDeEstadosTerminaisEnaoTerminais = entraConjuntoEstado(                                         );
-                validEst                                = verificaEst        ( conjuntoDeEstadosTerminaisEnaoTerminais );
+                break;
+            }
+            String[ ] p1 = conjuntoFuncaoDeTransicaoDeEstados[ i ].split( ";" );
+            String[ ] p2 = p1                                [ 0 ].split( "," );
+            
+            estadoPartidaS [ i ] = p2[ 0 ];
+            caracConsumidoS[ i ] = p2[ 1 ];
+            estadoDestinoS [ i ] = p1[ 1 ];
+        }
+
+        for( int p = 0; p < conjuntoFuncaoDeTransicaoDeEstados.length; p++ )
+        {
+            String aux = estadoPartidaS[ p ];
+            int    h   = 0;
+            
+            for ( Character ch : conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( ) ) 
+            {
+                for (int j = 0; j < ( conjuntodeSimbolos_Alfabeto.length  *
+                                      conjuntoDeEstadosTerminaisEnaoTerminais.length( ) ); j++ )
+                {
+                    if ( estadoPartidaS[ j ].equals( ch.toString( ) ) ) 
+                    {
+                         estadoPartida[ j ] = h;
+                    }
+                }
                 
-                if( !validEst )
-                	 entradaValidada( );
+                for( int j = 0; j < ( conjuntodeSimbolos_Alfabeto.length *
+                                      conjuntoDeEstadosTerminaisEnaoTerminais.length( ) ); j++ )
+                {
+                    if( estadoDestinoS[ j ].equals( ch.toString( ) ) )
+                    {
+                        estadoDestino[ j ] = h;
+                    }
+                }
+                h++;
             }
-            
-            conjuntoDeEstadosTerminaisImprime       = conjuntoDeEstadosTerminaisEnaoTerminais;    
-            conjuntoDeEstadosTerminaisEnaoTerminais = removeNulos( conjuntoDeEstadosTerminaisEnaoTerminais );// Removendo {,}
-
-            int estados              = conjuntoDeEstadosTerminaisEnaoTerminais.length( );
-            int[ ] conjuntoDeEstados = new int[ estados ];
-            int a = 0;
-            
-            for ( Character ch : conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( ) )
-            {
-                conjuntoDeEstadosMap.put( a, ch.toString( ) );
-                conjuntoDeEstados[ a ] = a;
-                a++;
-            }
-            
+            aux     = caracConsumidoS[ p ];
+            le[ p ] = aux.charAt( 0 );
         }
-        
-      /**
-       * Trecho responsável por receber entrada do conjunto de regras de
-       * transição (Regra de Produção), funciona da seguinte forma: 
-       * # ESTADO (LADO ESQUERDO), CONSOME (CENTRO); VAI PARA ESTADO (LADO DIREITO)#
-       */
-       public void setRegra( )
-       {
-    	   tutorialTransicao( );
-           
-           
-           String[ ] conjuntoFuncaoDeTransicaoDeEstados = new String[ conjuntodeSimbolos_Alfabeto.length  * 
-                                                                      conjuntoDeEstadosTerminaisEnaoTerminais.length( ) ];
-
-           conjuntoFuncaoDeTransicaoDeEstados = montarConjuntoFuncTran( conjuntodeSimbolos_Alfabeto.length  * 
-                                                                        conjuntoDeEstadosTerminaisEnaoTerminais.length( ) );
-           
-           String [ ] estadoPartidaS  = new String[ conjuntoFuncaoDeTransicaoDeEstados.length ];
-           String [ ] caracConsumidoS = new String[ conjuntoFuncaoDeTransicaoDeEstados.length ];
-           String [ ] estadoDestinoS  = new String[ conjuntoFuncaoDeTransicaoDeEstados.length ];
-
-           estadoPartida = new int [ conjuntoFuncaoDeTransicaoDeEstados.length ];
-           estadoDestino = new int [ conjuntoFuncaoDeTransicaoDeEstados.length ];
-           le            = new char[ conjuntoFuncaoDeTransicaoDeEstados.length ];
-
-           //
-           for (int i = 0; i < conjuntoFuncaoDeTransicaoDeEstados.length; i++)
-           {
-               if (conjuntoFuncaoDeTransicaoDeEstados[i] == null)
-               {
-                   break;
-               }
-               String[ ] p1 = conjuntoFuncaoDeTransicaoDeEstados[ i ].split( ";" );
-               String[ ] p2 = p1                                [ 0 ].split( "," );
-               
-               estadoPartidaS [ i ] = p2[ 0 ];
-               caracConsumidoS[ i ] = p2[ 1 ];
-               estadoDestinoS [ i ] = p1[ 1 ];
-           }
-
-           for( int p = 0; p < conjuntoFuncaoDeTransicaoDeEstados.length; p++ )
-           {
-               String aux = estadoPartidaS[ p ];
-               int    h   = 0;
-               
-               for ( Character ch : conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( ) ) 
-               {
-                   for (int j = 0; j < ( conjuntodeSimbolos_Alfabeto.length  *
-                                         conjuntoDeEstadosTerminaisEnaoTerminais.length( ) ); j++ )
-                   {
-                       if ( estadoPartidaS[ j ].equals( ch.toString( ) ) ) 
-                       {
-                            estadoPartida[ j ] = h;
-                       }
-                   }
-                   
-                   for( int j = 0; j < ( conjuntodeSimbolos_Alfabeto.length *
-                                         conjuntoDeEstadosTerminaisEnaoTerminais.length( ) ); j++ )
-                   {
-                       if( estadoDestinoS[ j ].equals( ch.toString( ) ) )
-                       {
-                           estadoDestino[ j ] = h;
-                       }
-                   }
-                   h++;
-               }
-               aux     = caracConsumidoS[ p ];
-               le[ p ] = aux.charAt( 0 );
-           }
-              
-       }
         
         /**
          * Trecho responsável por receber o estado inicial, identificar posição
          * correspondente no conjunto de estados (Terminais e não terminais) e armazena o mesmo sem os 
         * caracteres desnecessários em uma variável do tipo int com o valor correspondente a sua posição   * no conjunto de estados.
          */
-       public void setEstIni( )
-       {
-    	   estadoIni = "{" + entraEstIN( conjuntoDeEstadosTerminaisEnaoTerminais ) + "}";
-           estadoIni = removeNulos( estadoIni );
-           estIniImprime = estadoIni;
-           
-           estadoi = 0;
-          
-           estadoi =  conjuntoDeEstadosTerminaisEnaoTerminais.indexOf( estadoIni );        
-       }
-       
-       /**
+        String estadoIni = "{" + entraEstIN( conjuntoDeEstadosTerminaisEnaoTerminais ) + "}";
+        estadoIni = removeNulos( estadoIni );
+        estIniImprime = estadoIni;
+        
+        //String estadoIni = "{A}";
+        
+        int estadoi = 0;
+           //       = 0;
+      
+        estadoi =  conjuntoDeEstadosTerminaisEnaoTerminais.indexOf( estadoIni );
+        
+        /**
          * Trecho responsável por receber o conjunto de estados finais (Terminais), e
          * armazenar o mesmo sem os caracteres desnecessários em um array de int,
          * identificando a posição de um estado fornecido no conjunto em um valor
          * numérico, correspondente a posição do mesmo no conjunto de estados (Terminais
          * e não Terminais)e armazenando estes valores em um array de tipo int. 
-     * @return 
          */
         
-        public void setEstadosFinais( ) {
-        	 // ENTRA COM ESTADOS FINAIS
-     	  boolean validEstFim = false;
-     	  conjuntoEstadosTerminais = JOptionPane.showInputDialog(null, "\nEntre com o conjunto dos estados finais F:"
+        // ENTRA COM ESTADOS FINAIS
+     		boolean validEstFim = false;
+     		String conjuntoEstadosTerminais = JOptionPane.showInputDialog(null, "\nEntre com o conjunto dos estados finais F:"
      				+ "\nCada estado deve ser separado por virgula, sem espaços.\nEX: q0,q1,q2 ... e1,e2,e3 ...");
 
      		String[]  estFin = splitVirgula( conjuntoEstadosTerminais );
@@ -268,7 +242,7 @@ public class AFD
         conjEstTermImprime = conjuntoEstadosTerminais;
         //conjuntoEstadosTerminais = removeNulos(conjuntoEstadosTerminais);
 
-        estadosf = new int[conjuntoEstadosTerminais.length()];
+        int[ ] estadosf = new int[conjuntoEstadosTerminais.length()];
         int b = 0, y = 0;
 
         for ( Character ch : conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( ) )
@@ -283,102 +257,98 @@ public class AFD
                 }
             }
             y++;
-            
-            imprimirAutomato( alfabetoImprime, conjuntoDeEstadosTerminaisImprime,
-            		estadoPartida, estadoDestino, le, estIniImprime, conjEstTermImprime );
         }
-        }
-        
-        public void checaPalavra( ) 
-        {
-        	 String palavraS;
-             boolean flagPal;
-             do {
-                 int teste = 0;
-                 int w = 0;
-                 palavraS = JOptionPane.showInputDialog(null,
-                         "Entre com a palavra a ser verificada: \nPara conferir os valores dos conjuntos e regras de produção digite 'i'\nPara sair digite s");
-                 if (palavraS.equalsIgnoreCase( "s" ) ) 
-                 {
-                     break;
-                 }
-                 if (palavraS.equalsIgnoreCase( "I" ) )
-                 {
-                     imprimirAutomato( alfabetoImprime, conjuntoDeEstadosTerminaisImprime, estadoPartida, estadoDestino, le,
-                             estadoIni, conjuntoEstadosTerminais);
-                     
-                     palavraS = JOptionPane.showInputDialog(null,
-                             "Entre com a palavra a ser verificada: \nPara conferir os valores dos cinjuntos e regras de produção digite 'i'\nPara sair digite s");
-                     
-                     if( palavraS.equalsIgnoreCase( "s" ) )
-                     {
-                         break;
-                     }
-                 }
 
-                 //Variável reponsável por receber  a validação da palavra informada pelo automato
-                 flagPal = VerificaPalavra(palavraS, conjuntodeSimbolos_Alfabeto);
-
-                 if ( !flagPal )
-                 {
-                 } 
-                 else 
-                 {
-                     char[ ] palavra = palavraS.toCharArray();
-                     int     estadoa = estadoi;
-
-                     for ( int p = 0; p < palavra.length; p++ )
-                     {
-                         for ( int k = 0; k < conjuntoFuncaoDeTransicaoDeEstados.length; k++ ) 
-                         {
-                             if ( ( palavra[p] == le[k]) && (estadoPartida[k] == estadoa ) )
-                             {
-                                 estadoa = estadoDestino[k];
-
-                                 w++;
-                                 break;
-                             } 
-                             else
-                             {
-                             }
-                         }
-
-                         for ( int k = 0; k < conjuntoEstadosTerminais.length(); k++) 
-                         {
-                             if (estadoa == estadosf[k])
-                             {
-                                 teste = 1;
-                             } 
-                             else
-                             {
-                                 teste = 0;
-                             }
-                         }
-                     }
-                     if (teste == 1)
-                     {
-                         JOptionPane.showMessageDialog(null, "PALAVRA ACEITA PELO AUTOMATO\n\n");
-                         // break;
-                     }
-                     else
-                     {
-                         JOptionPane.showMessageDialog(null, "PALAVRA NÃO ACEITA PELO AUTOMATO\n\n");
-                         // break;
-                     }
-                 }
-             }
-             
-             while (!palavraS.equalsIgnoreCase("s"));
-             	JOptionPane.showMessageDialog(null, "Voce finalizou a aplição, obrigado!");
-        }
         
         
+        
+        imprimirAutomato( alfabetoImprime, conjuntoDeEstadosTerminaisImprime, estadoPartida, estadoDestino, le,
+        				 estIniImprime, conjEstTermImprime );
 
         /*
          * Entrada realizada pelo usuário, realiza verificação para checar se a
          * palavra pode ser formada com os caracteres do conjunto de símbolo (alfabeto).
          */
-       
+        String palavraS;
+        boolean flagPal;
+        do {
+            int teste = 0;
+            int w = 0;
+            palavraS = JOptionPane.showInputDialog(null,
+                    "Entre com a palavra a ser verificada: \nPara conferir os valores dos conjuntos e regras de produção digite 'i'\nPara sair digite s");
+            if (palavraS.equalsIgnoreCase( "s" ) ) 
+            {
+                break;
+            }
+            if (palavraS.equalsIgnoreCase( "I" ) )
+            {
+                imprimirAutomato( alfabetoImprime, conjuntoDeEstadosTerminaisImprime, estadoPartida, estadoDestino, le,
+                        estadoIni, conjuntoEstadosTerminais);
+                
+                palavraS = JOptionPane.showInputDialog(null,
+                        "Entre com a palavra a ser verificada: \nPara conferir os valores dos cinjuntos e regras de produção digite 'i'\nPara sair digite s");
+                
+                if( palavraS.equalsIgnoreCase( "s" ) )
+                {
+                    break;
+                }
+            }
+
+            //Variável reponsável por receber  a validação da palavra informada pelo automato
+            flagPal = VerificaPalavra(palavraS, conjuntodeSimbolos_Alfabeto);
+
+            if ( !flagPal )
+            {
+            } 
+            else 
+            {
+                char[ ] palavra = palavraS.toCharArray();
+                int     estadoa = estadoi;
+
+                for ( int p = 0; p < palavra.length; p++ )
+                {
+                    for ( int k = 0; k < conjuntoFuncaoDeTransicaoDeEstados.length; k++ ) 
+                    {
+                        if ( ( palavra[p] == le[k]) && (estadoPartida[k] == estadoa ) )
+                        {
+                            estadoa = estadoDestino[k];
+
+                            w++;
+                            break;
+                        } 
+                        else
+                        {
+                        }
+                    }
+
+                    for ( int k = 0; k < conjuntoEstadosTerminais.length(); k++) 
+                    {
+                        if (estadoa == estadosf[k])
+                        {
+                            teste = 1;
+                        } 
+                        else
+                        {
+                            teste = 0;
+                        }
+                    }
+                }
+                if (teste == 1)
+                {
+                    JOptionPane.showMessageDialog(null, "PALAVRA ACEITA PELO AUTOMATO\n\n");
+                    // break;
+                }
+                else
+                {
+                    JOptionPane.showMessageDialog(null, "PALAVRA NÃO ACEITA PELO AUTOMATO\n\n");
+                    // break;
+                }
+            }
+        }
+        
+        while (!palavraS.equalsIgnoreCase("s"));
+        	JOptionPane.showMessageDialog(null, "Voce finalizou a aplição, obrigado!");
+    }
 
     
     
@@ -741,7 +711,7 @@ public class AFD
     private static String[] montarConjuntoFuncTran( int i ) 
     {
     	String    funcaoDeTransicao                  = null;
-    	conjuntoFuncaoDeTransicaoDeEstados = new String[ i ];
+    	String[ ] conjuntoFuncaoDeTransicaoDeEstados = new String[ i ];
     	boolean valFunc = false;
         
         for1: for (int c = 0; c < i; c++ ) 
