@@ -48,12 +48,12 @@ public class AFD_Compiladores_Trabalho
         
         alfabetoImprime = alfabeto;
         
-        alfabeto            = removeNulos    ( alfabeto );// Removendo {,}
+        alfabeto = removeNulos    ( alfabeto );// Removendo {,}
         
         Character[ ]conjuntodeSimbolos_Alfabeto = new Character[ alfabeto.length( ) ];
         int z = 0;
-    
-        for( char ch : alfabeto.toCharArray( ) ) 
+     
+        for( char ch : alfabeto.toCharArray( ) )   
         {
             conjuntodeSimbolos_Alfabeto[ z ] = ch;
             z++;
@@ -67,7 +67,7 @@ public class AFD_Compiladores_Trabalho
          */
         String conjuntoDeEstadosTerminaisEnaoTerminais = "{A,B}";
        
-        /*boolean validEst = false;
+        boolean validEst = false;
 
         conjuntoDeEstadosTerminaisEnaoTerminais = entraConjuntoEstado      (                                         );
         validEst                                = verificaEst   ( conjuntoDeEstadosTerminaisEnaoTerminais );
@@ -84,7 +84,6 @@ public class AFD_Compiladores_Trabalho
                 		                       "TENTE NOVAMENTE", JOptionPane.WARNING_MESSAGE);
             }
         }
-       */
         
         conjuntoDeEstadosTerminaisImprime       = conjuntoDeEstadosTerminaisEnaoTerminais;
         conjuntoDeEstadosTerminaisEnaoTerminais = removeNulos( conjuntoDeEstadosTerminaisEnaoTerminais );// Removendo {,}
