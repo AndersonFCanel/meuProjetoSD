@@ -1,9 +1,7 @@
 package com.suamSD;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -31,10 +29,10 @@ public class ServiceAutomato implements AutomatoInterface
 	private static String estIniIMPRIME;
 	private static String conjEstTermIMPRIME;
 
-	private static String       conjuntoDeEstadosTerminaisEnaoTerminais = "";
-	private static Character[ ] conjuntodeSimbolos_Alfabeto = null;
-	private static String       estadoIni = "";
-	public  static String       conjuntoEstadosTerminais = "";
+	private static String        conjuntoDeEstadosTerminaisEnaoTerminais = "";
+	private static Character [ ] conjuntodeSimbolos_Alfabeto = null;
+	private static String        estadoIni = "";
+	public  static String        conjuntoEstadosTerminais = "";
 
 	private static int            estadoi;
 	private static int        [ ] estadosf;
@@ -55,16 +53,17 @@ public class ServiceAutomato implements AutomatoInterface
 
 		do
 		{
-			alfabeto = entrarConjuntoCaracteres_Alfabeto( );
-			validAlf = verificaConjuntoCaracteres_Alfabeto(alfabeto);
-		}while (validAlf);
+			alfabeto = entrarConjuntoCaracteres_Alfabeto  (          );
+			validAlf = verificaConjuntoCaracteres_Alfabeto( alfabeto );
+		}
+		while ( validAlf ) ;
 
 		//Armazenando para imprimir, tratando a formatação
 		alfabetoIMPRIME = alfabeto;
-		alfabeto        = removeNulos(alfabeto);// Removendo {,}
+		alfabeto        = removeNulos( alfabeto );// Removendo {,}
 
 		// Poderia ser um array de object, caso cada elemento do conjunto fosse um conjunto de simbolos
-		conjuntodeSimbolos_Alfabeto = new Character[alfabeto.length( )];
+		conjuntodeSimbolos_Alfabeto = new Character[ alfabeto.length( ) ];
 		
 		/*
 		int z = 0;
@@ -73,7 +72,7 @@ public class ServiceAutomato implements AutomatoInterface
 			z++;
 		}
 		*/
-		conjuntodeSimbolos_Alfabeto = alfabeto.chars( ).mapToObj(c -> (char)c).toArray(Character[]::new); 
+		conjuntodeSimbolos_Alfabeto = alfabeto.chars( ).mapToObj( c -> ( char ) c ).toArray( Character[ ]::new ); 
 	}
 
 	/**
@@ -90,22 +89,23 @@ public class ServiceAutomato implements AutomatoInterface
 
 		do
 		{
-			conjuntoDeEstadosTerminaisEnaoTerminais = entraConjuntoEstado( );
-			validEst = verificaEst(conjuntoDeEstadosTerminaisEnaoTerminais);
+			conjuntoDeEstadosTerminaisEnaoTerminais =  entraConjuntoEstado( );
+			validEst = verificaEst( conjuntoDeEstadosTerminaisEnaoTerminais );
 		}
-		while (validEst) ;
+		while ( validEst ) ;
 
 		conjuntoDeEstadosTerminaisIMPRIME       = conjuntoDeEstadosTerminaisEnaoTerminais;
-		conjuntoDeEstadosTerminaisEnaoTerminais = removeNulos(conjuntoDeEstadosTerminaisEnaoTerminais);// Removendo {,}
+		conjuntoDeEstadosTerminaisEnaoTerminais = removeNulos( conjuntoDeEstadosTerminaisEnaoTerminais );// Removendo {,}
 
 		int   estados           = conjuntoDeEstadosTerminaisEnaoTerminais.length( );
-		int[] conjuntoDeEstados = new int[estados];
+		int[ ] conjuntoDeEstados = new int[ estados ];
 		int a = 0;
 
 		//Mapeando posição dos estados
-		for (Character ch : conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( )) {
-			conjuntoDeEstadosMap.put(a, ch.toString( ));
-			conjuntoDeEstados[a] = a;
+		for (Character ch : conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( ) )
+		{
+			conjuntoDeEstadosMap.put( a, ch.toString( ) );
+			conjuntoDeEstados [ a ] = a;
 			a++;
 		}
 	}
@@ -122,64 +122,64 @@ public class ServiceAutomato implements AutomatoInterface
 		int quantidadeDeFuncTransPossiveis = conjuntodeSimbolos_Alfabeto.length
 				* conjuntoDeEstadosTerminaisEnaoTerminais.length( );
 		
-		String[] conjuntoFuncaoDeTransicaoDeEstados  = montarConjuntoFuncTran(
-				quantidadeDeFuncTransPossiveis);
+		String[ ] conjuntoFuncaoDeTransicaoDeEstados  = montarConjuntoFuncTran(
+				quantidadeDeFuncTransPossiveis );
 		
-		String[] estadoPartidaS  = new String[quantidadeDeFuncTransPossiveis];
-		String[] caracConsumidoS = new String[quantidadeDeFuncTransPossiveis];
-		String[] estadoDestinoS  = new String[quantidadeDeFuncTransPossiveis];
+		String[ ] estadoPartidaS  = new String[ quantidadeDeFuncTransPossiveis ];
+		String[ ] caracConsumidoS = new String[ quantidadeDeFuncTransPossiveis ];
+		String[ ] estadoDestinoS  = new String[ quantidadeDeFuncTransPossiveis ];
 
-		estadoPartida = new int 	 [quantidadeDeFuncTransPossiveis];
-		estadoDestino = new int		 [quantidadeDeFuncTransPossiveis];
-		le            = new Character[quantidadeDeFuncTransPossiveis];
+		estadoPartida = new int 	 [ quantidadeDeFuncTransPossiveis ];
+		estadoDestino = new int		 [ quantidadeDeFuncTransPossiveis ];
+		le            = new Character[ quantidadeDeFuncTransPossiveis ];
 
-		for (int i = 0; i < quantidadeDeFuncTransPossiveis; i++) 
+		for ( int i = 0; i < quantidadeDeFuncTransPossiveis; i++ ) 
 		{
-			if (conjuntoFuncaoDeTransicaoDeEstados[i] == null)
+			if ( conjuntoFuncaoDeTransicaoDeEstados[ i ] == null )
 				//break;
 				continue;
 			
-			if (conjuntoFuncaoDeTransicaoDeEstados[i].isEmpty( ) )
+			if ( conjuntoFuncaoDeTransicaoDeEstados[ i ].isEmpty( ) )
 				//break;
 				continue;
 				
-			String[] p1 = conjuntoFuncaoDeTransicaoDeEstados[i].split(";");
-			String[] p2 = p1[0].split(",");
+			String[ ] p1 = conjuntoFuncaoDeTransicaoDeEstados[ i ].split( ";" );
+			String[ ] p2 = p1[0].split(",");
 
-			estadoPartidaS [i] = p2[0];
-			caracConsumidoS[i] = p2[1];
-			estadoDestinoS [i] = p1[1];
+			estadoPartidaS [ i ] = p2[ 0 ];
+			caracConsumidoS[ i ] = p2[ 1 ];
+			estadoDestinoS [ i ] = p1[ 1 ];
 		}
 
-		for (int p = 0; p < quantidadeDeFuncTransPossiveis; p++)
+		for ( int p = 0; p < quantidadeDeFuncTransPossiveis; p++ )
 		{
-			String aux = estadoPartidaS[p];
+			String aux = estadoPartidaS[ p ];
 			int h = 0;
 
-			for (Character ch : conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( )) 
+			for ( Character ch : conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( ) ) 
 			{
-				for (int j = 0; j < quantidadeDeFuncTransPossiveis; j++) 
+				for ( int j = 0; j < quantidadeDeFuncTransPossiveis; j++ ) 
 				{
-					if ( ch.toString( ).equals( estadoPartidaS[j] ) ) 
-						estadoPartida[j] = h;
+					if ( ch.toString( ).equals( estadoPartidaS[ j ] ) ) 
+						estadoPartida[ j ] = h;
 				}
 
-				for (int j = 0; j < quantidadeDeFuncTransPossiveis; j++)
+				for ( int j = 0; j < quantidadeDeFuncTransPossiveis; j++ )
 				{
-					if ( ch.toString( ).equals( estadoDestinoS[j] ) ) 
-						estadoDestino[j] = h;
+					if ( ch.toString( ).equals( estadoDestinoS[ j ] ) ) 
+						estadoDestino[ j ] = h;
 				}
 				h++;
 			}
-			aux = caracConsumidoS[p];
+			aux = caracConsumidoS[ p ];
 			
 			if ( aux != null )
 			{
-				le[p] = aux.charAt(0);
+				le[ p ] = aux.charAt( 0 );
 			}
 			else
 			{
-				le[p] = (Character) null;
+				le[ p ] = ( Character ) null;
 			}
 		}
 	}
@@ -192,11 +192,11 @@ public class ServiceAutomato implements AutomatoInterface
 	 */
 	public void setEstInicial( )
 	{
-		estadoIni     = "{" + entraEstIN(conjuntoDeEstadosTerminaisEnaoTerminais) + "}";
-		estadoIni     = removeNulos(estadoIni);
+		estadoIni     = "{" + entraEstIN( conjuntoDeEstadosTerminaisEnaoTerminais ) + "}";
+		estadoIni     = removeNulos     ( estadoIni );
 		estIniIMPRIME = estadoIni;
         
-		estadoi = conjuntoDeEstadosTerminaisEnaoTerminais.indexOf(estadoIni);
+		estadoi = conjuntoDeEstadosTerminaisEnaoTerminais.indexOf( estadoIni );
 	}
 
 	/**
@@ -212,35 +212,36 @@ public class ServiceAutomato implements AutomatoInterface
 	 {
 		// ENTRA COM ESTADOS FINAIS
 		boolean validEstFim = false;
-		String[] estFin;
+		String[ ] estFin;
 		
 		do {
-			conjuntoEstadosTerminais = JOptionPane.showInputDialog(null, "\nEntre com o conjunto dos estados finais F:"
-					+ "\nCada estado deve ser separado por virgula, sem espaços.\nEX: A,B,C ... e1,e2,e3 ...");
+			conjuntoEstadosTerminais = JOptionPane.showInputDialog( null, "\nEntre com o conjunto dos estados finais F:"
+					+ "\nCada estado deve ser separado por virgula, sem espaços.\nEX: A,B,C ... e1,e2,e3 ..." );
 
-			estFin = splitVirgula(conjuntoEstadosTerminais);
+			estFin = splitVirgula( conjuntoEstadosTerminais );
 		    
-		    for (String est : estFin) {
-		    	if (conjuntoDeEstadosTerminaisEnaoTerminais.contains( est ) )
+		    for ( String est : estFin ) 
+		    {
+		    	if ( conjuntoDeEstadosTerminaisEnaoTerminais.contains( est ) )
 				{
 					validEstFim = false;
 				} 
 				else
 	            {
 					validEstFim = true;
-					JOptionPane.showMessageDialog(null, "Estado no inexistente no conjunto de estados.");
+					JOptionPane.showMessageDialog( null, "Estado no inexistente no conjunto de estados." );
 				}
 			}
 			
 		}
-		while (validEstFim);
+		while ( validEstFim );
 		 
 
 		/*
 		 int qestadosf = 0;
 		 qestadosf = estFin.length;
 	
-		 int[] estadosf = new int[qestadosf];
+		 int[ ] estadosf = new int[qestadosf];
 	  
 		 for (int p = 0; p < qestadosf; p++)
 		 { 
@@ -249,18 +250,18 @@ public class ServiceAutomato implements AutomatoInterface
 		*/ 
 
 		conjEstTermIMPRIME       = conjuntoEstadosTerminais;
-	    conjuntoEstadosTerminais = removeNulos(conjuntoEstadosTerminais);
+	    conjuntoEstadosTerminais = removeNulos( conjuntoEstadosTerminais );
 
-		estadosf = new int[conjuntoEstadosTerminais.length( )];
+		estadosf = new int[ conjuntoEstadosTerminais.length( ) ];
 		int b = 0, y = 0;
 
-		for (Character ch : conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( )) 
+		for ( Character ch : conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( ) ) 
 		{
-			for (Character ch1 : conjuntoEstadosTerminais.toCharArray( ))
+			for ( Character ch1 : conjuntoEstadosTerminais.toCharArray( ) )
 			{
-				if (conjuntoDeEstadosMap.get(y).equals(ch1.toString( )))
+				if ( conjuntoDeEstadosMap.get( y ).equals( ch1.toString( ) ) )
 				{
-					estadosf[b] = y;
+					estadosf[ b ] = y;
 					b++;
 					break;
 				}
@@ -282,48 +283,57 @@ public class ServiceAutomato implements AutomatoInterface
 		boolean flagPal;
 		do {
 			int teste = 0;
-			int w = 0;
-			palavraS = JOptionPane.showInputDialog(null,
+			int w     = 0;
+			
+			palavraS = JOptionPane.showInputDialog( null,
 					"Entre com a palavra a ser verificada: "
 					+ "\nPara conferir os valores dos conjuntos e regras de produção digite 'i'"
-					+ "\nPara sair digite s");
-			if (palavraS.equalsIgnoreCase("s")) {
+					+ "\nPara sair digite s" );
+			
+			if (palavraS.equalsIgnoreCase( "s" ) )
+			{
 				break;
 			}
-			if (palavraS.equalsIgnoreCase("I")) {
-				imprimirAutomato(alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, estadoDestino, le,
-						estadoIni, conjuntoEstadosTerminais);
+			
+			if (palavraS.equalsIgnoreCase( "I" ) )
+			{
+				imprimirAutomato( alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, estadoDestino, le,
+						estadoIni, conjuntoEstadosTerminais );
 
-				palavraS = JOptionPane.showInputDialog(null,
+				palavraS = JOptionPane.showInputDialog( null,
 						"Entre com a palavra a ser verificada: "
 						+ "\nPara conferir os valores dos conjuntos e regras de produção digite 'i'"
-						+ "\nPara sair digite s");
+						+ "\nPara sair digite s" );
 
-				if (palavraS.equalsIgnoreCase("s")) {
+				if (palavraS.equalsIgnoreCase( "s" ) ) 
+				{
 					break;
 				}
 			}
 
 			// Variável reponsável por receber a validação da palavra informada pelo
 			// automato
-			flagPal = VerificaPalavra(palavraS, conjuntodeSimbolos_Alfabeto);
+			flagPal = VerificaPalavra( palavraS, conjuntodeSimbolos_Alfabeto );
 
-			if (!flagPal) {
-			} else {
-				char[] palavra = palavraS.toCharArray( );
-				int estadoa = estadoi;
+			if (!flagPal) 
+			{
+			} 
+			else 
+			{
+				char[ ] palavra = palavraS.toCharArray( );
+				int     estadoa = estadoi;
 
-				for (int p = 0; p < palavra.length; p++) 
+				for ( int p = 0; p < palavra.length; p++ ) 
 				{
-					for (int k = 0; k < conjuntoFuncaoDeTransicaoDeEstados.length; k++) 
+					for ( int k = 0; k < conjuntoFuncaoDeTransicaoDeEstados.length; k++ ) 
 					{
-						if( le[k] == null )
+						if( le[ k ] == null )
 							continue;
 						
 							
-						if ( ( palavra[p] == le[k]) && (estadoPartida[k] == estadoa))
+						if ( ( palavra[ p ] == le[ k ]) && ( estadoPartida[ k ] == estadoa ) )
 						{
-							estadoa = estadoDestino[k];
+							estadoa = estadoDestino[ k ];
 
 							w++;
 							break;
@@ -333,16 +343,20 @@ public class ServiceAutomato implements AutomatoInterface
 						}
 					}
 
-					for (int k = 0; k < conjuntoEstadosTerminais.length( ); k++) {
-						if (estadoa == estadosf[k]) {
+					for ( int k = 0; k < conjuntoEstadosTerminais.length( ); k++ )
+					{
+						if ( estadoa == estadosf[ k ] )
+						{
 							teste = 1;
 						} else {
 							teste = 0;
 						}
 					}
 				}
-				if (teste == 1) {
-					JOptionPane.showMessageDialog(null, "PALAVRA ACEITA PELO AUTOMATO\n\n");
+				
+				if ( teste == 1 ) 
+				{
+					JOptionPane.showMessageDialog( null, "PALAVRA ACEITA PELO AUTOMATO\n\n" );
 					// break;
 				} else {
 					JOptionPane.showMessageDialog(null, "PALAVRA NÃO ACEITA PELO AUTOMATO\n\n");
@@ -350,8 +364,8 @@ public class ServiceAutomato implements AutomatoInterface
 				}
 			}
 		}
-
-		while (!palavraS.equalsIgnoreCase("s"));
+		while ( !palavraS.equalsIgnoreCase( "s" ) );
+		     
 		JOptionPane.showMessageDialog(null, "Voce finalizou a aplição, obrigado!");
 	}
 
@@ -375,16 +389,16 @@ public class ServiceAutomato implements AutomatoInterface
 		
 		do 
 		{
-			alfabeto = JOptionPane.showInputDialog(null,
+			alfabeto = JOptionPane.showInputDialog( null,
 					"Entre com o alfabeto Σ:\nCada caracter deve ser separado por virgula, "
 							+ "sem espaço.\nEX: a,b,c,d,e ...\n"
 							+ "Lembre-se, tratando de conjunto não são permitidos elementos duplicados."
 							+ "\nTamanho permitido:\n" 
 							+ "       Mínimo = 1(um)   elemento. \n"
-							+ "       Máximo = 3(três) elementos.\n");
+							+ "       Máximo = 3(três) elementos.\n" );
 
 		} 
-		while (valoresAtuais(alfabeto));
+		while (  valoresAtuais( alfabeto ) );
 		
 		return alfabeto;
 	}
@@ -396,11 +410,11 @@ public class ServiceAutomato implements AutomatoInterface
 	 */
 	private static String entraConjuntoEstado( ) 
 	{
-		String estados;
+		String  estados;
         boolean b = false;
 		
 		do {
-			estados  = JOptionPane.showInputDialog(null,
+			estados  = JOptionPane.showInputDialog( null,
 					"ATEN ÇÃO AO MODELO DE INSERÇÃO NO CONJUNTO DE ESTADOS\nCada estado deve ser "
 							+ "separado por virgula, sem espaço.\n" 
 							+ "EX: A,B,C ... e1,e2,e3...\n"
@@ -408,11 +422,11 @@ public class ServiceAutomato implements AutomatoInterface
 							+ "\nTamanho permitido:\n"
 							+ "       Mínimo = 1(um)   elemento. \n"
 							+ "       Máximo = 3(três) elementos.\n"
-							+ "Para checar entradas anteriores digite '?'.\n\n");
+							+ "Para checar entradas anteriores digite '?'.\n\n" );
 			
-			b = valoresAtuais(estados);
+			b = valoresAtuais( estados );
 		} 
-		while (b);
+		while ( b );
 		
 		return estados;
 	}
@@ -420,55 +434,63 @@ public class ServiceAutomato implements AutomatoInterface
 	// ENTRADA DA FUNÇÃO DE TRANSIÇAO
 	private static String entraFuncaoTransicao( )
 	{
-
 		String delta;
          boolean b = false;
 		
 		do {
-			delta = JOptionPane.showInputDialog(null,
+			delta = JOptionPane.showInputDialog( null,
 					"\nEntre com as transiçãos de estado (δ: Q × Σ → Q):\n" + "\nPara ver o tutorial  novamente : 'i'"
 							+ "\nPara sair : 's'\n" 
 							//+ "\nVer entradas anteriores 'a'" + "\n "
-							+ "Para checar entradas anteriores digite ?\n\n");
+							+ "Para checar entradas anteriores digite ?\n\n" );
 			
-			b = valoresAtuais(delta);
+			b = valoresAtuais( delta );
 		} 
-		while (b);
+		while ( b );
 		
 		
 		return delta;
 	}
 
-	private static String[] montarConjuntoFuncTran(int i) {
-		String funcaoDeTransicao = null;
-		conjuntoFuncaoDeTransicaoDeEstados = new String[i];
-		boolean valFunc = false;
+	private static String[ ] montarConjuntoFuncTran( int i ) 
+	{
+		String funcaoDeTransicao           = null;
+		conjuntoFuncaoDeTransicaoDeEstados = new String[ i ];
+		boolean valFunc                    = false;
 
-		for1: for (int c = 0; c < i; c++) {
+		for1: for ( int c = 0; c < i; c++ ) 
+		{
 			funcaoDeTransicao = entraFuncaoTransicao( );
 
-			try {
-				if (funcaoDeTransicao.equals(null)) {
+			try 
+			{
+				if ( funcaoDeTransicao.equals( null ) )
+				{
 				}
-			} catch (Exception e) {
-				JOptionPane.showMessageDialog(null, "ENTRADA INVALIDA\n" + "Para sair use a tecla 's'!");
+			} 
+			catch ( Exception e )
+			{
+				JOptionPane.showMessageDialog( null, "ENTRADA INVALIDA\n" + "Para sair use a tecla 's'!" );
 				c--;
 				continue for1;
 			}
 
-			if ("S".equalsIgnoreCase(funcaoDeTransicao)) {
+			if ( "S".equalsIgnoreCase( funcaoDeTransicao ) ) 
+			{
 				break for1;
 			}
 
-			if ("I".equalsIgnoreCase(funcaoDeTransicao)) {
+			if ("I".equalsIgnoreCase( funcaoDeTransicao ) )  
+			{
 				tutorialTransicao( );
 				c--;
 				continue for1;
 			}
 
-			if ("A".equalsIgnoreCase(funcaoDeTransicao)) {
-				JOptionPane.showMessageDialog(null,
-						"Transições informadas até o momento:\n" + Arrays.toString(conjuntoFuncaoDeTransicaoDeEstados));
+			if ( "A".equalsIgnoreCase( funcaoDeTransicao ) ) 
+			{
+				JOptionPane.showMessageDialog( null,
+						"Transições informadas até o momento:\n" + Arrays.toString(conjuntoFuncaoDeTransicaoDeEstados ) );
 				c--;
 				continue for1;
 			}
@@ -476,9 +498,12 @@ public class ServiceAutomato implements AutomatoInterface
 			valFunc = true; // checkFunc(delta, conjuntoDeEstadosTerminaisEnaoTerminais);
 			// valFunc2 = checkEqualsFunc(delta, alfArray,
 			// estArray,funcDeltaAux); //CORRIGIR VALIDADOR
-			if (valFunc) {
-				conjuntoFuncaoDeTransicaoDeEstados[c] = funcaoDeTransicao;
-			} else {
+			if ( valFunc ) 
+			{
+				conjuntoFuncaoDeTransicaoDeEstados[ c ] = funcaoDeTransicao;
+			} 
+			else 
+			{
 				entradaInvalida( );
 				c--;
 			}
@@ -494,18 +519,21 @@ public class ServiceAutomato implements AutomatoInterface
 	 */
 
 	// ENTRADA INVALIDA
-	private static void entradaInvalida( ) {
-		JOptionPane.showMessageDialog(null, "ENTRADA INVALIDA", "WARNING", JOptionPane.WARNING_MESSAGE);
+	private static void entradaInvalida( ) 
+	{
+		JOptionPane.showMessageDialog( null, "ENTRADA INVALIDA", "WARNING", JOptionPane.WARNING_MESSAGE );
 	}
 
 	// ENTRADA VALIDA
-	private static void entradaValidada( ) {
-		JOptionPane.showMessageDialog(null, "Entrada VERIFICADA\n");
+	private static void entradaValidada( )
+	{
+		JOptionPane.showMessageDialog( null, "Entrada VERIFICADA\n" );
 	}
 
 	// TUTORIAL DE ENTRADA PARA FUNȿO DE TRANSIȃO
-	private static void tutorialTransicao( ) {
-		JOptionPane.showMessageDialog(null,
+	private static void tutorialTransicao( ) 
+	{
+		JOptionPane.showMessageDialog( null,
 				"       * Conjunto de regras de transição (Regra de Produção), funciona da seguinte forma: *\n"
 						+ "         {* # ESTADO (LADO ESQUERDO), CONSOME (CENTRO); VAI PARA ESTADO (LADO DIREITO)# *}"
 						+ "\n\nATENÇÃO AOS PASSOS PARA ENTRADA DA FUNÇÃO DE TRANSIÇÃO DE ESTADOS\n"
@@ -516,7 +544,7 @@ public class ServiceAutomato implements AutomatoInterface
 						+ "PASSO 5: Entre com o estado de destino - EX: q1\n" + "PASSO 6: APERTE ENTER\n"
 						+ "A entrada pode ser verificada com a inserção da letra i + enter\n"
 						+ "e a mesma deve estar da forma do exemplo abaixo:\n" + "EX: q0,a;q1",
-				"WARNING", JOptionPane.WARNING_MESSAGE);
+				"WARNING", JOptionPane.WARNING_MESSAGE );
 	}
 
 	/**
@@ -529,37 +557,40 @@ public class ServiceAutomato implements AutomatoInterface
 	 * @param estIn
 	 * @param conjuntoEstadosFinais
 	 */
-	private static void imprimirAutomato(String alf, String est, int[] estadoPartida, int[] estadoDestino, Character[] le,
-			String estIn, String conjuntoEstadosFinais) {
+	private static void imprimirAutomato( String alf, String est, int[ ] estadoPartida, int[ ] estadoDestino, Character[ ] le,
+			String estIn, String conjuntoEstadosFinais ) 
+	{
 		
-		if ( !(estadoPartida != null) )
-			estadoPartida = new int[0];
+		if ( !( estadoPartida != null ) )
+			estadoPartida = new int[ 0 ];
 		
-		if ( !(estadoDestino != null) )
-		   estadoDestino = new int[0];
+		if ( !( estadoDestino != null ) )
+		   estadoDestino = new int[ 0 ];
 		
-		if ( !(le != null) )
-			   le = new Character[0];
+		if ( !( le != null ) )
+			   le = new Character[ 0 ];
 		
-		String[] estP = new String[estadoPartida.length];
+		String[ ] estP = new String[ estadoPartida.length ];
 		
 		
 		
 		int b = 0;
-		for (int key : estadoPartida) {
-			estP[b] = conjuntoDeEstadosMap.get(key);
+		for ( int key : estadoPartida ) 
+		{
+			estP[ b ] = conjuntoDeEstadosMap.get( key );
 			b++;
 		}
 
-		String[] estD = new String[estadoDestino.length];
+		String[ ] estD = new String[ estadoDestino.length ];
 		;
 		int c = 0;
-		for (int key : estadoDestino) {
-			estD[c] = conjuntoDeEstadosMap.get(key);
+		for ( int key : estadoDestino )
+		{
+			estD[c] = conjuntoDeEstadosMap.get( key );
 			c++;
 		}
 
-		JOptionPane.showMessageDialog(null,
+		JOptionPane.showMessageDialog( null,
 				"**************************************************\n" + "\tIMPRIMINDO DADOS DO AUTOMATO\n"
 						+ "\t\t\t ==>NOTAÇÃO UTILIZADA <== \n" + "\tO conjunto de simbolos - alfabeto: Σ \n"
 						+ "\tO conjunto dos estados terminais e não terminais: Q = {S1, S2...}\n"
@@ -569,7 +600,7 @@ public class ServiceAutomato implements AutomatoInterface
 						+ "\tδ   = \n" + "ESTADO PARTIDA:         Q" + Arrays.toString(estP) + "\n"
 						+ "CARACTER CONSUMIDO: Σ" + Arrays.toString(le) + "\n" + "ESTADO DESTINO:          Q"
 						+ Arrays.toString(estD) + "\n" + "" + "\tq0  = " + estIn + "\n" + "" + "\tF   = "
-						+ conjuntoEstadosFinais + "\n" + "" + "**************************************************");
+						+ conjuntoEstadosFinais + "\n" + "" + "**************************************************" );
 	}
 
 	/*
@@ -583,52 +614,53 @@ public class ServiceAutomato implements AutomatoInterface
 	 * @param alfabeto
 	 * @return
 	 */
-	private static boolean verificaConjuntoCaracteres_Alfabeto(String alfabeto)
+	private static boolean verificaConjuntoCaracteres_Alfabeto( String alfabeto )
 	{
 		boolean validador = false;
 
 		// Entrada Vazia
-		if (alfabeto.equals(" ") || alfabeto.length( ) < 1 || alfabeto.isEmpty( ) || alfabeto.length( ) > 5)// 5 porque
-																											// conta as
-																											// duas
-																											// virgulas
+		if (alfabeto.equals(" ") || alfabeto.length( ) < 1 || alfabeto.isEmpty( ) || alfabeto.length( ) > 5)
 		{
-			JOptionPane.showMessageDialog(null, "ENTRADA INVALIDA\n" + "Tamanho do alfabeto fora do range permitido!",
-					"WARNING", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog( null, "ENTRADA INVALIDA\n" + "Tamanho do alfabeto fora do range permitido!",
+					"WARNING", JOptionPane.WARNING_MESSAGE );
+			
 			return validador = true;
 		}
 
 		// Entrada iniciando pela virgula
 		if (alfabeto.charAt(0) == ',')
 		{
-			JOptionPane.showMessageDialog(null, "ENTRADA INVALIDA\n" + "Não começe a inserção pela virgula", "WARNING",
-					JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog( null, "ENTRADA INVALIDA\n" + "Não começe a inserção pela virgula", "WARNING",
+					JOptionPane.WARNING_MESSAGE );
 		}
 
 		// Caracteres iguais, exeção de ','
 		int w = 1;
-		for1: for (int k = 0; k < alfabeto.length( ); k = k + 2) 
+		
+		for1: for ( int k = 0; k < alfabeto.length( ); k = k + 2 ) 
 		{
-			if (k == alfabeto.length( ) || w == alfabeto.length( ))
+			if  (k == alfabeto.length( ) || w == alfabeto.length( ) )
 			{
 				break for1;
 			}
 
-			if (alfabeto.charAt(w) != ',')
+			if ( alfabeto.charAt(w) != ',' )
 			{
 				entradaInvalida( );
 				return validador = true;
 			}
+			
 			w = w + 2;
 
-			for (int j = k + 2; j < alfabeto.length( ); j = j + 2)
+			for ( int j = k + 2; j < alfabeto.length( ); j = j + 2 )
 			{
-				if (alfabeto.charAt(k) == alfabeto.charAt(j)) 
+				if ( alfabeto.charAt( k ) == alfabeto.charAt( j ) ) 
 				{
-					JOptionPane.showMessageDialog(null,
+					JOptionPane.showMessageDialog( null,
 							"ENTRADA INVALIDA\n" + "Você entrou com caracteres iguais no alfabeto!\n"
-									+ alfabeto.charAt(k) + " = " + alfabeto.charAt(j),
-							"WARNING", JOptionPane.WARNING_MESSAGE);
+									+ alfabeto.charAt( k ) + " = " + alfabeto.charAt( j ),
+							"WARNING", JOptionPane.WARNING_MESSAGE );
+					
 					return validador = true;
 				}
 			}
@@ -651,23 +683,23 @@ public class ServiceAutomato implements AutomatoInterface
 		boolean validador = false;
 
 		// ESTADO COM TAMANHO INFERIOR AO PERMITIDO, = 0 ou >5.
-		if (estados.length( ) < 1 || estados.length( ) > 5 || estados.equals(" ") || estados.isEmpty( ))// 5 porque conta
-																										// as duas
-																										// virgulas
+		if ( estados.length( ) < 1 || estados.length( ) > 5 || estados.equals(" ") || estados.isEmpty( ) )
 		{
-			JOptionPane.showMessageDialog(null, "ENTRADA INVALIDA\n" + "Tamanho do conjunto fora do range permitido!");
+			JOptionPane.showMessageDialog( null, "ENTRADA INVALIDA\n" + "Tamanho do conjunto fora do range permitido!" );
+			
 			return validador = true;
 		}
 
 		// INSERÇÃO DE ESTADOS NÃO PODE COMEÇAR PELA VIRGULA.
-		if (estados.charAt(0) == ',') 
+		if ( estados.charAt(0) == ',' ) 
 		{
-			JOptionPane.showMessageDialog(null, "ENTRADA INVALIDA\n" + "Não começe a inserção pela virgula");
+			JOptionPane.showMessageDialog( null, "ENTRADA INVALIDA\n" + "Não começe a inserção pela virgula" );
+			
 			return validador = true;
 		}
 
 		// ESTADOS IGUIAS
-		if (!verificaConjuntoEstados(estados)) 
+		if ( !verificaConjuntoEstados( estados ) ) 
 		{
 			entradaValidada( );
 		}
@@ -680,30 +712,31 @@ public class ServiceAutomato implements AutomatoInterface
 	}
 
 	// ===>>>#####ESTADOS IGUAIS --- CORRIGIR VALIDADOR DE ESTADOS
-	private static boolean verificaConjuntoEstados(String estados) 
+	private static boolean verificaConjuntoEstados( String estados ) 
 	{
 		try 
 		{
-			if (estados.equals(null)) 
+			if ( estados.equals( null ) ) 
 			{
 			}
 		} 
-		catch (Exception e)
+		catch ( Exception e )
 		{
 			return true;
 		}
 
-		String[] estAux = estados.split(",");
+		String[ ] estAux = estados.split( "," );
 
-		for (int i = 0; i < estAux.length; i++)
+		for ( int i = 0; i < estAux.length; i++ )
 		{
-			for (int j = i + 1; j < estAux.length; j++) 
+			for ( int j = i + 1; j < estAux.length; j++ ) 
 			{
-				if (estAux[i].equals(estAux[j]))
+				if ( estAux[ i ].equals(estAux[ j ] ) )
 				{
-					JOptionPane.showMessageDialog(null, "ENTRADA INVALIDA\n"
+					JOptionPane.showMessageDialog( null, "ENTRADA INVALIDA\n"
                             + "Existem elementos iguais no conjunto!",
-							"WARNING", JOptionPane.WARNING_MESSAGE);
+							"WARNING", JOptionPane.WARNING_MESSAGE );
+					
 					i = estAux.length;
 
 					return true;
@@ -720,31 +753,33 @@ public class ServiceAutomato implements AutomatoInterface
 	 * @param conjuntoDeEstados
 	 * @return
 	 */
-	private static String entraEstIN(String conjuntoDeEstados)
+	private static String entraEstIN( String conjuntoDeEstados )
 	{
 		boolean validador = true;
+		String  estadoInicial; 
+		
+		do 
+		{
+			estadoInicial = JOptionPane.showInputDialog( null, "ESTADO INICIAL:\nEntre com o estado inicial q0: " );
 
-		String estadoInicial;
-		do {
-			estadoInicial = JOptionPane.showInputDialog(null, "ESTADO INICIAL:\nEntre com o estado inicial q0: ");
-
-			if (estadoInicial.equalsIgnoreCase("I")) 
+			if ( estadoInicial.equalsIgnoreCase( "I" ) ) 
 			{
-				imprimirAutomato(alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, estadoDestino, le,
-						estadoIni, conjuntoEstadosTerminais);
+				imprimirAutomato( alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, estadoDestino, le,
+						estadoIni, conjuntoEstadosTerminais );
 			}
 			
-			if (conjuntoDeEstados.contains(estadoInicial))
+			if ( conjuntoDeEstados.contains( estadoInicial ) )
 			{
 				validador = false;
 			} 
 			else
             {
 				validador = true;
-				JOptionPane.showMessageDialog(null, "Estado no inexistente no conjunto de estados.");
+				JOptionPane.showMessageDialog( null, "Estado no inexistente no conjunto de estados." );
 			}
 
-		} while (validador);
+		} 
+		while ( validador );
 
 		return estadoInicial;
 	}
@@ -756,31 +791,35 @@ public class ServiceAutomato implements AutomatoInterface
 	 * @param alf
 	 * @return
 	 */
-	private static boolean VerificaPalavra(String palavra, Character[] alf)
+	private static boolean VerificaPalavra( String palavra, Character[ ] alf )
 	{
 		int cont = 0;
-		for (int x = 0; x < palavra.length( ); x++) {
-			Character caracPalavra = palavra.charAt(x);
-			for (int y = 0; y < alf.length; y++) 
+		for ( int x = 0; x < palavra.length( ); x++ )
+		{
+			
+			Character caracPalavra = palavra.charAt( x );
+			
+			for ( int y = 0; y < alf.length; y++ ) 
 			{
-				if (caracPalavra.equals(alf[y])) 
+				if ( caracPalavra.equals( alf [ y ] ) ) 
 				{
 					cont++;
 				}
 			}
 		}
 
-		if (cont == palavra.length( )) 
+		if ( cont == palavra.length( ) ) 
 		{
 			return true;
 		}
 		else 
 		{
-			JOptionPane.showMessageDialog(null,
+			JOptionPane.showMessageDialog( null,
 					"A palavra \"" + palavra
 							+ "\" contém simbolos não pertencentes ao conjunto de simbolos (alfabeto,Σ= "
 							+ alfabetoIMPRIME + ")!",
-					"WARNING", JOptionPane.WARNING_MESSAGE);
+					"WARNING", JOptionPane.WARNING_MESSAGE );
+			
 			return false;
 		}
 	}
@@ -797,19 +836,19 @@ public class ServiceAutomato implements AutomatoInterface
 	 * @param conjunto
 	 * @return
 	 */
-	public static String removeNulos(String conjunto) 
+	public static String removeNulos( String conjunto ) 
 	{
-		String[] nulos = { "{", "}", "," };// identificando carateres de formatação do conjunto
-		for (String n : nulos)
+		String[ ] nulos = { "{", "}", "," };// identificando carateres de formatação do conjunto
+		for ( String n : nulos )
 		{
-			conjunto = conjunto.replace(n, "");
+			conjunto = conjunto.replace( n, "" );
 		}
 		return conjunto;
 
 	}
 
 	// SPLIT PARA SEPARAR ENTRADAS QUE CONTEM VIRGULA
-	private static String[] splitVirgula(String valor)
+	private static String[ ] splitVirgula( String valor )
 	{
 		return valor.split(",");// Divide a String quando ocorrer ","
 	}
@@ -817,10 +856,11 @@ public class ServiceAutomato implements AutomatoInterface
 	
 	public static boolean valoresAtuais ( String info )
 	{
-		if (info.equalsIgnoreCase("?")) 
+		if ( info.equalsIgnoreCase( "?" ) ) 
 		{
-			imprimirAutomato(alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, estadoDestino, le,
-					estadoIni, conjuntoEstadosTerminais);
+			imprimirAutomato( alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, estadoDestino, le,
+					estadoIni, conjuntoEstadosTerminais );
+			
 			return true;
 		}
 		

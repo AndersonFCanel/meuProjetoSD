@@ -17,27 +17,30 @@ public class Servidor
 {
 	public static void main( String args[ ] )
     {
+		String ipServer = Util.defineIPservidor( );
+		
         try {
-            // Criando
+            // Criando objeto autómato
             ServiceAutomato a = new ServiceAutomato( );
 
             // Definindo o hostname do servidor
-            System.setProperty("java.rmi.server.hostname", Util.IPSERVIDOR);
+            System.setProperty( "java.rmi.server.hostname", ipServer );
 
-            AutomatoInterface stub = (AutomatoInterface) UnicastRemoteObject.exportObject(a, 0);
+            AutomatoInterface stub = (AutomatoInterface) UnicastRemoteObject.exportObject( a, 0 );
 
             // Criando serviço de registro
-            Registry registro = LocateRegistry.createRegistry(Util.PORTA);
+            Registry registro = LocateRegistry.createRegistry( Util.PORTA );
 
             // Registrando objeto distribuído
-            registro.bind(Util.NOMEOBJDIST, stub);
+            registro.bind( Util.NOMEOBJDIST, stub );
 
-            System.out.println("Servidor pronto!\n");
+            System.out.println( "Servidor pronto!\n" );
            // System.out.println("Pressione CTRL + C para encerrar...");
-
-
-        } catch (RemoteException | AlreadyBoundException ex) {
-            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+            
+        } 
+        catch ( RemoteException | AlreadyBoundException ex )
+        {
+            Logger.getLogger( Servidor.class.getName( ) ).log( Level.SEVERE, null, ex );
         }
     }
 

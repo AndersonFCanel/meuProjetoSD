@@ -13,10 +13,20 @@ public class Util {
 	public static final int    PORTA       =  1099;
 	public static final String NOMEOBJDIST = "MeuAutomato";
 	
-	private static String defineIPservidor( ) 
+	public static String defineIPservidor( ) 
 	{		
-		String ip = JOptionPane.showInputDialog(null,
-					"Entre com o IP do servidor:\n ");
+		String ip = JOptionPane.showInputDialog( null,
+				"Entre com o IP do servidor:\n " );
+		
+		switch ( ip ) 
+		{
+		case "":
+			ip = IPSERVIDOR;
+			break;
+
+		default:
+			break;
+		}
 			
 		return ip;
 	}
