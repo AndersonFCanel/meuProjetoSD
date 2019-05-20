@@ -16,18 +16,23 @@ public class Util {
 	public static String defineIPservidor( ) 
 	{		
 		String ip = JOptionPane.showInputDialog( null,
-				"Entre com o IP do servidor:\n " );
+				"Entre com o IP do servidor:\n "
+				+ "Para 127.0.0.1, apenas clique OK!\n" );
 		
-		switch ( ip ) 
+		if ( ip != null)
 		{
-		case "":
-			ip = IPSERVIDOR;
-			break;
+			switch ( ip ) 
+			{
+			case "":
+				ip = IPSERVIDOR;
+				break;
 
-		default:
-			break;
+			default:
+				break;
+			}
 		}
-			
+		System.out.println("O ip do servidorAutomato é: "+ ip);
+		
 		return ip;
 	}
 	

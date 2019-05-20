@@ -19,7 +19,8 @@ public class Cliente extends Thread
 	public static void main(String[] args)
     {
 		
-		try {
+		try 
+		{
             // Obtendo referência do serviço de registro
             Registry registro = LocateRegistry.getRegistry(Util.IPSERVIDOR, Util.PORTA);
 
@@ -30,46 +31,67 @@ public class Cliente extends Thread
             System.out.println("CONTADOR DE THREADS: " + stub.getContaThreads( ));
             int thread = stub.getContaThreads( );
             
-            
             switch (thread) {
 			case 1: 
-				    stub.setAlfabeto 			 ( );
-		            //stub.setEstados  			 ( );
-		            stub.setRegra				 ( );
-		            //stub.setEstInicial			 ( );
-		            //stub.setConjuntoEstadosFinais( );
-		            stub.checaPalavra			 ( );
-		            
-		            Thread  t = new Thread(Cliente1); //Cria a linha de execução
+		            Thread  t = new Thread(Cliente1) 
+		            {
+		            	@Override
+			            public void run() 
+		            	{ 		
+					        try 
+					        {
+					        	stub.setAlfabeto 			 ( );
+					            //stub.setEstados  			 ( );
+					            stub.setRegra				 ( );
+					            //stub.setEstInicial			 ( );
+					            //stub.setConjuntoEstadosFinais( );
+					            stub.checaPalavra			 ( );
+							}
+					        catch ( RemoteException e ) 
+					        {
+								e.printStackTrace();
+							}
+			        	}
+		            }; //Cria a linha de execução
 		       	    t.start();                 //Ativa a thread
 		       	    t.setName( "Cliente: ==> "+ stub.getContaThreads( ));
 				break;
-			case 2:
-				//stub.setAlfabeto 			 ( );
-		        stub.setEstados  			 ( );
-		        //stub.setRegra				 ( );
-		        stub.setEstInicial			 ( );
-		        stub.setConjuntoEstadosFinais( );
-		        //stub.checaPalavra			 ( );
-		        
-		        Thread  t2= new Thread(Cliente2); //Cria a linha de execução
-		   	   t2.start();                 //Ativa a thread
-		   	    t2.setName( "Cliente: ==> "+ stub.getContaThreads( ));
-		        
 				
+			case 2:
+		        Thread  t2= new Thread(Cliente2) 
+		        {
+		        	@Override
+		            public void run() 
+		        	{ 		
+				        try 
+				        {
+				        	//stub.setAlfabeto 			 ( );
+							stub.setEstados  			 ( );
+							 //stub.setRegra				 ( );
+					        stub.setEstInicial			 ( );
+					        stub.setConjuntoEstadosFinais( );
+					        //stub.checaPalavra			 ( );
+						}
+				        catch ( RemoteException e ) 
+				        {
+							e.printStackTrace();
+						}
+		        	}
+		        };
+		        //Cria a linha de execução
+		   	    t2.start();                 //Ativa a thread
+		   	    t2.setName( "Cliente: ==> "+ stub.getContaThreads( ));
 
 			default:
 				break;
 			}
             
-           
-            
-       	    System.out.println("Fim da execução do cliente!");
-
         } catch (RemoteException | NotBoundException ex) {
             Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
         }
 		
+		
+  	    System.out.println("Fim da execução do cliente!");
         
         //código para executar em paralelo
         System.out.println("ID: "         + Thread.currentThread( ).getId( )       );

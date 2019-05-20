@@ -9,17 +9,24 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Classe responsável por criar uma instância do objeto Contador e registrá-la
+ * Classe responsável por criar uma instância do objeto serviceAutomato e registrá-la
  * em um serviço de registro de objetos distribuídos
  *
  */
-public class Servidor 
+public class ServidorAutomato 
 {
 	public static void main( String args[ ] )
     {
 		String ipServer = Util.defineIPservidor( );
 		
-        try {
+		if ( ipServer == null )
+		{
+			System.out.println( "IP inválido" );
+			return;
+		}
+		
+        try 
+        {
             // Criando objeto autómato
             ServiceAutomato a = new ServiceAutomato( );
 
@@ -40,7 +47,7 @@ public class Servidor
         } 
         catch ( RemoteException | AlreadyBoundException ex )
         {
-            Logger.getLogger( Servidor.class.getName( ) ).log( Level.SEVERE, null, ex );
+            Logger.getLogger( ServidorAutomato.class.getName( ) ).log( Level.SEVERE, null, ex );
         }
     }
 
