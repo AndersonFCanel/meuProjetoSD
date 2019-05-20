@@ -19,10 +19,7 @@ public class Servidor
 
     // Constantes que indicam onde está sendo executado o serviço de registro,
     // qual porta e qual o nome do objeto distribuído
-    private static final String IPSERVIDOR  = "127.0.0.1";
-    private static final int    PORTA       = 1234;
-    private static final String NOMEOBJDIST = "MeuAutomato";
-
+   
     public static void main( String args[ ] )
     {
         try {
@@ -30,15 +27,15 @@ public class Servidor
             ServiceAutomato a = new ServiceAutomato( );
 
             // Definindo o hostname do servidor
-            System.setProperty("java.rmi.server.hostname", IPSERVIDOR);
+            System.setProperty("java.rmi.server.hostname", Util.IPSERVIDOR);
 
             AutomatoInterface stub = (AutomatoInterface) UnicastRemoteObject.exportObject(a, 0);
 
             // Criando serviço de registro
-            Registry registro = LocateRegistry.createRegistry(PORTA);
+            Registry registro = LocateRegistry.createRegistry(Util.PORTA);
 
             // Registrando objeto distribuído
-            registro.bind(NOMEOBJDIST, stub);
+            registro.bind(Util.NOMEOBJDIST, stub);
 
             System.out.println("Servidor pronto!\n");
            // System.out.println("Pressione CTRL + C para encerrar...");

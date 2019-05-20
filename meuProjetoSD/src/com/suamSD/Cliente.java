@@ -13,20 +13,14 @@ import java.util.logging.Logger;
  * http://docente.ifsc.edu.br/mello
  */
 public class Cliente {
-
-    // Constantes que indicam onde está sendo executado o serviço de registro,
-    // qual porta e qual o nome do objeto distribuído
-    private static final String IPSERVIDOR  = "127.0.0.1";
-    private static final int    PORTA       = 1234;
-    private static final String NOMEOBJDIST = "MeuAutomato";
-
+	
     public static void main(String args[]) {
         try {
             // Obtendo referência do serviço de registro
-            Registry registro = LocateRegistry.getRegistry(IPSERVIDOR, PORTA);
+            Registry registro = LocateRegistry.getRegistry(Util.IPSERVIDOR, Util.PORTA);
 
             // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
-            AutomatoInterface stub = (AutomatoInterface) registro.lookup(NOMEOBJDIST);
+            AutomatoInterface stub = (AutomatoInterface) registro.lookup(Util.NOMEOBJDIST);
 
             // Invocando métodos do objeto distribuído
             //System.out.println("Valor atual: " + stub.obtemValorAtual());
@@ -34,12 +28,12 @@ public class Cliente {
             //stub.incrementa();
            // System.out.println("Valor atual: " + stub.obtemValorAtual());
 
-            stub.setAlfabeto();
-            stub.setEstados();
-            stub.setRegra();
-            stub.setEstInicial();
-            stub.setConjuntoEstadosFinais();
-            stub.checaPalavra();
+            stub.setAlfabeto 			 ( );
+            stub.setEstados  			 ( );
+            stub.setRegra				 ( );
+            stub.setEstInicial			 ( );
+            stub.setConjuntoEstadosFinais( );
+            stub.checaPalavra			 ( );
             
             System.out.println("Fim da execução do cliente!");
 
