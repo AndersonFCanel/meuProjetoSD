@@ -16,5 +16,9 @@ public interface AutomatoInterface extends Remote
     public void setConjuntoEstadosFinais( )throws RemoteException;
 
     public void checaPalavra            ( )throws RemoteException;
-
+    
+    public  int getContaThreads( ) throws RemoteException;
+	
+	public void setContaThreads( )throws RemoteException;
+	
 }

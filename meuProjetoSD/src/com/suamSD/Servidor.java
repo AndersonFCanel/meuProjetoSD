@@ -12,15 +12,10 @@ import java.util.logging.Logger;
  * Classe responsável por criar uma instância do objeto Contador e registrá-la
  * em um serviço de registro de objetos distribuídos
  *
- * http://docente.ifsc.edu.br/mello
  */
 public class Servidor 
 {
-
-    // Constantes que indicam onde está sendo executado o serviço de registro,
-    // qual porta e qual o nome do objeto distribuído
-   
-    public static void main( String args[ ] )
+	public static void main( String args[ ] )
     {
         try {
             // Criando

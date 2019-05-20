@@ -10,6 +10,19 @@ import javax.swing.JOptionPane;
 
 public class ServiceAutomato implements AutomatoInterface 
 {
+	
+    static int contaThreads;
+	
+	public  int getContaThreads( ) 
+	{
+		return contaThreads;
+	}
+
+	public void setContaThreads( )
+	{
+		ServiceAutomato.contaThreads ++;
+	}
+	
 	private static HashMap<Integer, String> conjuntoDeEstadosMap = new HashMap<Integer, String>( );
 	//private static HashMap<Integer, String> conjuntoDeEstadosFinaisMap = new HashMap<Integer, String>( );
 
@@ -200,36 +213,25 @@ public class ServiceAutomato implements AutomatoInterface
 		// ENTRA COM ESTADOS FINAIS
 		boolean validEstFim = false;
 		String[] estFin;
-		char  [] cList;		
+		
 		do {
 			conjuntoEstadosTerminais = JOptionPane.showInputDialog(null, "\nEntre com o conjunto dos estados finais F:"
 					+ "\nCada estado deve ser separado por virgula, sem espaços.\nEX: A,B,C ... e1,e2,e3 ...");
 
 			estFin = splitVirgula(conjuntoEstadosTerminais);
-		    cList  = conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( );
-			
-		    StringBuilder builder = new StringBuilder();
-		    for(String s : arr) {
-		        builder.append(s);
-		    }
-		    String str = builder.toString();
 		    
-	    	for (char c : cList)
-	    	{
-	    		for (int i = 0; i < estFin.length; i++) 
-	    		{
-	    			if (  estFin[i].contentEquals( c )  )
-	    			{
-	    				validEstFim = verificaEst(conjuntoEstadosTerminais);
-	    				validEstFim = verificaConjuntoEstados(conjuntoEstadosTerminais);
-	    			} 
-	    			else 
-	    			{
-	    				validEstFim = true;
-	    				JOptionPane.showMessageDialog(null, "Estado no inexistente no conjunto de estados");
-	    			}
-	    		}
-	    	}
+		    for (String est : estFin) {
+		    	if (conjuntoDeEstadosTerminaisEnaoTerminais.contains( est ) )
+				{
+					validEstFim = false;
+				} 
+				else
+	            {
+					validEstFim = true;
+					JOptionPane.showMessageDialog(null, "Estado no inexistente no conjunto de estados.");
+				}
+			}
+			
 		}
 		while (validEstFim);
 		 
@@ -311,14 +313,23 @@ public class ServiceAutomato implements AutomatoInterface
 				char[] palavra = palavraS.toCharArray( );
 				int estadoa = estadoi;
 
-				for (int p = 0; p < palavra.length; p++) {
-					for (int k = 0; k < conjuntoFuncaoDeTransicaoDeEstados.length; k++) {
-						if ((palavra[p] == le[k]) && (estadoPartida[k] == estadoa)) {
+				for (int p = 0; p < palavra.length; p++) 
+				{
+					for (int k = 0; k < conjuntoFuncaoDeTransicaoDeEstados.length; k++) 
+					{
+						if( le[k] == null )
+							continue;
+						
+							
+						if ( ( palavra[p] == le[k]) && (estadoPartida[k] == estadoa))
+						{
 							estadoa = estadoDestino[k];
 
 							w++;
 							break;
-						} else {
+						} 
+						else
+						{
 						}
 					}
 
