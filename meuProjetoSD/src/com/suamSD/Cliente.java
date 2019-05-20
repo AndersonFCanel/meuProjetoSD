@@ -10,7 +10,6 @@ import java.util.logging.Logger;
 /**
  * Cliente de uma aplicação Java RMI
  *
- * http://docente.ifsc.edu.br/mello
  */
 public class Cliente extends Thread
 {
