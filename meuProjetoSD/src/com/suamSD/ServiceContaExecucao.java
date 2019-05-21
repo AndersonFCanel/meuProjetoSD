@@ -3,7 +3,7 @@ package com.suamSD;
 public class ServiceContaExecucao implements ContaExecucaoInterface 
 {
 	
-	static Integer contaThreads;
+	static Integer contaThreads = 1;
 	
 	public Integer getContaExecucao( ) 
 	{

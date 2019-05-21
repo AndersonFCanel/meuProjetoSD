@@ -17,7 +17,7 @@ public class Cliente extends Thread
 	//private static final Runnable Cliente2 = new Cliente( );
 
 	static String  ipServer;
-	static int  thread = 1;
+	static Integer thread = 1;
 	
 	public static void main ( String[ ] args ) 
 	{
@@ -37,13 +37,16 @@ public class Cliente extends Thread
 			// Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
 			//AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
 			
-			ServiceContaExecucao stubCont = (ServiceContaExecucao ) registro.lookup( Util.NOMEOBJDIST+"cont" );
+			ContaExecucaoInterface stubCont = (ContaExecucaoInterface) registro.lookup( Util.NOMEOBJDIST+"cont" );
 
-			System.out.println( "CONTADOR DE EXECUÇÃO: " + stubCont );
+			System.out.println( "CONTADOR DE EXECUÇÃO: " + stubCont.getContaExecucao( ) );
 			
-		    switch ( thread ) 
+			//thread  ;
+			
+		    switch ( stubCont.getContaExecucao( ) ) 
 			{
 			case 1:
+				stubCont.setContaThreads( stubCont.getContaExecucao( ) + 1 );
 				new Thread(t1).start();
 				break;
 
@@ -55,6 +58,7 @@ public class Cliente extends Thread
 				
 				break;
 			}
+		    
 			
 		}
 		catch (RemoteException e) 
@@ -81,14 +85,10 @@ public class Cliente extends Thread
     			// Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
     			AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
 
-    			ServiceContaExecucao stubCont = (ServiceContaExecucao ) registro.lookup( Util.NOMEOBJDIST +"cont");
+    			ContaExecucaoInterface stubCont = (ContaExecucaoInterface) registro.lookup( Util.NOMEOBJDIST +"cont");
     			
-    			stubCont.setContaThreads( 1 );
+    			System.out.println( "CONTADOR DE EXECUÇÃO: " + stubCont.getContaExecucao( ).toString( ) );
 
-    			System.out.println( "CONTADOR DE EXECUÇÃO: " + stubCont.getContaExecucao( ) );
-    			
-    		    thread = stubCont.getContaExecucao( ) + 1;
-    			
         		try 
 				{
 					stub.setAlfabeto( );
@@ -128,9 +128,7 @@ public class Cliente extends Thread
     			// Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
     			AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
 
-    			ServiceContaExecucao stubCont = (ServiceContaExecucao ) registro.lookup( Util.NOMEOBJDIST +"cont");
-    			
-    			stubCont.setContaThreads( 2 );
+    			ContaExecucaoInterface stubCont = (ContaExecucaoInterface) registro.lookup( Util.NOMEOBJDIST +"cont");
     			
     			System.out.println( "CONTADOR DE EXECUÇÃO: " + stubCont.getContaExecucao( ) );
     			
