@@ -9,19 +9,7 @@ import javax.swing.JOptionPane;
 public class ServiceAutomato implements AutomatoInterface 
 {
 	
-    int contaThreads;
-	
-	public  int getContaExecucao( ) 
-	{
-		return contaThreads;
-	}
-
-	public void setContaThreads( int contaThread )
-	{
-		this.contaThreads = contaThread;
-	}
-	
-	private static HashMap<Integer, String> conjuntoDeEstadosMap = new HashMap<Integer, String>( );
+ private static HashMap<Integer, String> conjuntoDeEstadosMap = new HashMap<Integer, String>( );
 	//private static HashMap<Integer, String> conjuntoDeEstadosFinaisMap = new HashMap<Integer, String>( );
 
 	private static String alfabetoIMPRIME;

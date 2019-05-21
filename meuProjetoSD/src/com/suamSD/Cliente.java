@@ -29,16 +29,17 @@ public class Cliente extends Thread
 			return;
 		}
 		
-		
 		try 
 		{
 			// Obtendo referência do serviço de registro
 			Registry registro = LocateRegistry.getRegistry( ipServer, Util.PORTA );
 
 			// Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
-			AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
+			//AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
 			
-			System.out.println( "CONTADOR DE EXECUÇÃO: " + stub.getContaExecucao( ) );
+			ServiceContaExecucao stubCont = (ServiceContaExecucao ) registro.lookup( Util.NOMEOBJDIST+"cont" );
+
+			System.out.println( "CONTADOR DE EXECUÇÃO: " + stubCont );
 			
 		    switch ( thread ) 
 			{
@@ -80,12 +81,13 @@ public class Cliente extends Thread
     			// Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
     			AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
 
+    			ServiceContaExecucao stubCont = (ServiceContaExecucao ) registro.lookup( Util.NOMEOBJDIST +"cont");
     			
-    			stub.setContaThreads( 1 );
+    			stubCont.setContaThreads( 1 );
 
-    			System.out.println( "CONTADOR DE EXECUÇÃO: " + stub.getContaExecucao( ) );
+    			System.out.println( "CONTADOR DE EXECUÇÃO: " + stubCont.getContaExecucao( ) );
     			
-    		    thread = stub.getContaExecucao( ) + 1;
+    		    thread = stubCont.getContaExecucao( ) + 1;
     			
         		try 
 				{
@@ -126,11 +128,13 @@ public class Cliente extends Thread
     			// Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
     			AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
 
-    			stub.setContaThreads( 2 );
+    			ServiceContaExecucao stubCont = (ServiceContaExecucao ) registro.lookup( Util.NOMEOBJDIST +"cont");
     			
-    			System.out.println( "CONTADOR DE EXECUÇÃO: " + stub.getContaExecucao( ) );
+    			stubCont.setContaThreads( 2 );
     			
-    		    thread = stub.getContaExecucao( ) + 1;
+    			System.out.println( "CONTADOR DE EXECUÇÃO: " + stubCont.getContaExecucao( ) );
+    			
+    		    thread = stubCont.getContaExecucao( ) + 1;
     		
     			
             	try 
