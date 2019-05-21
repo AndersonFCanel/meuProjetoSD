@@ -9,16 +9,16 @@ import javax.swing.JOptionPane;
 public class ServiceAutomato implements AutomatoInterface 
 {
 	
-    static int contaThreads;
+    int contaThreads;
 	
-	public  int getContaThreads( ) 
+	public  int getContaExecucao( ) 
 	{
 		return contaThreads;
 	}
 
-	public void setContaThreads( )
+	public void setContaThreads( int contaThread )
 	{
-		ServiceAutomato.contaThreads ++;
+		this.contaThreads = contaThread;
 	}
 	
 	private static HashMap<Integer, String> conjuntoDeEstadosMap = new HashMap<Integer, String>( );
