@@ -1,4 +1,4 @@
-package com.suamSD;
+package com.suam.contador;
 
 public class ServiceContaExecucao implements ContaExecucaoInterface 
 {

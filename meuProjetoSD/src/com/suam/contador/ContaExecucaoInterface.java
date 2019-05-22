@@ -1,4 +1,4 @@
-package com.suamSD;
+package com.suam.contador;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
