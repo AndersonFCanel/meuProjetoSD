@@ -61,7 +61,7 @@ public class ServidorAutomato
             do 
             {
             	System.out.println( "Servidor pronto!\n"                                                   );
-            	System.out.println( "Se esiver executando pelo prompt pressione CTRL + C para encerrar..." );
+            	System.out.println( "Se estiver executando pelo prompt pressione CTRL + C para encerrar..." );
             	
             	input = JOptionPane.showConfirmDialog(null,
         				"Servidor pronto!\n"

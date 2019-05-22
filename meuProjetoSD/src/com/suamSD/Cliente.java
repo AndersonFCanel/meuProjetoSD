@@ -7,6 +7,8 @@ import java.rmi.registry.Registry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JOptionPane;
+
 /**
  * Cliente de uma aplicação Java RMI
  *
@@ -38,15 +40,14 @@ public class Cliente extends Thread
 			AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
 			//ContaExecucaoInterface stubCont = (ContaExecucaoInterface) registro.lookup( Util.NOMEOBJDIST+"cont" );
 
-			System.out.println( "CONTADOR DE EXECUÇÃO: " + stub.getContaExecucao( ) );
+			//System.out.println( "CONTADOR DE EXECUÇÃO: " + stub.getContaExecucao( ) );
 			
 			//thread  ;
 			
 		    switch ( stub.getContaExecucao( ) ) 
 			{
 			case 1:
-				stub.setContaThreads( stub.getContaExecucao( ) + 1 );
-				new Thread(t1).start();
+				new Thread(t1).start( );
 				break;
 
 			case 2:
@@ -90,16 +91,31 @@ public class Cliente extends Thread
 
         		try 
 				{
+        			stub.setContaThreads( stub.getContaExecucao( ) + 1 );
+        			
 					stub.setAlfabeto( );
-					t1.wait( );
-					t2.notify( );
-					// stub.setEstados ( );
+					if( stub.getContaExecucao( ) == 3 ) 
+					{
+						t1.wait( );
+						t2.notify( );
+						aguardarVezOutroUsuario( );
+					}
+					else
+					   stub.setEstados ( );
+					
 					stub.setRegra( );
-					t1.wait( );
-					t2.notify( );
-					// stub.setEstInicial ( );
-					// stub.setConjuntoEstadosFinais( );
-					stub.checaPalavra( );
+					if( stub.getContaExecucao( ) == 3 ) 
+					{
+						t1.wait( );
+						t2.notify( );
+						aguardarVezOutroUsuario( );
+					}
+					else
+					{
+					    stub.setEstInicial ( );
+					    stub.setConjuntoEstadosFinais( );
+					}
+					    stub.checaPalavra( );
 				}
         		catch ( RemoteException e ) 
 				{
@@ -114,6 +130,7 @@ public class Cliente extends Thread
 				System.out.println( "Nome: "       + Thread.currentThread( ).getName( )     );
 				System.out.println( "Prioridade: " + Thread.currentThread( ).getPriority( ) );
 				System.out.println( "Estado: "     + Thread.currentThread( ).getState( )    );
+
             } 
             catch (RemoteException | NotBoundException ex) 
     		{
@@ -141,17 +158,23 @@ public class Cliente extends Thread
     		
             	try 
 				{
+            		stub.setContaThreads( stub.getContaExecucao( ) + 1 );
+            		
 					// stub.setAlfabeto ( );
 					stub.setEstados( );
 					t2.wait( );
 					t1.notify( );
+					aguardarVezOutroUsuario( );
 					// stub.setRegra ( );
 					stub.setEstInicial( );
 					t2.wait( );
 					t1.notify( );
+					aguardarVezOutroUsuario( );
 					
 					stub.setConjuntoEstadosFinais( );
 					t2.wait( );
+					t1.notify( );
+					aguardarVezOutroUsuario( );
 					//t1.notify( );
 					// stub.checaPalavra ( );
 				} 
@@ -177,4 +200,10 @@ public class Cliente extends Thread
     		}
        }
     };
+    
+    //USUÁRIO VEZ
+	private static void aguardarVezOutroUsuario( )
+	{
+		JOptionPane.showMessageDialog( null, "Aguarde o outro usuário terminar!\n" );
+	}
 }

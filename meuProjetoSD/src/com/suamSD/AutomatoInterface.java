@@ -21,4 +21,10 @@ public interface AutomatoInterface extends Remote
 	
 	public void setContaThreads         ( Integer contaThread )throws RemoteException;
 	
+	public void imprimirAutomatoUsuario1( String alf, String est, int[ ] estadoPartida, int[ ] estadoDestino, Character[ ] le,
+			String estIn, String conjuntoEstadosFinais )throws RemoteException;
+	
+	public void imprimirAutomatoUsuario2( String alf, String est, int[ ] estadoPartida, int[ ] estadoDestino, Character[ ] le,
+			String estIn, String conjuntoEstadosFinais )throws RemoteException;
+	
 }
