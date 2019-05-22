@@ -91,14 +91,22 @@ public class Cliente extends Thread
         		try 
 				{
 					stub.setAlfabeto( );
+					t1.wait( );
+					t2.notify( );
 					// stub.setEstados ( );
 					stub.setRegra( );
+					t1.wait( );
+					t2.notify( );
 					// stub.setEstInicial ( );
 					// stub.setConjuntoEstadosFinais( );
 					stub.checaPalavra( );
 				}
-        		catch (RemoteException e) 
+        		catch ( RemoteException e ) 
 				{
+					e.printStackTrace( );
+				}
+                catch ( InterruptedException e ) 
+        		{
 					e.printStackTrace( );
 				}
 				// código para executar em paralelo
@@ -135,14 +143,26 @@ public class Cliente extends Thread
 				{
 					// stub.setAlfabeto ( );
 					stub.setEstados( );
+					t2.wait( );
+					t1.notify( );
 					// stub.setRegra ( );
 					stub.setEstInicial( );
+					t2.wait( );
+					t1.notify( );
+					
 					stub.setConjuntoEstadosFinais( );
+					t2.wait( );
+					//t1.notify( );
 					// stub.checaPalavra ( );
 				} 
-				catch (RemoteException e) 
+				catch ( RemoteException e ) 
 				{
 					e.printStackTrace( );
+				} 
+            	catch ( InterruptedException e )
+            	{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 				
 				// código para executar em paralelo

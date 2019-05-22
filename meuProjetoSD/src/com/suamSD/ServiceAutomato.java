@@ -385,7 +385,7 @@ public class ServiceAutomato implements AutomatoInterface
 	private static String entrarConjuntoCaracteres_Alfabeto( ) 
 	{		
 		String alfabeto;
-		
+		boolean b = false;
 		do 
 		{
 			alfabeto = JOptionPane.showInputDialog( null,
@@ -397,9 +397,16 @@ public class ServiceAutomato implements AutomatoInterface
 							+ "       Máximo = 3(três) elementos.\n" );
 			
 			if ( alfabeto == null)
-				alfabeto = "";
+			{
+				b = true;
+			}
+			else
+			{
+				b = !valoresAtuais( alfabeto ) ;
+			}	
+		
 		} 
-		while (  valoresAtuais( alfabeto ) );
+		while ( b );
 		
 		return alfabeto;
 	}
@@ -412,10 +419,11 @@ public class ServiceAutomato implements AutomatoInterface
 	private static String entraConjuntoEstado( ) 
 	{
 		String  estados;
+		boolean b = false;
 		
 		do {
 			estados  = JOptionPane.showInputDialog( null,
-					"ATEN ÇÃO AO MODELO DE INSERÇÃO NO CONJUNTO DE ESTADOS\nCada estado deve ser "
+					"ATENÇÃO AO MODELO DE INSERÇÃO NO CONJUNTO DE ESTADOS\nCada estado deve ser "
 							+ "separado por virgula, sem espaço.\n" 
 							+ "EX: A,B,C ... e1,e2,e3...\n"
 							+ "Lembre-se, tratando de conjunto não são permitidos elementos duplicados."
@@ -424,9 +432,15 @@ public class ServiceAutomato implements AutomatoInterface
 							+ "       Máximo = 3(três) elementos.\n"
 							+ "Para checar entradas anteriores digite '?'.\n\n" );
 			if ( estados == null)
-				estados = "";
+			{
+				b = true;
+			}
+			else
+			{
+				b = !valoresAtuais( estados ) ;
+			}
 		} 
-		while (valoresAtuais( estados ) );
+		while ( b );
 		
 		return estados;
 	}
@@ -435,6 +449,7 @@ public class ServiceAutomato implements AutomatoInterface
 	private static String entraFuncaoTransicao( )
 	{
 		String delta;
+		boolean b = false;
 		
 		do {
 			delta = JOptionPane.showInputDialog( null,
@@ -444,9 +459,15 @@ public class ServiceAutomato implements AutomatoInterface
 							+ "Para checar entradas anteriores digite ?\n\n" );
 			
 			if ( delta == null)
-				 delta = "";
+			{
+				b = true;
+			}
+			else
+			{
+				b = !valoresAtuais( delta ) ;
+			}
 		} 
-		while ( valoresAtuais( delta ) );
+		while ( b );
 		
 		
 		return delta;
