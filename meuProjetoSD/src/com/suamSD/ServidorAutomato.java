@@ -8,6 +8,8 @@ import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.swing.JOptionPane;
+
 /**
  * Classe responsável por criar uma instância do objeto serviceAutomato e registrá-la
  * em um serviço de registro de objetos distribuídos
@@ -52,14 +54,39 @@ public class ServidorAutomato
             registro.bind( Util.NOMEOBJDIST, stub );
             registro.bind( Util.NOMEOBJDIST+"cont", stubContador );
 
-            System.out.println( "Servidor pronto!\n" );
+            //System.out.println( "Servidor pronto!\n" );
            // System.out.println("Pressione CTRL + C para encerrar...");
+            int input ;
+            do 
+            {
+            	input = JOptionPane.showConfirmDialog(null,
+        				"Servidor pronto!\n"
+        				+ "Para parar aperte ok.\n\n",
+        				"WARNING", JOptionPane.WARNING_MESSAGE);
+                // 0=yes, 1=no, 2=cancel
+            	
+            	if(input == 0)
+                {
+                    if ( registro != null) 
+                    {
+                        UnicastRemoteObject.unexportObject( registro, true );
+                        System.out.println( "Você unexportObject" );
+                    }
+                   
+                    return;
+                }
+            }
+            while (input == 2);
+            System.out.println( "Você parou o servidor" );
+            
             
         } 
         catch ( RemoteException | AlreadyBoundException ex )
         {
             Logger.getLogger( ServidorAutomato.class.getName( ) ).log( Level.SEVERE, null, ex );
         }
+        
+        System.out.println( "Fim" );
     }
 
 }
