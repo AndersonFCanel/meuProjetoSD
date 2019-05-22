@@ -11,13 +11,13 @@ import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
- * Classe responsável por criar uma instância do objeto serviceAutomato e registrá-la
+ * Classe responsável por criar uma instância 
+ * do objeto serviceAutomato e registrá-la
  * em um serviço de registro de objetos distribuídos
  *
  */
 public class ServidorAutomato 
 {
-	
 	public static void main( String args[ ] )
     {
 		/*String ipServer = Util.defineIPservidor( );
@@ -30,56 +30,59 @@ public class ServidorAutomato
 		
 		String ipServer = Util.IPSERVIDOR;
 		
-        try 
+		String javaHome = System.getenv("JAVA_HOME");
+		System.out.println       ( "JDK: "+javaHome);
+        
+		try 
         {
             // Criando objeto autómato
             ServiceAutomato a = new ServiceAutomato( );
             
             //Criando contador
-            ServiceContaExecucao c =  new ServiceContaExecucao( );
+            //ServiceContaExecucao c =  new ServiceContaExecucao( );
             
             // Definindo o hostname do servidor
             System.setProperty( "java.rmi.server.hostname", ipServer );
 
             AutomatoInterface stub = (AutomatoInterface) UnicastRemoteObject.exportObject( a, 0 );
-            System.out.println( "Objeto  ServiceAutomato Carrregado. " );
+            System.out.println       ( "Objeto  ServiceAutomato Carrregado. "                   );
             
-            ContaExecucaoInterface stubContador = (ContaExecucaoInterface) UnicastRemoteObject.exportObject(c, 0 );
-            System.out.println( "Objeto ServiceContaExecucao Carrregado. " );
+            //ContaExecucaoInterface stubContador = (ContaExecucaoInterface) UnicastRemoteObject.exportObject(c, 0 );
+            //System.out.println( "Objeto ServiceContaExecucao Carrregado. " );
             
-            // Criando serviço de registro
+            //Criando serviço de registro
             Registry registro = LocateRegistry.createRegistry( Util.PORTA );
 
-            // Registrando objeto distribuído
+            //Registrando objeto distribuído
             registro.bind( Util.NOMEOBJDIST, stub );
-            registro.bind( Util.NOMEOBJDIST+"cont", stubContador );
+            //registro.bind( Util.NOMEOBJDIST+"cont", stubContador );
 
-            //System.out.println( "Servidor pronto!\n" );
-           // System.out.println("Pressione CTRL + C para encerrar...");
             int input ;
             do 
             {
+            	System.out.println( "Servidor pronto!\n"                                                   );
+            	System.out.println( "Se esiver executando pelo prompt pressione CTRL + C para encerrar..." );
+            	
             	input = JOptionPane.showConfirmDialog(null,
         				"Servidor pronto!\n"
         				+ "Para parar aperte ok.\n\n",
         				"WARNING", JOptionPane.WARNING_MESSAGE);
-                // 0=yes, 1=no, 2=cancel
+                //Possíveis retornos 0=yes, 1=no, 2=cancel
             	
-            	if(input == 0)
+            	if( input == 0 )
                 {
-                    if ( registro != null) 
+                    if ( registro != null ) 
                     {
-                        UnicastRemoteObject.unexportObject( registro, true );
-                        System.out.println( "Você unexportObject" );
+                        UnicastRemoteObject.unexportObject( registro, true   );
+                        System.out.println                ( "unexportObject" );
                     }
                    
                     return;
                 }
             }
-            while (input == 2);
+            while ( input == 2 );
             System.out.println( "Você parou o servidor" );
-            
-            
+
         } 
         catch ( RemoteException | AlreadyBoundException ex )
         {

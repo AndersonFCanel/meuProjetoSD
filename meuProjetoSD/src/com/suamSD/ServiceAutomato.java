@@ -8,8 +8,19 @@ import javax.swing.JOptionPane;
 
 public class ServiceAutomato implements AutomatoInterface 
 {
+	static Integer contaThreads = 1;
+		
+    public Integer getContaExecucao( ) 
+	{
+	    return contaThreads;
+	}
+
+	public void setContaThreads( Integer contaThread )
+	{
+	    contaThreads = contaThread;
+	}
 	
- private static HashMap<Integer, String> conjuntoDeEstadosMap = new HashMap<Integer, String>( );
+    private static HashMap<Integer, String> conjuntoDeEstadosMap = new HashMap<Integer, String>( );
 	//private static HashMap<Integer, String> conjuntoDeEstadosFinaisMap = new HashMap<Integer, String>( );
 
 	private static String alfabetoIMPRIME;
@@ -384,7 +395,9 @@ public class ServiceAutomato implements AutomatoInterface
 							+ "\nTamanho permitido:\n" 
 							+ "       Mínimo = 1(um)   elemento. \n"
 							+ "       Máximo = 3(três) elementos.\n" );
-
+			
+			if ( alfabeto == null)
+				alfabeto = "";
 		} 
 		while (  valoresAtuais( alfabeto ) );
 		
@@ -399,7 +412,6 @@ public class ServiceAutomato implements AutomatoInterface
 	private static String entraConjuntoEstado( ) 
 	{
 		String  estados;
-        boolean b = false;
 		
 		do {
 			estados  = JOptionPane.showInputDialog( null,
@@ -411,10 +423,10 @@ public class ServiceAutomato implements AutomatoInterface
 							+ "       Mínimo = 1(um)   elemento. \n"
 							+ "       Máximo = 3(três) elementos.\n"
 							+ "Para checar entradas anteriores digite '?'.\n\n" );
-			
-			b = valoresAtuais( estados );
+			if ( estados == null)
+				estados = "";
 		} 
-		while ( b );
+		while (valoresAtuais( estados ) );
 		
 		return estados;
 	}
@@ -423,7 +435,6 @@ public class ServiceAutomato implements AutomatoInterface
 	private static String entraFuncaoTransicao( )
 	{
 		String delta;
-         boolean b = false;
 		
 		do {
 			delta = JOptionPane.showInputDialog( null,
@@ -432,9 +443,10 @@ public class ServiceAutomato implements AutomatoInterface
 							//+ "\nVer entradas anteriores 'a'" + "\n "
 							+ "Para checar entradas anteriores digite ?\n\n" );
 			
-			b = valoresAtuais( delta );
+			if ( delta == null)
+				 delta = "";
 		} 
-		while ( b );
+		while ( valoresAtuais( delta ) );
 		
 		
 		return delta;
@@ -850,9 +862,7 @@ public class ServiceAutomato implements AutomatoInterface
 					estadoIni, conjuntoEstadosTerminais );
 			
 			return true;
-		}
-		
+		}	
 	    return false;
 	}
-
 }

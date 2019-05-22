@@ -17,7 +17,7 @@ public class Cliente extends Thread
 	//private static final Runnable Cliente2 = new Cliente( );
 
 	static String  ipServer;
-	static Integer thread = 1;
+	//static Integer thread = 1;
 	
 	public static void main ( String[ ] args ) 
 	{
@@ -35,18 +35,17 @@ public class Cliente extends Thread
 			Registry registro = LocateRegistry.getRegistry( ipServer, Util.PORTA );
 
 			// Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
-			//AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
-			
-			ContaExecucaoInterface stubCont = (ContaExecucaoInterface) registro.lookup( Util.NOMEOBJDIST+"cont" );
+			AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
+			//ContaExecucaoInterface stubCont = (ContaExecucaoInterface) registro.lookup( Util.NOMEOBJDIST+"cont" );
 
-			System.out.println( "CONTADOR DE EXECUÇÃO: " + stubCont.getContaExecucao( ) );
+			System.out.println( "CONTADOR DE EXECUÇÃO: " + stub.getContaExecucao( ) );
 			
 			//thread  ;
 			
-		    switch ( stubCont.getContaExecucao( ) ) 
+		    switch ( stub.getContaExecucao( ) ) 
 			{
 			case 1:
-				stubCont.setContaThreads( stubCont.getContaExecucao( ) + 1 );
+				stub.setContaThreads( stub.getContaExecucao( ) + 1 );
 				new Thread(t1).start();
 				break;
 
@@ -61,12 +60,13 @@ public class Cliente extends Thread
 		    
 			
 		}
-		catch (RemoteException e) 
+		catch ( RemoteException e ) 
 		{
 			e.printStackTrace();
-		} catch (NotBoundException e) {
-			
-			e.printStackTrace();
+		} 
+		catch ( NotBoundException e )
+		{
+			e.printStackTrace( );
 		}
 
 		System.out.println( "Fim da execução do cliente!" );
@@ -84,10 +84,9 @@ public class Cliente extends Thread
 
     			// Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
     			AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
-
-    			ContaExecucaoInterface stubCont = (ContaExecucaoInterface) registro.lookup( Util.NOMEOBJDIST +"cont");
+    			//ContaExecucaoInterface stubCont = (ContaExecucaoInterface) registro.lookup( Util.NOMEOBJDIST +"cont");
     			
-    			System.out.println( "CONTADOR DE EXECUÇÃO: " + stubCont.getContaExecucao( ).toString( ) );
+    			System.out.println( "CONTADOR DE EXECUÇÃO: " + stub.getContaExecucao( ).toString( ) );
 
         		try 
 				{
@@ -127,14 +126,11 @@ public class Cliente extends Thread
 
     			// Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
     			AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
-
-    			ContaExecucaoInterface stubCont = (ContaExecucaoInterface) registro.lookup( Util.NOMEOBJDIST +"cont");
+  			    //ContaExecucaoInterface stubCont = (ContaExecucaoInterface) registro.lookup( Util.NOMEOBJDIST +"cont");
     			
-    			System.out.println( "CONTADOR DE EXECUÇÃO: " + stubCont.getContaExecucao( ) );
-    			
-    		    thread = stubCont.getContaExecucao( ) + 1;
+    			System.out.println( "CONTADOR DE EXECUÇÃO: " + stub.getContaExecucao( ) );
+    		    //thread = stub.getContaExecucao( ) + 1;
     		
-    			
             	try 
 				{
 					// stub.setAlfabeto ( );
