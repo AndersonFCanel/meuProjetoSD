@@ -15,11 +15,7 @@ import javax.swing.JOptionPane;
  */
 public class Cliente extends Thread 
 {
-	//private static final Runnable Cliente1 = new Cliente( );
-	//private static final Runnable Cliente2 = new Cliente( );
-
 	static String  ipServer;
-	//static Integer thread = 1;
 	
 	public static void main ( String[ ] args ) 
 	{
@@ -38,26 +34,26 @@ public class Cliente extends Thread
 
 			// Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
 			AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
-			//ContaExecucaoInterface stubCont = (ContaExecucaoInterface) registro.lookup( Util.NOMEOBJDIST+"cont" );
-
-			//System.out.println( "CONTADOR DE EXECUÇÃO: " + stub.getContaExecucao( ) );
 			
-			//thread  ;
 			
-		    switch ( stub.getContaExecucao( ) ) 
-			{
-			case 1:
-				new Thread(t1).start( );
-				break;
-
-			case 2:
-				new Thread(t2).start();
-				break;
-
-			default:
+				System.out.println("Iniciando cliente ...");
 				
-				break;
-			}
+			    switch ( stub.getContaUsuario( ) ) 
+				{
+				case 1:
+					new Thread(t1).start( );
+					break;
+
+				case 2:
+					new Thread(t2).start();
+					break;
+
+				default:
+					
+					break;
+				}
+			
+			
 		    
 			
 		}
@@ -70,14 +66,15 @@ public class Cliente extends Thread
 			e.printStackTrace( );
 		}
 
-		System.out.println( "Fim da execução do cliente!" );
+		
 	}
 
 	
-	private static Runnable t1 = new Runnable( )
+	private static Thread t1 = new Thread( new Thread( ) ) 
 	{
         public void run( )
         {
+        	Thread.currentThread( ).setName( "CLIENTE_1" );       	
             try
             {
             	// Obtendo referência do serviço de registro
@@ -85,52 +82,67 @@ public class Cliente extends Thread
 
     			// Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
     			AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
-    			//ContaExecucaoInterface stubCont = (ContaExecucaoInterface) registro.lookup( Util.NOMEOBJDIST +"cont");
     			
-    			System.out.println( "CONTADOR DE EXECUÇÃO: " + stub.getContaExecucao( ).toString( ) );
-
-        		try 
-				{
-        			stub.setContaThreads( stub.getContaExecucao( ) + 1 );
-        			
-					stub.setAlfabeto( );
-					if( stub.getContaExecucao( ) == 3 ) 
-					{
-						t1.wait( );
-						t2.notify( );
-						aguardarVezOutroUsuario( );
-					}
-					else
-					   stub.setEstados ( );
-					
-					stub.setRegra( );
-					if( stub.getContaExecucao( ) == 3 ) 
-					{
-						t1.wait( );
-						t2.notify( );
-						aguardarVezOutroUsuario( );
-					}
-					else
-					{
-					    stub.setEstInicial ( );
-					    stub.setConjuntoEstadosFinais( );
-					}
-					    stub.checaPalavra( );
-				}
-        		catch ( RemoteException e ) 
-				{
-					e.printStackTrace( );
-				}
-                catch ( InterruptedException e ) 
-        		{
-					e.printStackTrace( );
-				}
-				// código para executar em paralelo
-				System.out.println( "ID: "         + Thread.currentThread( ).getId( )       );
+    			System.out.println("\n***********************************************************************");
+    			System.out.println( "CONTADOR DE EXECUÇÃO: " + stub.getContaUsuario( ).toString( ) +"\n\n");    			
+    			System.out.println( "ID: "         + Thread.currentThread( ).getId( )       );
 				System.out.println( "Nome: "       + Thread.currentThread( ).getName( )     );
 				System.out.println( "Prioridade: " + Thread.currentThread( ).getPriority( ) );
 				System.out.println( "Estado: "     + Thread.currentThread( ).getState( )    );
+				System.out.println("***********************************************************************\n");
 
+        		try 
+				{
+        			//synchronized (t1) {
+        			    stub.setContaUsuario( stub.getContaUsuario( ) + 1 );
+        			      
+        			   
+					    stub.setAlfabeto( );
+					    //Execução de um cliente apenas
+					    if( stub.getContaUsuario( ) == 2 )
+					    {
+					         stub.setEstados ( );
+					         stub.incrementaContaPasso( );
+					    }
+					    stub.incrementaContaPasso( );
+					    
+					    if( stub.getContaUsuario( ) != 2 )
+					    {
+					        do 
+            		        {
+            		        	aguardarVezOutroUsuarioCli1( );
+					 }      
+            		        while ( stub.getContaPasso() != 3);
+					    }
+					    stub.setRegra( );
+					    stub.incrementaContaPasso( );
+					    
+					    if( stub.getContaUsuario( ) == 2 )
+					    {
+					    	stub.setEstInicial ( );
+						    stub.setConjuntoEstadosFinais( );
+					        stub.incrementaContaPasso( );
+					    }
+					    
+					    if( stub.getContaUsuario( ) != 2 )
+					    {
+					        do 
+            		        {
+            		        	aguardarVezOutroUsuarioCli1( );
+						    } 
+            		        while ( stub.getContaPasso() != 5);
+					    }
+					    stub.checaPalavra( );
+        			//}
+				}
+        		catch ( RemoteException e ) 
+				{
+        			stub.setContaUsuario( stub.getContaUsuario( ) -1 );
+					e.printStackTrace( );
+				}
+                
+        		
+        		System.out.println( "Fim da execução do cliente_1!" );
             } 
             catch (RemoteException | NotBoundException ex) 
     		{
@@ -140,10 +152,12 @@ public class Cliente extends Thread
         }
     };
  
-    private static Runnable t2 = new Runnable( ) 
+    
+    private static Thread t2 = new Thread( new Thread( ) ) 
     {
         public void run( ) 
         {
+        	Thread.currentThread( ).setName( "CLIENTE_2" );
             try
             {
             	// Obtendo referência do serviço de registro
@@ -151,42 +165,58 @@ public class Cliente extends Thread
 
     			// Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
     			AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
-  			    //ContaExecucaoInterface stubCont = (ContaExecucaoInterface) registro.lookup( Util.NOMEOBJDIST +"cont");
-    			
-    			System.out.println( "CONTADOR DE EXECUÇÃO: " + stub.getContaExecucao( ) );
-    		    //thread = stub.getContaExecucao( ) + 1;
-    		
+
+    			System.out.println("\n***********************************************************************");
+    			System.out.println( "CONTADOR DE EXECUÇÃO: " + stub.getContaUsuario( ).toString( ) +"\n\n");    			
+    			System.out.println( "ID: "         + Thread.currentThread( ).getId( )       );
+				System.out.println( "Nome: "       + Thread.currentThread( ).getName( )     );
+				System.out.println( "Prioridade: " + Thread.currentThread( ).getPriority( ) );
+				System.out.println( "Estado: "     + Thread.currentThread( ).getState( )    );
+				System.out.println("***********************************************************************\n");
+    					
             	try 
 				{
-            		stub.setContaThreads( stub.getContaExecucao( ) + 1 );
-            		
-					// stub.setAlfabeto ( );
-					stub.setEstados( );
-					t2.wait( );
-					t1.notify( );
-					aguardarVezOutroUsuario( );
-					// stub.setRegra ( );
-					stub.setEstInicial( );
-					t2.wait( );
-					t1.notify( );
-					aguardarVezOutroUsuario( );
-					
-					stub.setConjuntoEstadosFinais( );
-					t2.wait( );
-					t1.notify( );
-					aguardarVezOutroUsuario( );
-					//t1.notify( );
-					// stub.checaPalavra ( );
+            		//synchronized (stub)
+            		//{
+            		     stub.setContaUsuario( stub.getContaUsuario( ) + 1 );
+            		     
+					     // stub.setAlfabeto ( );
+					     
+            		    do 
+            		    {
+            		    	aguardarVezOutroUsuarioCli2( );
+						} 
+            		    while ( stub.getContaPasso() != 2);
+            		    stub.setEstados( );
+            		    stub.incrementaContaPasso( );
+	     			    
+            		    // stub.setRegra ( );
+					     
+            		    do 
+            		    {
+            		    	aguardarVezOutroUsuarioCli2( );
+						} 
+            		    while ( stub.getContaPasso() != 4);
+					    stub.setEstInicial( );
+					    stub.setConjuntoEstadosFinais( );
+					    stub.incrementaContaPasso( );
+					     
+					     
+					     //stub.setConjuntoEstadosFinais( );
+					    do 
+            		    {
+            		    	aguardarVezOutroUsuarioCli2( );
+						} 
+            		    while ( stub.getContaPasso() != 6);
+					     stub.checaPalavra ( );
+					     stub.incrementaContaPasso( );
+            		//}
 				} 
 				catch ( RemoteException e ) 
 				{
+					stub.setContaUsuario( stub.getContaUsuario( ) -1 );
 					e.printStackTrace( );
 				} 
-            	catch ( InterruptedException e )
-            	{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
 				
 				// código para executar em paralelo
 				System.out.println( "ID: "         + Thread.currentThread( ).getId( )       );
@@ -202,8 +232,14 @@ public class Cliente extends Thread
     };
     
     //USUÁRIO VEZ
-	private static void aguardarVezOutroUsuario( )
+	private static void aguardarVezOutroUsuarioCli1( )
 	{
-		JOptionPane.showMessageDialog( null, "Aguarde o outro usuário terminar!\n" );
+		JOptionPane.showMessageDialog( null, "Cli1 \nAguarde o outro usuário terminar!\nAguarde 30 segundos e tente novamente!" );
 	}
+	
+    //USUÁRIO VEZ
+    private static void aguardarVezOutroUsuarioCli2( )
+    {
+    	JOptionPane.showMessageDialog( null, "Cli2 \nAguarde o outro usuário terminar!\nAguarde 30 segundos e tente novamente!" );
+    }
 }
