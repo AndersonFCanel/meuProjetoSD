@@ -9,16 +9,31 @@ import javax.swing.JOptionPane;
 
 public class ServiceAutomato implements AutomatoInterface 
 {
-	static Integer contaThreads = 1;
+	static Integer contaUsuario = 1;
 		
-    public Integer getContaExecucao( ) 
+    public Integer getContaUsuario( ) 
 	{
-	    return contaThreads;
+	    return contaUsuario;
 	}
 
-	public void setContaThreads( Integer contaThread )
+	public void setContaUsuario( Integer contaThread )
 	{
-	    contaThreads = contaThread;
+	    contaUsuario = contaThread;
+	}
+	
+	static Integer contaPasso = 1;
+	
+	@Override
+	public Integer getContaPasso() throws RemoteException 
+	{
+		 return contaPasso;
+	}
+
+	@Override
+	public void incrementaContaPasso() throws RemoteException
+	{
+		contaPasso++;
+		
 	}
 	
     private static HashMap<Integer, String> conjuntoDeEstadosMap = new HashMap<Integer, String>( );
@@ -255,7 +270,28 @@ public class ServiceAutomato implements AutomatoInterface
 		estadosf = new int[ conjuntoEstadosTerminais.length( ) ];
 		int b = 0, y = 0;
 
-		for ( Character ch : conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( ) ) 
+		//***********Sugestão de código Eclipse
+		char[] charArray = conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( );
+		
+		for (int i = 0; i < charArray.length; i++) {
+			for ( Character ch1 : conjuntoEstadosTerminais.toCharArray( ) )
+			{
+				if ( conjuntoDeEstadosMap.get( y ).equals( ch1.toString( ) ) )
+				{
+					estadosf[ b ] = y;
+					b++;
+					break;
+				}
+			}
+			y++;
+			
+			imprimirAutomato(alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, 
+					         estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME);
+		}
+		//****************
+		
+		/*Meu código
+		 * for ( Character ch : conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( ) ) 
 		{
 			for ( Character ch1 : conjuntoEstadosTerminais.toCharArray( ) )
 			{
@@ -271,8 +307,10 @@ public class ServiceAutomato implements AutomatoInterface
 			imprimirAutomato(alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, 
 					         estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME);
 		}
+		 * */
 	}
 
+	 
 	/*
 	 * Entrada realizada pelo usuário, realiza verificação para checar se a palavra
 	 * pode ser formada com os caracteres do conjunto de símbolo (alfabeto).
@@ -283,7 +321,7 @@ public class ServiceAutomato implements AutomatoInterface
 		boolean flagPal;
 		do {
 			int teste = 0;
-			int w     = 0;
+			//int w     = 0;
 			
 			palavraS = JOptionPane.showInputDialog( null,
 					"Entre com a palavra a ser verificada: "
@@ -335,7 +373,7 @@ public class ServiceAutomato implements AutomatoInterface
 						{
 							estadoa = estadoDestino[ k ];
 
-							w++;
+							//w++;
 							break;
 						} 
 						else
@@ -946,7 +984,5 @@ public class ServiceAutomato implements AutomatoInterface
 		
 	}
 
-	
-	
 	
 }

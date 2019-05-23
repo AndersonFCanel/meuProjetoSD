@@ -30,13 +30,14 @@ public class ServidorAutomato
 		
 		String ipServer = Util.IPSERVIDOR;
 		
-		String javaHome = System.getenv("JAVA_HOME");
-		System.out.println       ( "JDK: "+javaHome);
+		String javaHome = System.getenv( "JAVA_HOME" );
+		
+		System.out.println( "Versão do JDK local: " + javaHome );
         
 		try 
         {
-            // Criando objeto autómato
-            ServiceAutomato a = new ServiceAutomato( );
+            // Criando objeto autômato
+            ServiceAutomato automatoRemoto = new ServiceAutomato( );
             
             //Criando contador
             //ServiceContaExecucao c =  new ServiceContaExecucao( );
@@ -44,9 +45,11 @@ public class ServidorAutomato
             // Definindo o hostname do servidor
             System.setProperty( "java.rmi.server.hostname", ipServer );
 
-            AutomatoInterface stub = (AutomatoInterface) UnicastRemoteObject.exportObject( a, 0 );
+            //Exportando objeto remoto autômato 
+            AutomatoInterface stub = (AutomatoInterface) UnicastRemoteObject.exportObject( automatoRemoto, 0 );
             System.out.println       ( "Objeto  ServiceAutomato Carrregado. "                   );
             
+            //Exportando objeto ContaExecucao
             //ContaExecucaoInterface stubContador = (ContaExecucaoInterface) UnicastRemoteObject.exportObject(c, 0 );
             //System.out.println( "Objeto ServiceContaExecucao Carrregado. " );
             
@@ -65,7 +68,7 @@ public class ServidorAutomato
             	
             	input = JOptionPane.showConfirmDialog(null,
         				"Servidor pronto!\n"
-        				+ "Para parar aperte ok.\n\n",
+        				+ "Para parar o servidor pressione ok.\n\n",
         				"WARNING", JOptionPane.WARNING_MESSAGE);
                 //Possíveis retornos 0=yes, 1=no, 2=cancel
             	

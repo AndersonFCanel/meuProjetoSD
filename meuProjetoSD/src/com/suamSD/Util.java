@@ -17,7 +17,7 @@ public class Util {
 	{		
 		String ip = JOptionPane.showInputDialog( null,
 				"Entre com o IP do servidor:\n "
-				+ "Para 127.0.0.1, apenas clique OK!\n" );
+				+ "Para 127.0.0.1 'localhost', apenas clique OK!\n" );
 		
 		if ( ip != null)
 		{
@@ -31,7 +31,8 @@ public class Util {
 				break;
 			}
 		}
-		System.out.println("O ip do servidorAutomato é: "+ ip);
+		
+		System.out.println(" O ip do servidorAutomato é: "+ ip);
 		
 		return ip;
 	}
