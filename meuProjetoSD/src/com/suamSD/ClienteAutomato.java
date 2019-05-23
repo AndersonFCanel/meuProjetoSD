@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
  * Cliente de uma aplicação Java RMI
  *
  */
-public class Cliente extends Thread 
+public class ClienteAutomato extends Thread 
 {
 	static String  ipServer;
 	
@@ -146,7 +146,7 @@ public class Cliente extends Thread
             } 
             catch (RemoteException | NotBoundException ex) 
     		{
-    			Logger.getLogger( Cliente.class.getName( ) ).log( Level.SEVERE, null, ex );
+    			Logger.getLogger( ClienteAutomato.class.getName( ) ).log( Level.SEVERE, null, ex );
     		}
  
         }
@@ -218,16 +218,14 @@ public class Cliente extends Thread
 					e.printStackTrace( );
 				} 
 				
-				// código para executar em paralelo
-				System.out.println( "ID: "         + Thread.currentThread( ).getId( )       );
-				System.out.println( "Nome: "       + Thread.currentThread( ).getName( )     );
-				System.out.println( "Prioridade: " + Thread.currentThread( ).getPriority( ) );
-				System.out.println( "Estado: "     + Thread.currentThread( ).getState( )    );
+            	 System.out.println( "Fim da execução do cliente_2!" );
             } 
             catch (RemoteException | NotBoundException ex) 
     		{
-    			Logger.getLogger( Cliente.class.getName( ) ).log( Level.SEVERE, null, ex );
+    			Logger.getLogger( ClienteAutomato.class.getName( ) ).log( Level.SEVERE, null, ex );
     		}
+            
+           
        }
     };
     
