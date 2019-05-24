@@ -13,8 +13,10 @@ public class ClienteService
     /**
      * 
      * @return
+     * @throws InterruptedException 
      */
      public static String entrarConjuntoCaracteres_Alfabeto( ) 
+    		 throws InterruptedException 
         {       
             String alfabeto;
             boolean b = false;
@@ -31,7 +33,9 @@ public class ClienteService
                 if ( alfabeto == null)
                 {
                     b = true;
-                    return "";
+                    Thread.currentThread( ).interrupt( ) ;
+                    if ( Thread.interrupted( ) ) throw new InterruptedException( );
+                    	System.out.println("FIM");
                 }
              
             } 
@@ -42,6 +46,7 @@ public class ClienteService
      
      
         public static String entraConjuntoEstado( ) 
+        		throws RemoteException, NotBoundException, InterruptedException 
         {
             String  estados;
             boolean b = false;
@@ -59,8 +64,26 @@ public class ClienteService
                 if ( estados == null)
                 {
                     b = true;
-                    return "";
+                    Thread.currentThread( ).interrupt( ) ;
+                    if ( Thread.interrupted( ) ) throw new InterruptedException( );
+                    	System.out.println("FIM");
                 }
+                
+                if ( "?".equals( estados ) )
+                {
+                	 b = true;
+                	 
+                	// Obtendo referência do serviço de registro
+                     Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
+
+                     // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
+                     AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
+                     
+                     //Caracter que idenifica entradas globais de ambos os clientes
+                     Character k = '@';
+                     
+                     stub.imprimirAutomatoCliente( k );
+				}
                 
             } 
             while ( b );

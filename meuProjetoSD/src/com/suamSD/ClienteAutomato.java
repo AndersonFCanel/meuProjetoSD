@@ -92,9 +92,15 @@ public class ClienteAutomato extends Thread
 
                 try 
                 {
-                    //Controle de execução //Próximo usuário será o B
-                    String resposta;
+                    //Controle de execução //se houver, próximo usuário será o 'B'
+                    String  resposta;
                     boolean b = false;
+                    
+                    //Variáveis para armazenar valores devolvidos do servidor.
+                    boolean verEntradasAnteriores;
+                    String  entrada ;
+                    String  isValid;
+                    
                     do 
                     {
                         resposta = JOptionPane.showInputDialog( null,
@@ -117,11 +123,6 @@ public class ClienteAutomato extends Thread
                     } 
                     
                     while ( b );
-   
-                        String isValid;
-                        boolean verEntradasAnteriores;
-                        String entrada ;
-                        
                         /**
                          * Execução do primeiro método
                          */
@@ -257,7 +258,7 @@ public class ClienteAutomato extends Thread
                         }
                         while( !"OK".equals( isValid ) && verEntradasAnteriores );
                         
-                     //CASO A EXECUÇÃO SEJA APENAS DE UM CLIENTE
+                        //CASO A EXECUÇÃO SEJA APENAS DE UM CLIENTE
                         /**
                          * Execução do Quarto método
                          */
@@ -291,7 +292,9 @@ public class ClienteAutomato extends Thread
                 {
                     stub.setIdentificaUsuario( 'A' );
                     e.printStackTrace( );
-                }
+                } catch (InterruptedException e) {
+					e.printStackTrace();
+				}
                 
                 
                 System.out.println( "Fim da execução do cliente_1!" );
@@ -335,7 +338,8 @@ public class ClienteAutomato extends Thread
                         //Controle de execução //Próximo usuário será o C (Não existe na nossa aplição)
                          stub.setIdentificaUsuario( 'C' );
                          
-                         // stub.setAlfabeto ( );
+                        //Método executado pelo Cliente A 
+                        // stub.setAlfabeto ( );
                        
                         //Executando segundo método 
                         do 
@@ -360,6 +364,7 @@ public class ClienteAutomato extends Thread
                         }
                         while( !"OK".equals( isValid )  && verEntradasAnteriores );
                         
+                        //Método executado pelo Cliente A 
                         // stub.setRegra ( );
                        
                         //Executando Quarto Método
@@ -385,7 +390,8 @@ public class ClienteAutomato extends Thread
                         }
                         while( !"OK".equals( isValid ) && verEntradasAnteriores );
                         
-                        //stub.setConjuntoEstadosFinais( );
+                       //Método executado pelo Cliente A 
+                       //stub.setConjuntoEstadosFinais( );
                       
                        //Executando Sexto Método
                        do 
@@ -416,6 +422,10 @@ public class ClienteAutomato extends Thread
                     stub.setIdentificaUsuario( 'B' );
                     e.printStackTrace( );
                 } 
+                catch ( InterruptedException e ) 
+                {
+					e.printStackTrace( );
+				} 
                 
                  System.out.println( "Fim da execução do cliente_2!" );
             } 

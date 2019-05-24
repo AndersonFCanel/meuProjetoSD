@@ -68,11 +68,16 @@ public class ServidorAutomato
                     
                     if( input == 2 )
                     {
+                    	//PARANDO O SERVIDOR, EVITANDO PROCESSO PRESO
                         if ( registro != null ) 
                         {
-                            UnicastRemoteObject.unexportObject( registro, true   );
-                            System.out.println                ( "unexportObject" );
-                            registro.unbind( Util.NOMEOBJDIST ) ;
+                            UnicastRemoteObject.unexportObject( automatoRemoto, true );
+                            System.out.println                ( "unexportObject"     );
+                            registro.unbind                   ( Util.NOMEOBJDIST     ) ;
+                            
+                            //Thread.currentThread( ).interrupt( ) ;
+                            if ( Thread.interrupted( ) ) throw new InterruptedException( );
+                        		System.out.println("FINALIZANDO.....");
                         }
                        
                         return;
@@ -96,7 +101,11 @@ public class ServidorAutomato
         catch ( AlreadyBoundException ex ) 
         {
             ex.printStackTrace();
-        }
+        } 
+        catch (InterruptedException e) 
+        {
+			e.printStackTrace();
+		}
         
         System.out.println( "Fim" );
     }

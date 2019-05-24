@@ -786,7 +786,7 @@ public class AutomatoService implements AutomatoInterface
         }
 
         // ESTADOS IGUIAS
-        if ( !verificaConjuntoEstados( estados ) ) 
+        if ( "OK".equals( verificaConjuntoEstados( estados ) ) ) 
         {
             //entradaValidada( );
         }
@@ -799,7 +799,7 @@ public class AutomatoService implements AutomatoInterface
     }
 
     // ===>>>#####ESTADOS IGUAIS --- CORRIGIR VALIDADOR DE ESTADOS
-    private static boolean verificaConjuntoEstados( String estados ) 
+    private static String verificaConjuntoEstados( String estados ) 
     {
         try 
         {
@@ -809,7 +809,7 @@ public class AutomatoService implements AutomatoInterface
         } 
         catch ( Exception e )
         {
-            return true;
+            return "";
         }
 
         String[ ] estAux = estados.split( "," );
@@ -820,18 +820,16 @@ public class AutomatoService implements AutomatoInterface
             {
                 if ( estAux[ i ].equals(estAux[ j ] ) )
                 {
-                    JOptionPane.showMessageDialog( null, "ENTRADA INVALIDA\n"
-                            + "Existem elementos iguais no conjunto!",
-                            "WARNING", JOptionPane.WARNING_MESSAGE );
-                    
-                    i = estAux.length;
+                	
+                	i = estAux.length;
+                    return    "ENTRADA INVALIDA\n"
+                            + "Existem elementos iguais no conjunto!";
 
-                    return true;
                 }
             }
         }
 
-        return false;
+        return "OK";
     }
 
     /**
@@ -946,29 +944,125 @@ public class AutomatoService implements AutomatoInterface
     }
 
     
-    public static boolean valoresAtuais( String info )
+    /*public static String valoresAtuais( String info )
     {
         if ( info.equalsIgnoreCase( "?" ) ) 
         {
-            imprimirAutomato( alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, estadoDestino, le,
+        	return imprimirAutomato( alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, estadoDestino, le,
                     estadoIni, conjuntoEstadosTerminais );
             
-            return true;
         }   
-        return false;
-    }
+        return "";
+    }*/
     
-    
-    
-    
-    
-    
+ 
     //METODOS ESPECIFICOS PARA IMPRESSÃO DE DADOS DE 2 USUÁRIOS
-
+    /*
+    * Cliente 1 - Insere conjunto de caracteres.
+      Cliente 2 - Insere conjunto de estados terminais e não terminais.
+      Cliente 1-  Insere o conjunto de regras de produção.
+      Cliente 2-  Insere estado inicial.
+      Cliente 1-  Insere conjunto de estados finais.
+      Cliente 2 - Palavra a ser validada pelo autômato.
+      Cliente 1 e 2 - Recebem o retorno de suas respectivas entradas.
+     * */
     @Override
-    public String imprimirAutomatoCliente( Character c) throws RemoteException 
+    public String imprimirAutomatoCliente( Character c ) throws RemoteException 
     {
-        return "";  
+    	if( c == '@')
+    	{
+        return imprimirAutomato(alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, 
+                estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME);  
+       	}
+    	if( c == 'A')
+    	{
+        return imprimirAutomatoCliAouB(alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, 
+                estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME, 'A');  
+       	}
+    	if( c == 'B')
+    	{
+        return imprimirAutomatoCliAouB(alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, 
+                estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME, 'B');  
+       	}
+		return null;
+    	
+   	}
+    
+    private static String imprimirAutomatoCliAouB( String alf, String est, int[ ] estadoPartida, int[ ] estadoDestino, Character[ ] le,
+            String estIn, String conjuntoEstadosFinais, char cliente ) 
+    {
+        
+        if ( !( estadoPartida != null ) )
+            estadoPartida = new int[ 0 ];
+        
+        if ( !( estadoDestino != null ) )
+           estadoDestino = new int[ 0 ];
+        
+        if ( !( le != null ) )
+               le = new Character[ 0 ];
+        
+        String[ ] estP = new String[ estadoPartida.length ];
+        
+        
+        
+        int b = 0;
+        for ( int key : estadoPartida ) 
+        {
+            estP[ b ] = conjuntoDeEstadosMap.get( key );
+            b++;
+        }
+
+        String[ ] estD = new String[ estadoDestino.length ];
+        ;
+        int c = 0;
+        for ( int key : estadoDestino )
+        {
+            estD[c] = conjuntoDeEstadosMap.get( key );
+            c++;
+        }
+          
+        if( cliente == 'A') {
+             return "**************************************************\n" 
+                  + "\tIMPRIMINDO DADOS INSERIDOS PELO CLIENTE A:\n"
+                  + "\t\t\t ==>NOTAÇÃO UTILIZADA <== \n" 
+                  + "\tO conjunto de simbolos - alfabeto: Σ \n" 
+                  + "\tAs transicoes: (δ: Q × Σ → Q)\n" 
+                  + "\tO conjunto dos estados terminais: F\n"
+                  + "\tM = (Q, Σ, (δ: Q × Σ → Q), q0, F)\n"
+                  + "\n\t\t ==>DADOS INFORMADOS <==\n" 
+                  + "\tΣ   = " + alf + "\n" 
+                  + "\tδ   = \n" 
+                  + "ESTADO PARTIDA:         Q"
+                  + Arrays.toString(estP) 
+                  + "\n"
+                  + "CARACTER CONSUMIDO: Σ" 
+                  + Arrays.toString(le) 
+                  + "\n" 
+                  + "ESTADO DESTINO:          Q"
+                  + Arrays.toString(estD) 
+                  + "\n"
+                  + "\tF   = "
+                  + conjuntoEstadosFinais + "\n" + "" + "**************************************************";
+        }
+        
+        if( cliente == 'B') {
+             return "**************************************************\n" 
+                   + "\tIMPRIMINDO DADOS INSERIDOS PELO CLIENTE B: \n"
+                   + "\t\t\t ==>NOTAÇÃO UTILIZADA <== \n" 
+                   + "\tO conjunto dos estados terminais e não terminais: Q = {S1, S2...}\n"
+                   + "\tO  estado Inicial: q0\n"
+                   + "\tO conjunto dos estados terminais: F\n"
+                   + "\tM = (Q, Σ, (δ: Q × Σ → Q), q0, F)\n"
+                   + "\n\t\t ==>DADOS INFORMADOS <==\n" 
+                   + "\tQ   = " 
+                   + est 
+                   + "\n"
+                   + "\tq0  = " 
+                   + estIn 
+                   + "\n"
+                   + "**************************************************";
+        }
+		return null;
     }
 
 
