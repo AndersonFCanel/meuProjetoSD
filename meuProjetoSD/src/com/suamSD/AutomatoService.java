@@ -7,18 +7,18 @@ import java.util.HashMap;
 import javax.swing.JOptionPane;
 
 
-public class ServiceAutomato implements AutomatoInterface 
+public class AutomatoService implements AutomatoInterface 
 {
-	static Integer contaUsuario = 1;
+	static Character identificaUsuario = 'A';
 		
-    public Integer getContaUsuario( ) 
+    public Character getIdentificaUsuario( ) 
 	{
-	    return contaUsuario;
+	    return identificaUsuario;
 	}
 
-	public void setContaUsuario( Integer contaThread )
+	public void setIdentificaUsuario( Character identificador )
 	{
-	    contaUsuario = contaThread;
+		identificaUsuario = identificador;
 	}
 	
 	static Integer contaPasso = 1;
@@ -61,17 +61,17 @@ public class ServiceAutomato implements AutomatoInterface
 	 * mesmo sem os caracteres desnecessários em um array de char.
 	 *
 	 */
-	public void setAlfabeto( )
+	public String setAlfabeto( String alf )
 	{
-		String  alfabeto; 
-		boolean validAlf; 
+		String  alfabeto = alf; 
+		String  validAlf; 
 
-		do
-		{
-			alfabeto = entrarConjuntoCaracteres_Alfabeto  (          );
+		//do
+		//{
+			//alfabeto = entrarConjuntoCaracteres_Alfabeto  (          );
 			validAlf = verificaConjuntoCaracteres_Alfabeto( alfabeto );
-		}
-		while ( validAlf ) ;
+		//}
+		//while ( "OK".equals( alfabeto ) ) ;
 
 		//Armazenando para imprimir, tratando a formatação
 		alfabetoIMPRIME = alfabeto;
@@ -80,14 +80,16 @@ public class ServiceAutomato implements AutomatoInterface
 		// Poderia ser um array de object, caso cada elemento do conjunto fosse um conjunto de simbolos
 		conjuntodeSimbolos_Alfabeto = new Character[ alfabeto.length( ) ];
 		
-		/*
+		
 		int z = 0;
 		for (char ch : alfabeto.toCharArray( )) {
 			conjuntodeSimbolos_Alfabeto[z] = ch;
 			z++;
 		}
-		*/
-		conjuntodeSimbolos_Alfabeto = alfabeto.chars( ).mapToObj( c -> ( char ) c ).toArray( Character[ ]::new ); 
+		
+		//conjuntodeSimbolos_Alfabeto = alfabeto.chars( ).mapToObj( c -> ( char ) c ).toArray( Character[ ]::new ); 
+		
+		return validAlf;
 	}
 
 	/**
@@ -98,16 +100,16 @@ public class ServiceAutomato implements AutomatoInterface
 	 * 
 	 * @return
 	 */
-	public void setEstados( ) 
+	public String setEstados( String est ) 
 	{
-		boolean validEst;
+		String validEst;
 
-		do
-		{
-			conjuntoDeEstadosTerminaisEnaoTerminais =  entraConjuntoEstado( );
+		//do
+		//{
+			conjuntoDeEstadosTerminaisEnaoTerminais =  est;// entraConjuntoEstado( );
 			validEst = verificaEst( conjuntoDeEstadosTerminaisEnaoTerminais );
-		}
-		while ( validEst ) ;
+		//}
+		//while ( validEst ) ;
 
 		conjuntoDeEstadosTerminaisIMPRIME       = conjuntoDeEstadosTerminaisEnaoTerminais;
 		conjuntoDeEstadosTerminaisEnaoTerminais = removeNulos( conjuntoDeEstadosTerminaisEnaoTerminais );// Removendo {,}
@@ -123,6 +125,8 @@ public class ServiceAutomato implements AutomatoInterface
 			conjuntoDeEstados [ a ] = a;
 			a++;
 		}
+		
+		 return validEst;
 	}
 
 	/**
@@ -130,15 +134,16 @@ public class ServiceAutomato implements AutomatoInterface
 	 * (Regra de Produção), funciona da seguinte forma: # ESTADO (LADO ESQUERDO),
 	 * CONSOME (CENTRO); VAI PARA ESTADO (LADO DIREITO)#
 	 */
-	public void setRegra( ) 
+	public String setRegra( String func ) 
 	{
-		tutorialTransicao( );
+		String validaFunc = "OK";
+		//tutorialTransicao( );
 
 		int quantidadeDeFuncTransPossiveis = conjuntodeSimbolos_Alfabeto.length
 				* conjuntoDeEstadosTerminaisEnaoTerminais.length( );
 		
-		String[ ] conjuntoFuncaoDeTransicaoDeEstados  = montarConjuntoFuncTran(
-				quantidadeDeFuncTransPossiveis );
+		String[ ] conjuntoFuncaoDeTransicaoDeEstados  = entrarConjuntoFuncTran(
+				quantidadeDeFuncTransPossiveis , func );
 		
 		String[ ] estadoPartidaS  = new String[ quantidadeDeFuncTransPossiveis ];
 		String[ ] caracConsumidoS = new String[ quantidadeDeFuncTransPossiveis ];
@@ -197,6 +202,7 @@ public class ServiceAutomato implements AutomatoInterface
 				le[ p ] = ( Character ) null;
 			}
 		}
+		return validaFunc ;
 	}
 
 	/**
@@ -421,7 +427,7 @@ public class ServiceAutomato implements AutomatoInterface
 	 * 
 	 * @return
 	 */
-	private static String entrarConjuntoCaracteres_Alfabeto( ) 
+	/*private static String entrarConjuntoCaracteres_Alfabeto( ) 
 	{		
 		String alfabeto;
 		boolean b = false;
@@ -448,14 +454,14 @@ public class ServiceAutomato implements AutomatoInterface
 		while ( b );
 		
 		return alfabeto;
-	}
+	}*/
 
 	/**
 	 * JOptionPane para conjunto ESTADOS
 	 * 
 	 * @return
 	 */
-	private static String entraConjuntoEstado( ) 
+	/*private static String entraConjuntoEstado( ) 
 	{
 		String  estados;
 		boolean b = false;
@@ -482,10 +488,10 @@ public class ServiceAutomato implements AutomatoInterface
 		while ( b );
 		
 		return estados;
-	}
+	}*/
 
 	// ENTRADA DA FUNÇÃO DE TRANSIÇAO
-	private static String entraFuncaoTransicao( )
+	/*private static String entraFuncaoTransicao( )
 	{
 		String delta;
 		boolean b = false;
@@ -508,11 +514,10 @@ public class ServiceAutomato implements AutomatoInterface
 		} 
 		while ( b );
 		
-		
 		return delta;
-	}
+	}*/
 
-	private static String[ ] montarConjuntoFuncTran( int i ) 
+	private static String[ ] entrarConjuntoFuncTran( int i, String func ) 
 	{
 		String funcaoDeTransicao           = null;
 		conjuntoFuncaoDeTransicaoDeEstados = new String[ i ];
@@ -520,7 +525,7 @@ public class ServiceAutomato implements AutomatoInterface
 
 		for1: for ( int c = 0; c < i; c++ ) 
 		{
-			funcaoDeTransicao = entraFuncaoTransicao( );
+			funcaoDeTransicao = func;//entraFuncaoTransicao(  );
 
 			try 
 			{
@@ -540,12 +545,12 @@ public class ServiceAutomato implements AutomatoInterface
 				break for1;
 			}
 
-			if ("I".equalsIgnoreCase( funcaoDeTransicao ) )  
+			/*if ("I".equalsIgnoreCase( funcaoDeTransicao ) )  
 			{
 				tutorialTransicao( );
 				c--;
 				continue for1;
-			}
+			}*/
 
 			if ( "A".equalsIgnoreCase( funcaoDeTransicao ) ) 
 			{
@@ -585,13 +590,13 @@ public class ServiceAutomato implements AutomatoInterface
 	}
 
 	// ENTRADA VALIDA
-	private static void entradaValidada( )
+	/*private static void entradaValidada( )
 	{
 		JOptionPane.showMessageDialog( null, "Entrada VERIFICADA\n" );
-	}
+	}*/
 
 	// TUTORIAL DE ENTRADA PARA FUNȿO DE TRANSIȃO
-	private static void tutorialTransicao( ) 
+	/*private static void tutorialTransicao( ) 
 	{
 		JOptionPane.showMessageDialog( null,
 				"       * Conjunto de regras de transição (Regra de Produção), funciona da seguinte forma: *\n"
@@ -605,7 +610,7 @@ public class ServiceAutomato implements AutomatoInterface
 						+ "A entrada pode ser verificada com a inserção da letra i + enter\n"
 						+ "e a mesma deve estar da forma do exemplo abaixo:\n" + "EX: q0,a;q1",
 				"WARNING", JOptionPane.WARNING_MESSAGE );
-	}
+	}*/
 
 	/**
 	 * 
@@ -617,7 +622,7 @@ public class ServiceAutomato implements AutomatoInterface
 	 * @param estIn
 	 * @param conjuntoEstadosFinais
 	 */
-	private static void imprimirAutomato( String alf, String est, int[ ] estadoPartida, int[ ] estadoDestino, Character[ ] le,
+	private static String imprimirAutomato( String alf, String est, int[ ] estadoPartida, int[ ] estadoDestino, Character[ ] le,
 			String estIn, String conjuntoEstadosFinais ) 
 	{
 		
@@ -650,7 +655,7 @@ public class ServiceAutomato implements AutomatoInterface
 			c++;
 		}
 
-		JOptionPane.showMessageDialog( null,
+		/*JOptionPane.showMessageDialog( null,
 				"**************************************************\n" + "\tIMPRIMINDO DADOS DO AUTOMATO\n"
 						+ "\t\t\t ==>NOTAÇÃO UTILIZADA <== \n" + "\tO conjunto de simbolos - alfabeto: Σ \n"
 						+ "\tO conjunto dos estados terminais e não terminais: Q = {S1, S2...}\n"
@@ -660,7 +665,18 @@ public class ServiceAutomato implements AutomatoInterface
 						+ "\tδ   = \n" + "ESTADO PARTIDA:         Q" + Arrays.toString(estP) + "\n"
 						+ "CARACTER CONSUMIDO: Σ" + Arrays.toString(le) + "\n" + "ESTADO DESTINO:          Q"
 						+ Arrays.toString(estD) + "\n" + "" + "\tq0  = " + estIn + "\n" + "" + "\tF   = "
-						+ conjuntoEstadosFinais + "\n" + "" + "**************************************************" );
+						+ conjuntoEstadosFinais + "\n" + "" + "**************************************************" );*/	
+			
+		return "**************************************************\n" + "\tIMPRIMINDO DADOS DO AUTOMATO\n"
+		+ "\t\t\t ==>NOTAÇÃO UTILIZADA <== \n" + "\tO conjunto de simbolos - alfabeto: Σ \n"
+		+ "\tO conjunto dos estados terminais e não terminais: Q = {S1, S2...}\n"
+		+ "\tAs transicoes: (δ: Q × Σ → Q)\n" + "\tO  estado Inicial: q0\n"
+		+ "\tO conjunto dos estados terminais: F\n" + "\tM = (Q, Σ, (δ: Q × Σ → Q), q0, F)\n"
+		+ "\n\t\t ==>DADOS INFORMADOS <==\n" + "\tΣ   = " + alf + "\n" + "" + "\tQ   = " + est + "\n"
+		+ "\tδ   = \n" + "ESTADO PARTIDA:         Q" + Arrays.toString(estP) + "\n"
+		+ "CARACTER CONSUMIDO: Σ" + Arrays.toString(le) + "\n" + "ESTADO DESTINO:          Q"
+		+ Arrays.toString(estD) + "\n" + "" + "\tq0  = " + estIn + "\n" + "" + "\tF   = "
+		+ conjuntoEstadosFinais + "\n" + "" + "**************************************************";
 	}
 
 	/*
@@ -674,24 +690,25 @@ public class ServiceAutomato implements AutomatoInterface
 	 * @param alfabeto
 	 * @return
 	 */
-	private static boolean verificaConjuntoCaracteres_Alfabeto( String alfabeto )
+	private static String verificaConjuntoCaracteres_Alfabeto( String alfabeto )
 	{
-		boolean validador = false;
+		String validador = "OK";
 
 		// Entrada Vazia
 		if (alfabeto.equals(" ") || alfabeto.length( ) < 1 || alfabeto.isEmpty( ) || alfabeto.length( ) > 5)
 		{
-			JOptionPane.showMessageDialog( null, "ENTRADA INVALIDA\n" + "Tamanho do alfabeto fora do range permitido!",
-					"WARNING", JOptionPane.WARNING_MESSAGE );
+			/*JOptionPane.showMessageDialog( null, "ENTRADA INVALIDA\n" + "Tamanho do alfabeto fora do range permitido!",
+					"WARNING", JOptionPane.WARNING_MESSAGE );*/
 			
-			return validador = true;
+			return validador = "ENTRADA INVALIDA\n" + "Tamanho do alfabeto fora do range permitido!";
 		}
 
 		// Entrada iniciando pela virgula
 		if (alfabeto.charAt(0) == ',')
 		{
-			JOptionPane.showMessageDialog( null, "ENTRADA INVALIDA\n" + "Não começe a inserção pela virgula", "WARNING",
-					JOptionPane.WARNING_MESSAGE );
+			/*JOptionPane.showMessageDialog( null, "ENTRADA INVALIDA\n" + "Não começe a inserção pela virgula", "WARNING",
+					JOptionPane.WARNING_MESSAGE );*/			
+			return validador = "ENTRADA INVALIDA\n" + "Não começe a inserção pela virgula";
 		}
 
 		// Caracteres iguais, exeção de ','
@@ -706,8 +723,8 @@ public class ServiceAutomato implements AutomatoInterface
 
 			if ( alfabeto.charAt(w) != ',' )
 			{
-				entradaInvalida( );
-				return validador = true;
+				//entradaInvalida( );
+				return validador = "ENTRADA INVALIDA";
 			}
 			
 			w = w + 2;
@@ -716,18 +733,19 @@ public class ServiceAutomato implements AutomatoInterface
 			{
 				if ( alfabeto.charAt( k ) == alfabeto.charAt( j ) ) 
 				{
-					JOptionPane.showMessageDialog( null,
+					/*JOptionPane.showMessageDialog( null,
 							"ENTRADA INVALIDA\n" + "Você entrou com caracteres iguais no alfabeto!\n"
 									+ alfabeto.charAt( k ) + " = " + alfabeto.charAt( j ),
-							"WARNING", JOptionPane.WARNING_MESSAGE );
+							"WARNING", JOptionPane.WARNING_MESSAGE );*/
 					
-					return validador = true;
+					return validador = "ENTRADA INVALIDA\n" + "Você entrou com caracteres iguais no alfabeto!\n"
+							+ alfabeto.charAt( k ) + " = " + alfabeto.charAt( j );
 				}
 			}
 
 		}
 		
-		entradaValidada( );
+		//entradaValidada( );
 
 		return validador;
 	}
@@ -738,34 +756,34 @@ public class ServiceAutomato implements AutomatoInterface
 	 * @param estados
 	 * @return
 	 */
-	private static boolean verificaEst(String estados)
+	private static String verificaEst(String estados)
 	{
-		boolean validador = false;
+		String validador = "OK";
 
 		// ESTADO COM TAMANHO INFERIOR AO PERMITIDO, = 0 ou >5.
 		if ( estados.length( ) < 1 || estados.length( ) > 5 || estados.equals(" ") || estados.isEmpty( ) )
 		{
-			JOptionPane.showMessageDialog( null, "ENTRADA INVALIDA\n" + "Tamanho do conjunto fora do range permitido!" );
+			//JOptionPane.showMessageDialog( null, "ENTRADA INVALIDA\n" + "Tamanho do conjunto fora do range permitido!" );
 			
-			return validador = true;
+			return validador = "ENTRADA INVALIDA\n" + "Tamanho do conjunto fora do range permitido!";
 		}
 
 		// INSERÇÃO DE ESTADOS NÃO PODE COMEÇAR PELA VIRGULA.
 		if ( estados.charAt(0) == ',' ) 
 		{
-			JOptionPane.showMessageDialog( null, "ENTRADA INVALIDA\n" + "Não começe a inserção pela virgula" );
+			//JOptionPane.showMessageDialog( null, "ENTRADA INVALIDA\n" + "Não começe a inserção pela virgula" );
 			
-			return validador = true;
+			return validador = "ENTRADA INVALIDA\n" + "Não começe a inserção pela virgula";
 		}
 
 		// ESTADOS IGUIAS
 		if ( !verificaConjuntoEstados( estados ) ) 
 		{
-			entradaValidada( );
+			//entradaValidada( );
 		}
 		else
 		{
-			return validador = true;
+			return validador = "ENTRADA INVALIDA\n";
 		}
 
 		return validador;// = false;
@@ -914,7 +932,7 @@ public class ServiceAutomato implements AutomatoInterface
 	}
 
 	
-	public static boolean valoresAtuais ( String info )
+	public static boolean valoresAtuais( String info )
 	{
 		if ( info.equalsIgnoreCase( "?" ) ) 
 		{
@@ -983,6 +1001,13 @@ public class ServiceAutomato implements AutomatoInterface
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public String imprimirAutomatoCliente() throws RemoteException {
+		return imprimirAutomato( alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, estadoDestino, le,
+				estadoIni, conjuntoEstadosTerminais );		
+	}
+
 
 	
 }

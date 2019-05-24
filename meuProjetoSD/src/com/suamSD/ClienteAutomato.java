@@ -38,13 +38,13 @@ public class ClienteAutomato extends Thread
 			
 				System.out.println("Iniciando cliente ...");
 				
-			    switch ( stub.getContaUsuario( ) ) 
+			    switch ( stub.getIdentificaUsuario( ) ) 
 				{
-				case 1:
+				case 'A':
 					new Thread(t1).start( );
 					break;
 
-				case 2:
+				case 'B':
 					new Thread(t2).start();
 					break;
 
@@ -84,7 +84,7 @@ public class ClienteAutomato extends Thread
     			AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
     			
     			System.out.println("\n***********************************************************************");
-    			System.out.println( "CONTADOR DE EXECUÇÃO: " + stub.getContaUsuario( ).toString( ) +"\n\n");    			
+    			System.out.println( "CONTADOR DE EXECUÇÃO: " + stub.getIdentificaUsuario( ) +"\n\n");    			
     			System.out.println( "ID: "         + Thread.currentThread( ).getId( )       );
 				System.out.println( "Nome: "       + Thread.currentThread( ).getName( )     );
 				System.out.println( "Prioridade: " + Thread.currentThread( ).getPriority( ) );
@@ -93,13 +93,28 @@ public class ClienteAutomato extends Thread
 
         		try 
 				{
-        			//synchronized (t1) {
-        			    stub.setContaUsuario( stub.getContaUsuario( ) + 1 );
-        			      
+        			    //Controle de execução //Próximo usuário será o B
+        			    stub.setIdentificaUsuario( 'B' );
         			   
-					    stub.setAlfabeto( );
+        			    //Execução do primeiro método
+        			    String isValid;
+        			    do
+        			    {
+        			    	isValid = stub.setAlfabeto( ClienteService.entrarConjuntoCaracteres_Alfabeto( ) );
+        			    
+        			    	if( !"OK".equals( isValid ) )
+        			    		JOptionPane.showMessageDialog( null, isValid );
+        			    	else 
+        			    	{
+        			    		JOptionPane.showMessageDialog( null, "Entrada Verificada" );
+        			    		stub.incrementaContaPasso( );
+        			    	}
+        			    
+        			    }
+        			    while( !"OK".equals( isValid ) );
+        			    				    
 					    //Execução de um cliente apenas
-					    if( stub.getContaUsuario( ) == 2 )
+					    /*if( stub.getContaUsuario( ) == 2 )
 					    {
 					         stub.setEstados ( );
 					         stub.incrementaContaPasso( );
@@ -107,37 +122,62 @@ public class ClienteAutomato extends Thread
 					    stub.incrementaContaPasso( );
 					    
 					    if( stub.getContaUsuario( ) != 2 )
-					    {
-					        do 
-            		        {
-            		        	aguardarVezOutroUsuarioCli1( );
-					 }      
-            		        while ( stub.getContaPasso() != 3);
-					    }
-					    stub.setRegra( );
-					    stub.incrementaContaPasso( );
+					    { }*/
+        			    
 					    
-					    if( stub.getContaUsuario( ) == 2 )
-					    {
-					    	stub.setEstInicial ( );
-						    stub.setConjuntoEstadosFinais( );
-					        stub.incrementaContaPasso( );
-					    }
+        			    //Execução do terceiro método
+        			    do 
+           		        {
+           		     	    aguardarVezOutroUsuarioCli1( );
+					    }      
+           		        while ( stub.getContaPasso() != 3);
+        			    
+        			    ClienteService.tutorialTransicao( );
+        			    do
+        			    {
+        			    	isValid = stub.setRegra( ClienteService.entraFuncaoTransicao( ) );
+        			     
+        			    	if( !"OK".equals( isValid ) )
+        			    		JOptionPane.showMessageDialog( null, isValid );
+        			    	else 
+        			    	{
+        			    		JOptionPane.showMessageDialog( null, "Entrada Verificada" );
+        			    		stub.incrementaContaPasso( );
+        			    	}
+        			    	
+        			    	if ("I".equalsIgnoreCase( isValid ) )  
+        					{
+        			    		ClienteService.tutorialTransicao( );
+        					}
+        			    
+        			    }
+        			    while( !"OK".equals( isValid ) );
+
+        			    
+        			    //Execução do quinto método
+        			    do 
+        		        {
+        		        	aguardarVezOutroUsuarioCli1( );
+					    } 
+        		        while ( stub.getContaPasso() != 5);
+				    
+        			    
+        			    
+        			    //pronto até aqui
 					    
-					    if( stub.getContaUsuario( ) != 2 )
-					    {
-					        do 
-            		        {
-            		        	aguardarVezOutroUsuarioCli1( );
-						    } 
-            		        while ( stub.getContaPasso() != 5);
-					    }
+					    
+					    	//stub.setEstInicial ( );
+						    //stub.setConjuntoEstadosFinais( );
+					        //stub.incrementaContaPasso( );
+					    
+					    
+					   
 					    stub.checaPalavra( );
         			//}
 				}
         		catch ( RemoteException e ) 
 				{
-        			stub.setContaUsuario( stub.getContaUsuario( ) -1 );
+        			stub.setIdentificaUsuario( 'A' );
 					e.printStackTrace( );
 				}
                 
@@ -167,7 +207,7 @@ public class ClienteAutomato extends Thread
     			AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
 
     			System.out.println("\n***********************************************************************");
-    			System.out.println( "CONTADOR DE EXECUÇÃO: " + stub.getContaUsuario( ).toString( ) +"\n\n");    			
+    			System.out.println( "CONTADOR DE EXECUÇÃO: " + stub.getIdentificaUsuario( ) +"\n\n");    			
     			System.out.println( "ID: "         + Thread.currentThread( ).getId( )       );
 				System.out.println( "Nome: "       + Thread.currentThread( ).getName( )     );
 				System.out.println( "Prioridade: " + Thread.currentThread( ).getPriority( ) );
@@ -176,27 +216,51 @@ public class ClienteAutomato extends Thread
     					
             	try 
 				{
-            		//synchronized (stub)
-            		//{
-            		     stub.setContaUsuario( stub.getContaUsuario( ) + 1 );
+            		    //Controle de execução //Próximo usuário será o C
+            		     stub.setIdentificaUsuario( 'C' );
             		     
 					     // stub.setAlfabeto ( );
-					     
+            		   
+            		    //Executando segundo método 
             		    do 
             		    {
             		    	aguardarVezOutroUsuarioCli2( );
 						} 
             		    while ( stub.getContaPasso() != 2);
-            		    stub.setEstados( );
-            		    stub.incrementaContaPasso( );
-	     			    
+                    
+            		    String isValid;
+            		    String entrada;
+            		    boolean checkEntradasAnteriores;
+            		    
+         			    do
+         			    {
+         			    	entrada = ClienteService.entraConjuntoEstado( );
+         			    	isValid = stub.setEstados( entrada );
+         			    	checkEntradasAnteriores = valoresAtuais( entrada );
+         			    	
+         			    	if( !"OK".equals( isValid ) && checkEntradasAnteriores  )
+         			    		JOptionPane.showMessageDialog( null, isValid );
+         			    	else 
+         			    	{
+         			    		JOptionPane.showMessageDialog( null, "Entrada Verificada" );
+         			    		stub.incrementaContaPasso( );
+         			    	}
+         			    
+         			    }
+         			    while( !"OK".equals( isValid )  && checkEntradasAnteriores );
+         			    
             		    // stub.setRegra ( );
-					     
-            		    do 
+            		    
+         			    do 
             		    {
             		    	aguardarVezOutroUsuarioCli2( );
 						} 
             		    while ( stub.getContaPasso() != 4);
+            		    
+         			    //Pronto ate aqui
+         			    
+         			    
+         			    
 					    stub.setEstInicial( );
 					    stub.setConjuntoEstadosFinais( );
 					    stub.incrementaContaPasso( );
@@ -214,7 +278,7 @@ public class ClienteAutomato extends Thread
 				} 
 				catch ( RemoteException e ) 
 				{
-					stub.setContaUsuario( stub.getContaUsuario( ) -1 );
+					stub.setIdentificaUsuario( 'B' );
 					e.printStackTrace( );
 				} 
 				
@@ -228,6 +292,36 @@ public class ClienteAutomato extends Thread
            
        }
     };
+    
+    
+    public static boolean valoresAtuais( String info ) throws RemoteException, NotBoundException
+	{
+		if ( info.equalsIgnoreCase( "?" ) ) 
+		{
+			// Obtendo referência do serviço de registro
+			Registry registro = LocateRegistry.getRegistry( ipServer, Util.PORTA );
+
+			// Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
+			AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
+			
+			JOptionPane.showInputDialog( null, stub.imprimirAutomatoCliente( ) );
+			
+			return false;
+		}	
+	    return true;
+	}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     //USUÁRIO VEZ
 	private static void aguardarVezOutroUsuarioCli1( )
