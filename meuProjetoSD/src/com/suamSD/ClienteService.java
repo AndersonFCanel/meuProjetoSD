@@ -129,11 +129,45 @@ public class ClienteService
 
 			return estadoInicial;
 		}
+	
 		
-		
-		
-		
-		
+		// ENTRADA DO ESTADO INICIAL
+				public static String entraCjtEstFinal( ) throws RemoteException, NotBoundException 
+				{
+					boolean validador = false;
+					String  cjtEstFinal; 
+					
+					do 
+					{
+						 cjtEstFinal = JOptionPane.showInputDialog( null, "\nEntre com o conjunto dos estados finais F:"
+								+ "\nCada estado deve ser separado por virgula, sem espaços.\nEX: A,B,C ... e1,e2,e3 ..." );
+
+						if ( cjtEstFinal == null )
+						{
+							validador = true;
+						}
+						else
+						{ 
+							if ( cjtEstFinal.equalsIgnoreCase( "I" ) ) 
+							{
+								// Obtendo referência do serviço de registro
+								Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
+
+								// Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
+								AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
+								
+								Character k = 'k';
+								
+								stub.imprimirAutomatoCliente( k );
+							}
+						}
+	
+					} 
+					while ( validador );
+
+					return cjtEstFinal;
+				}
+		 
 	    
 	    // TUTORIAL DE ENTRADA PARA FUNȿO DE TRANSIÇÃO
 		public static void tutorialTransicao( ) 

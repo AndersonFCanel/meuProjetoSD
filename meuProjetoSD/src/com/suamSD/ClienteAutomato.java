@@ -49,13 +49,12 @@ public class ClienteAutomato extends Thread
 					break;
 
 				default:
-					
+					System.out.println( "Aplicação para usar com apenas 1 ou 2 Clients!" );
+					t1.interrupt( );
+					t2.interrupt( );
 					break;
 				}
-			
-			
-		    
-			
+			    
 		}
 		catch ( RemoteException e ) 
 		{
@@ -93,14 +92,39 @@ public class ClienteAutomato extends Thread
 
         		try 
 				{
-        			    //Controle de execução //Próximo usuário será o B
-        			    stub.setIdentificaUsuario( 'B' );
-        			   
+        		    //Controle de execução //Próximo usuário será o B
+        			String resposta;
+        			boolean b = false;
+        			do 
+        			{
+        				resposta = JOptionPane.showInputDialog( null,
+        						"Para um cliente ENTRE 1, para dois ENTRE 2." );
+        				
+        				resposta = resposta.trim( );
+        				
+        				if ( resposta == null)
+        				{
+        					stub.setIdentificaUsuario( 'A' );
+        				}
+        				if ( "1".equals( resposta ) )
+        				{
+        					stub.setIdentificaUsuario( 'A' );
+        				}
+        				if ( "2".equals( resposta ) )
+        				{
+        					stub.setIdentificaUsuario( 'B' );
+        				}
+        			} 
+        			
+        			while ( b );
+   
         			    String isValid;
         			    boolean verEntradasAnteriores;
         			    String entrada ;
         			    
-        			    //Execução do primeiro método
+        			    /**
+        			     * Execução do primeiro método
+        			     */
         			    do
         			    {
         			    	entrada = ClienteService.entrarConjuntoCaracteres_Alfabeto( ); 
@@ -117,19 +141,39 @@ public class ClienteAutomato extends Thread
         			    }
         			    while( !"OK".equals( isValid ) );
         			    				    
-					    //Execução de um cliente apenas
-					    /*if( stub.getContaUsuario( ) == 2 )
+					    //CASO A EXECUÇÃO SEJA APENAS DE UM CLIENTE
+        			    /**
+        			     * Execução do Segundo método
+        			     */
+					    if( stub.getIdentificaUsuario( ) =='A' )
 					    {
-					         stub.setEstados ( );
-					         stub.incrementaContaPasso( );
+					    	do 
+	            		    {
+	            		    	ClienteService.aguardarVezOutroUsuarioCli2( );
+							} 
+	            		    while ( stub.getContaPasso() != 2);
+	                   
+	         			    do
+	         			    {
+	         			    	entrada               = ClienteService.entraConjuntoEstado(        );
+	         			    	isValid               = stub.setEstados( entrada                   );
+	         			    	verEntradasAnteriores = ClienteService.valoresAtuais( entrada, 'B' );
+	         			    	
+	         			    	if( !"OK".equals( isValid ) && verEntradasAnteriores  )
+	         			    		JOptionPane.showMessageDialog( null, isValid );
+	         			    	else 
+	         			    	{
+	         			    		JOptionPane.showMessageDialog( null, "Entrada Verificada" );
+	         			    		stub.incrementaContaPasso( );
+	         			    	}
+	         			    }
+	         			    while( !"OK".equals( isValid )  && verEntradasAnteriores );
 					    }
-					    stub.incrementaContaPasso( );
-					    
-					    if( stub.getContaUsuario( ) != 2 )
-					    { }*/
+					   
         			    
-					    
-        			    //Execução do terceiro método
+        			    /**
+        			     * Execução do terceiro método
+        			     */
         			    do 
            		        {
         			    	ClienteService.aguardarVezOutroUsuarioCli1( );
@@ -139,9 +183,9 @@ public class ClienteAutomato extends Thread
         			    ClienteService.tutorialTransicao( );
         			    do
         			    {   
-        			        entrada        = ClienteService.entraFuncaoTransicao( ); 
-        			    	isValid               = stub.setRegra( entrada );
-        			    	verEntradasAnteriores = ClienteService.valoresAtuais( entrada, 'B' );
+        			        entrada               = ClienteService.entraFuncaoTransicao(              ); 
+        			    	isValid               = stub.setRegra                      ( entrada      );
+        			    	verEntradasAnteriores = ClienteService.valoresAtuais       ( entrada, 'B' );
         			    	
         			    	if( !"OK".equals( isValid ) && verEntradasAnteriores )
         			    		JOptionPane.showMessageDialog( null, isValid );
@@ -159,26 +203,40 @@ public class ClienteAutomato extends Thread
         			    }
         			    while( !"OK".equals( isValid ) && verEntradasAnteriores );
 
+        			    //CASO A EXECUÇÃO SEJA APENAS DE UM CLIENTE
+        			    //stub.setEstInicial( )
         			    
-        			    //Execução do quinto método
-        			    do 
-        		        {
-        			    	ClienteService.aguardarVezOutroUsuarioCli1( );
-					    } 
-        		        while ( stub.getContaPasso() != 5);
+        			    /*
+        			     * Execução do quinto método
+        			     */
+         			    do 
+            		    {
+         			    	ClienteService.aguardarVezOutroUsuarioCli2( );
+						} 
+            		    while ( stub.getContaPasso() != 5);
+            		             			   
+         			    do
+       			        {
+         			    	entrada               = ClienteService.entraCjtEstFinal(              );
+         			    	isValid               = stub.setConjuntoEstadosFinais  ( entrada      );
+	       			    	verEntradasAnteriores = ClienteService.valoresAtuais   ( entrada, 'B' );
+	       			    	
+	       			    	if( !"OK".equals( isValid ) && verEntradasAnteriores )
+	       			    		JOptionPane.showMessageDialog( null, isValid );
+	       			    	else 
+	       			    	{
+	       			    		JOptionPane.showMessageDialog( null, "Entrada Verificada" );
+	       			    		stub.incrementaContaPasso( );
+	       			    	}
+       			        }
+       			        while( !"OK".equals( isValid ) && verEntradasAnteriores );
+         			    
 				    
         			    
-        			    
-        			    //pronto até aqui
-					    
-					    
-					    	//stub.setEstInicial ( );
-						    //stub.setConjuntoEstadosFinais( );
-					        //stub.incrementaContaPasso( );
-					    
-					    
-					   
-					    stub.checaPalavra( );
+        			   //pronto até aqui
+        			  
+        	
+					    //stub.checaPalavra( );
         			//}
 				}
         		catch ( RemoteException e ) 
@@ -265,9 +323,9 @@ public class ClienteAutomato extends Thread
             		             			   
          			    do
        			        {
-         			    	entrada               = ClienteService.entraEstIN(                       );
-         			    	isValid               = stub.setEstInicial( entrada                      );
-	       			    	verEntradasAnteriores = ClienteService.valoresAtuais( entrada, 'B'       );
+         			    	entrada               = ClienteService.entraEstIN   (              );
+         			    	isValid               = stub.setEstInicial          ( entrada      );
+	       			    	verEntradasAnteriores = ClienteService.valoresAtuais( entrada, 'B' );
 	       			    	
 	       			    	if( !"OK".equals( isValid ) && verEntradasAnteriores )
 	       			    		JOptionPane.showMessageDialog( null, isValid );
@@ -280,10 +338,9 @@ public class ClienteAutomato extends Thread
        			        while( !"OK".equals( isValid ) && verEntradasAnteriores );
          			    
          			    
-         			    
-					    
+   
 					    //stub.setConjuntoEstadosFinais( );
-					   // stub.incrementaContaPasso( );
+					    //stub.incrementaContaPasso( );
 					     
 					     
 					     //stub.setConjuntoEstadosFinais( );

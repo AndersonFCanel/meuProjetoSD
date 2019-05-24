@@ -1,6 +1,7 @@
 package com.suamSD;
 
 import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -37,11 +38,8 @@ public class ServidorAutomato
 		try 
         {
             // Criando objeto autômato
-            AutomatoService automatoRemoto = new AutomatoService( );
-            
-            //Criando contador
-            //ServiceContaExecucao c =  new ServiceContaExecucao( );
-            
+            AutomatoService automatoRemoto = new AutomatoService( );           
+                  
             // Definindo o hostname do servidor
             System.setProperty( "java.rmi.server.hostname", ipServer );
 
@@ -49,16 +47,12 @@ public class ServidorAutomato
             AutomatoInterface stub = (AutomatoInterface) UnicastRemoteObject.exportObject( automatoRemoto, 0 );
             System.out.println       ( "Objeto  ServiceAutomato Carrregado. "                   );
             
-            //Exportando objeto ContaExecucao
-            //ContaExecucaoInterface stubContador = (ContaExecucaoInterface) UnicastRemoteObject.exportObject(c, 0 );
-            //System.out.println( "Objeto ServiceContaExecucao Carrregado. " );
-            
             //Criando serviço de registro
             Registry registro = LocateRegistry.createRegistry( Util.PORTA );
 
             //Registrando objeto distribuído
             registro.bind( Util.NOMEOBJDIST, stub );
-            //registro.bind( Util.NOMEOBJDIST+"cont", stubContador );
+   
 
             int input ;
             do 
@@ -66,31 +60,45 @@ public class ServidorAutomato
             	System.out.println( "Servidor pronto!\n"                                                   );
             	System.out.println( "Se estiver executando pelo prompt pressione CTRL + C para encerrar..." );
             	
-            	input = JOptionPane.showConfirmDialog(null,
-        				"Servidor pronto!\n"
-        				+ "Para parar o servidor pressione ok.\n\n",
-        				"WARNING", JOptionPane.WARNING_MESSAGE);
-                //Possíveis retornos 0=yes, 1=no, 2=cancel
-            	
-            	if( input == 0 )
-                {
-                    if ( registro != null ) 
+            	do
+            	{
+            		input = JOptionPane.showConfirmDialog(null,
+            				"Servidor pronto!\n"
+            				+ "Para parar o servidor pressioneCANCELAR.\n\n",
+            				"WARNING", JOptionPane.WARNING_MESSAGE);
+                    //Possíveis retornos 0=yes, 1=no, 2=cancel
+                	
+                	if( input == 2 )
                     {
-                        UnicastRemoteObject.unexportObject( registro, true   );
-                        System.out.println                ( "unexportObject" );
+                        if ( registro != null ) 
+                        {
+                            UnicastRemoteObject.unexportObject( registro, true   );
+                            System.out.println                ( "unexportObject" );
+                            registro.unbind( Util.NOMEOBJDIST ) ;
+                        }
+                       
+                        return;
                     }
-                   
-                    return;
-                }
+            	}
+            	while( input == 0 );
+
             }
             while ( input == 2 );
             System.out.println( "Você parou o servidor" );
 
         } 
-        catch ( RemoteException | AlreadyBoundException ex )
+        catch ( RemoteException ex )
         {
             Logger.getLogger( ServidorAutomato.class.getName( ) ).log( Level.SEVERE, null, ex );
-        }
+        } 
+		catch (NotBoundException e) 
+		{
+			e.printStackTrace();
+		}
+		catch ( AlreadyBoundException ex ) 
+		{
+			ex.printStackTrace();
+		}
         
         System.out.println( "Fim" );
     }

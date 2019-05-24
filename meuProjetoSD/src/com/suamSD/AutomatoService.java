@@ -215,8 +215,8 @@ public class AutomatoService implements AutomatoInterface
 	{
 		String validaEstadoI = "OK";
 		
-		estadoIni     = "{" + entraEstIN( ) + "}";
-		estadoIni     = removeNulos     ( estadoIni );
+		estadoIni     = "{" + verificaEstInicial( ei ) + "}";
+		estadoIni     = removeNulos            ( estadoIni );
 		estIniIMPRIME = estadoIni;
         
 		estadoi = conjuntoDeEstadosTerminaisEnaoTerminais.indexOf( estadoIni );
@@ -233,15 +233,15 @@ public class AutomatoService implements AutomatoInterface
 	 * 
 	 * @return
 	 */
-	 public void setConjuntoEstadosFinais( )
+	 public String setConjuntoEstadosFinais( String cjtFin )
 	 {
 		// ENTRA COM ESTADOS FINAIS
 		boolean validEstFim = false;
 		String[ ] estFin;
+		String validaConjuntoEstadosFin = "OK";
 		
 		do {
-			conjuntoEstadosTerminais = JOptionPane.showInputDialog( null, "\nEntre com o conjunto dos estados finais F:"
-					+ "\nCada estado deve ser separado por virgula, sem espaços.\nEX: A,B,C ... e1,e2,e3 ..." );
+			conjuntoEstadosTerminais = cjtFin;
 
 			estFin = splitVirgula( conjuntoEstadosTerminais );
 		    
@@ -254,7 +254,7 @@ public class AutomatoService implements AutomatoInterface
 				else
 	            {
 					validEstFim = true;
-					JOptionPane.showMessageDialog( null, "Estado no inexistente no conjunto de estados." );
+					return "Estado no inexistente no conjunto de estados." ;
 				}
 			}
 			
@@ -299,7 +299,7 @@ public class AutomatoService implements AutomatoInterface
 					         estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME);
 		}
 		//****************
-		
+
 		/*Meu código
 		 * for ( Character ch : conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( ) ) 
 		{
@@ -318,6 +318,8 @@ public class AutomatoService implements AutomatoInterface
 					         estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME);
 		}
 		 * */
+		
+		return validaConjuntoEstadosFin;
 	}
 
 	 
@@ -704,7 +706,7 @@ public class AutomatoService implements AutomatoInterface
 			/*JOptionPane.showMessageDialog( null, "ENTRADA INVALIDA\n" + "Tamanho do alfabeto fora do range permitido!",
 					"WARNING", JOptionPane.WARNING_MESSAGE );*/
 			
-			return validador = "ENTRADA INVALIDA\n" + "Tamanho do alfabeto fora do range permitido!";
+			return  "ENTRADA INVALIDA\n" + "Tamanho do alfabeto fora do range permitido!";
 		}
 
 		// Entrada iniciando pela virgula
@@ -712,7 +714,7 @@ public class AutomatoService implements AutomatoInterface
 		{
 			/*JOptionPane.showMessageDialog( null, "ENTRADA INVALIDA\n" + "Não começe a inserção pela virgula", "WARNING",
 					JOptionPane.WARNING_MESSAGE );*/			
-			return validador = "ENTRADA INVALIDA\n" + "Não começe a inserção pela virgula";
+			return  "ENTRADA INVALIDA\n" + "Não começe a inserção pela virgula";
 		}
 
 		// Caracteres iguais, exeção de ','
@@ -728,7 +730,7 @@ public class AutomatoService implements AutomatoInterface
 			if ( alfabeto.charAt(w) != ',' )
 			{
 				//entradaInvalida( );
-				return validador = "ENTRADA INVALIDA";
+				return "ENTRADA INVALIDA";
 			}
 			
 			w = w + 2;
@@ -742,7 +744,7 @@ public class AutomatoService implements AutomatoInterface
 									+ alfabeto.charAt( k ) + " = " + alfabeto.charAt( j ),
 							"WARNING", JOptionPane.WARNING_MESSAGE );*/
 					
-					return validador = "ENTRADA INVALIDA\n" + "Você entrou com caracteres iguais no alfabeto!\n"
+					return "ENTRADA INVALIDA\n" + "Você entrou com caracteres iguais no alfabeto!\n"
 							+ alfabeto.charAt( k ) + " = " + alfabeto.charAt( j );
 				}
 			}
@@ -760,7 +762,7 @@ public class AutomatoService implements AutomatoInterface
 	 * @param estados
 	 * @return
 	 */
-	private static String verificaEst(String estados)
+	private static String verificaEst( String estados )
 	{
 		String validador = "OK";
 
@@ -769,7 +771,7 @@ public class AutomatoService implements AutomatoInterface
 		{
 			//JOptionPane.showMessageDialog( null, "ENTRADA INVALIDA\n" + "Tamanho do conjunto fora do range permitido!" );
 			
-			return validador = "ENTRADA INVALIDA\n" + "Tamanho do conjunto fora do range permitido!";
+			return "ENTRADA INVALIDA\n" + "Tamanho do conjunto fora do range permitido!";
 		}
 
 		// INSERÇÃO DE ESTADOS NÃO PODE COMEÇAR PELA VIRGULA.
@@ -777,7 +779,7 @@ public class AutomatoService implements AutomatoInterface
 		{
 			//JOptionPane.showMessageDialog( null, "ENTRADA INVALIDA\n" + "Não começe a inserção pela virgula" );
 			
-			return validador = "ENTRADA INVALIDA\n" + "Não começe a inserção pela virgula";
+			return "ENTRADA INVALIDA\n" + "Não começe a inserção pela virgula";
 		}
 
 		// ESTADOS IGUIAS
@@ -787,7 +789,7 @@ public class AutomatoService implements AutomatoInterface
 		}
 		else
 		{
-			return validador = "ENTRADA INVALIDA\n";
+			return "ENTRADA INVALIDA\n";
 		}
 
 		return validador;// = false;
@@ -835,13 +837,12 @@ public class AutomatoService implements AutomatoInterface
 	 * @param conjuntoDeEstados
 	 * @return
 	 */
-	private static String entraEstIN( )
+	private static String verificaEstInicial(  String estIn)
 	{
 		
-		boolean validador = true;
-		String  estadoInicial; 
+		String  estadoInicial = estIn; 
 		
-		do 
+		/*do 
 		{
 			estadoInicial = JOptionPane.showInputDialog( null, "ESTADO INICIAL:\nEntre com o estado inicial q0: " );
 
@@ -858,12 +859,17 @@ public class AutomatoService implements AutomatoInterface
 			else
             {
 				validador = true;
-				JOptionPane.showMessageDialog( null, "Estado no inexistente no conjunto de estados." );
+				return "Estado no inexistente no conjunto de estados." ;
 			}
 
 		} 
-		while ( validador );
-
+		while ( validador );*/
+		
+		if ( !conjuntoDeEstadosTerminaisEnaoTerminais.contains( estadoInicial ) )
+		{
+			return "Estado no inexistente no conjunto de estados." ;
+		} 
+	
 		return estadoInicial;
 	}
 
