@@ -246,7 +246,7 @@ public class ClienteService
         }
         
         //Pegando valores atuais no servidor
-        public static boolean valoresAtuais( String info, Character user ) throws RemoteException, NotBoundException
+        public static boolean valoresAtuais( String info, Character idUser ) throws RemoteException, NotBoundException
         {
             if ( info.equalsIgnoreCase( "?" ) ) 
             {
@@ -256,7 +256,7 @@ public class ClienteService
                 // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
                 AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
                 
-                JOptionPane.showInputDialog( null, stub.imprimirAutomatoCliente( user ) );
+                JOptionPane.showInputDialog( null, stub.imprimirAutomatoCliente( idUser ) );
                 
                 return false;
             }   
@@ -264,15 +264,11 @@ public class ClienteService
         }
         
         //USUÁRIO VEZ
-        static void aguardarVezOutroUsuarioCli1( )
+        static void aguardarVezOutroUsuarioCli( String idCli )
         {
-            JOptionPane.showMessageDialog( null, "Cliente A \nAguarde o Cliente A terminar!\nAguarde 30 segundos e tente novamente!" );
+            JOptionPane.showMessageDialog( null, "Cliente "+ idCli +" \nAguarde outro user terminar!\nAguarde 30 segundos e tente novamente!" );
         }
         
-        //USUÁRIO VEZ
-        static void aguardarVezOutroUsuarioCli2( )
-        {
-            JOptionPane.showMessageDialog( null, "Cliente B \nAguarde o Cliente B terminar!\nAguarde 30 segundos e tente novamente!" );
-        }
+       
             
 }

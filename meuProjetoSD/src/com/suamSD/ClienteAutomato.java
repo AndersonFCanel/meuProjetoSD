@@ -35,30 +35,28 @@ public class ClienteAutomato extends Thread
             // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
             AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
             
+            System.out.println("Iniciando cliente ...");
             
-                System.out.println("Iniciando cliente ...");
-                
-                switch ( stub.getIdentificaUsuario( ) ) 
-                {
-                case 'A':
-                    new Thread(t1).start( );
-                    break;
+            switch ( stub.getIdentificaUsuario( ) ) 
+            {
+            case 'A':
+                new Thread(t1).start( );
+                break;
 
-                case 'B':
-                    new Thread(t2).start();
-                    break;
+            case 'B':
+                new Thread(t2).start();
+                break;
 
-                default:
-                    System.out.println( "Aplicação para usar com apenas 1 ou 2 Clients!" );
-                    
-                    stub.setIdentificaUsuario( 'A' );
-                    
-                    t1.interrupt( );
-                    t2.interrupt( );
-                    
-                    break;
-                }
+            default:
+                System.out.println( "Aplicação para usar com apenas 1 ou 2 Clients!" );
                 
+                stub.setIdentificaUsuario( 'A' );
+                
+                t1.interrupt( );
+                t2.interrupt( );
+                
+                break;
+            }  
         }
         catch ( RemoteException e ) 
         {
@@ -125,7 +123,7 @@ public class ClienteAutomato extends Thread
                     
                     while ( b );
                         /**
-                         * Execução do primeiro método
+                         * Execução do primeiro método  - Passo 1
                          */
                         do
                         {
@@ -142,19 +140,22 @@ public class ClienteAutomato extends Thread
                         
                         }
                         while( !"OK".equals( isValid ) );
-                                            
-                        //CASO A EXECUÇÃO SEJA APENAS DE UM CLIENTE
-                        /**
-                         * Execução do Segundo método
-                         */
-                        if( stub.getIdentificaUsuario( ) =='A' )
+                         
+                        if( stub.getIdentificaUsuario( ) =='B' )
                         {
                             do 
                             {
-                                ClienteService.aguardarVezOutroUsuarioCli2( );
+                                ClienteService.aguardarVezOutroUsuarioCli( "A" );
                             } 
-                            while ( stub.getContaPasso() != 2);
-                       
+                            while ( !( stub.getContaPasso( ) == 2 ) );
+                        }
+                        
+                        //CASO A EXECUÇÃO SEJA APENAS DE UM CLIENTE
+                        /**
+                         * Execução do Segundo método  - Passo 2
+                         */
+                        if( stub.getIdentificaUsuario( ) =='A' )
+                        {
                             do
                             {
                                 entrada               = ClienteService.entraConjuntoEstado(        );
@@ -174,14 +175,8 @@ public class ClienteAutomato extends Thread
                        
                         
                         /**
-                         * Execução do terceiro método
+                         * Execução do terceiro método  - Passo 3
                          */
-                        do 
-                        {
-                            ClienteService.aguardarVezOutroUsuarioCli1( );
-                        }      
-                        while ( stub.getContaPasso() != 3);
-                        
                         ClienteService.tutorialTransicao( );
                         do
                         {   
@@ -205,18 +200,22 @@ public class ClienteAutomato extends Thread
                         }
                         while( !"OK".equals( isValid ) && verEntradasAnteriores );
 
-                        //CASO A EXECUÇÃO SEJA APENAS DE UM CLIENTE
-                        /**
-                         * Execução do Quarto método
-                         */
-                        if( stub.getIdentificaUsuario( ) =='A' )
+                        
+                        if( stub.getIdentificaUsuario( ) =='B' )
                         {
                             do 
                             {
-                                ClienteService.aguardarVezOutroUsuarioCli2( );
+                                ClienteService.aguardarVezOutroUsuarioCli( "A" );
                             } 
-                            while ( stub.getContaPasso() != 4);
-                                                   
+                            while ( !( stub.getContaPasso( ) == 4 ) );
+                        }
+                        
+                        //CASO A EXECUÇÃO SEJA APENAS DE UM CLIENTE
+                        /**
+                         * Execução do Quarto método  - Passo 4
+                         */
+                        if( stub.getIdentificaUsuario( ) =='A' )
+                        {                     
                             do
                             {
                                 entrada               = ClienteService.entraEstIN   (              );
@@ -235,14 +234,8 @@ public class ClienteAutomato extends Thread
                         }
                         
                         /*
-                         * Execução do quinto método
-                         */
-                        do 
-                        {
-                            ClienteService.aguardarVezOutroUsuarioCli2( );
-                        } 
-                        while ( stub.getContaPasso() != 5);
-                                               
+                         * Execução do quinto método  - Passo 5
+                         */               
                         do
                         {
                             entrada               = ClienteService.entraCjtEstFinal(              );
@@ -259,18 +252,21 @@ public class ClienteAutomato extends Thread
                         }
                         while( !"OK".equals( isValid ) && verEntradasAnteriores );
                         
-                        //CASO A EXECUÇÃO SEJA APENAS DE UM CLIENTE
-                        /**
-                         * Execução do Quarto método
-                         */
-                        if( stub.getIdentificaUsuario( ) =='A' )
-                        { 
+                        if( stub.getIdentificaUsuario( ) =='B' )
+                        {
                             do 
                             {
-                                 ClienteService.aguardarVezOutroUsuarioCli2( );
+                                ClienteService.aguardarVezOutroUsuarioCli( "A" );
                             } 
-                            while ( stub.getContaPasso() != 4);
-                                                
+                            while ( !( stub.getContaPasso( ) == 6 ) );
+                        }
+                        
+                        //CASO A EXECUÇÃO SEJA APENAS DE UM CLIENTE
+                        /**
+                         * Execução do Quarto método  - Passo 6
+                         */
+                        if( stub.getIdentificaUsuario( ) =='A' )
+                        {                    
                             do
                             {
                              entrada               = ClienteService.entraPalavra (              );
@@ -340,14 +336,14 @@ public class ClienteAutomato extends Thread
                          stub.setIdentificaUsuario( 'C' );
                          
                         //Método executado pelo Cliente A 
-                        // stub.setAlfabeto ( );
+                        // stub.setAlfabeto ( );  - Passo 1
                        
-                        //Executando segundo método 
-                        do 
-                        {
-                            ClienteService.aguardarVezOutroUsuarioCli2( );
-                        } 
-                        while ( stub.getContaPasso() != 2);
+                        //Executando segundo método   - Passo 2
+                         do 
+                         {
+                             ClienteService.aguardarVezOutroUsuarioCli( "B" );
+                         } 
+                         while ( !( stub.getContaPasso( ) == 2 ) );
                    
                         do
                         {
@@ -366,14 +362,14 @@ public class ClienteAutomato extends Thread
                         while( !"OK".equals( isValid )  && verEntradasAnteriores );
                         
                         //Método executado pelo Cliente A 
-                        // stub.setRegra ( );
+                        // stub.setRegra ( );  - Passo 3
                        
-                        //Executando Quarto Método
+                        //Executando Quarto Método  - Passo 4
                         do 
                         {
-                            ClienteService.aguardarVezOutroUsuarioCli2( );
+                            ClienteService.aguardarVezOutroUsuarioCli( "B" );
                         } 
-                        while ( stub.getContaPasso() != 4);
+                        while ( !( stub.getContaPasso( ) == 4 ) );
                                                
                         do
                         {
@@ -392,14 +388,14 @@ public class ClienteAutomato extends Thread
                         while( !"OK".equals( isValid ) && verEntradasAnteriores );
                         
                        //Método executado pelo Cliente A 
-                       //stub.setConjuntoEstadosFinais( );
+                       //stub.setConjuntoEstadosFinais( );  - Passo 5
                       
-                       //Executando Sexto Método
-                       do 
-                       {
-                            ClienteService.aguardarVezOutroUsuarioCli2( );
-                       } 
-                       while ( stub.getContaPasso() != 4);
+                       //Executando Sexto Método  - Passo 6
+                        do 
+                        {
+                            ClienteService.aguardarVezOutroUsuarioCli( "B" );
+                        } 
+                        while ( !( stub.getContaPasso( ) == 6 ) );
                                            
                        do
                        {
