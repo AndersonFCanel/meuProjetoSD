@@ -19,23 +19,23 @@ import javax.swing.JOptionPane;
  */
 public class ServidorAutomato 
 {
-	public static void main( String args[ ] )
+    public static void main( String args[ ] )
     {
-		/*String ipServer = Util.defineIPservidor( );
-		
-		if ( ipServer == null )
-		{
-			System.out.println( "IP inválido" );
-			return;
-		}*/
-		
-		String ipServer = Util.IPSERVIDOR;
-		
-		String javaHome = System.getenv( "JAVA_HOME" );
-		
-		System.out.println( "Versão do JDK local: " + javaHome );
+        /*String ipServer = Util.defineIPservidor( );
         
-		try 
+        if ( ipServer == null )
+        {
+            System.out.println( "IP inválido" );
+            return;
+        }*/
+        
+        String ipServer = Util.IPSERVIDOR;
+        
+        String javaHome = System.getenv( "JAVA_HOME" );
+        
+        System.out.println( "Versão do JDK local: " + javaHome );
+        
+        try 
         {
             // Criando objeto autômato
             AutomatoService automatoRemoto = new AutomatoService( );           
@@ -57,18 +57,18 @@ public class ServidorAutomato
             int input ;
             do 
             {
-            	System.out.println( "Servidor pronto!\n"                                                   );
-            	System.out.println( "Se estiver executando pelo prompt pressione CTRL + C para encerrar..." );
-            	
-            	do
-            	{
-            		input = JOptionPane.showConfirmDialog(null,
-            				"Servidor pronto!\n"
-            				+ "Para parar o servidor pressioneCANCELAR.\n\n",
-            				"WARNING", JOptionPane.WARNING_MESSAGE);
+                System.out.println( "Servidor pronto!\n"                                                   );
+                System.out.println( "Se estiver executando pelo prompt pressione CTRL + C para encerrar..." );
+                
+                do
+                {
+                    input = JOptionPane.showConfirmDialog(null,
+                            "Servidor pronto!\n"
+                            + "Para parar o servidor pressioneCANCELAR.\n\n",
+                            "WARNING", JOptionPane.WARNING_MESSAGE);
                     //Possíveis retornos 0=yes, 1=no, 2=cancel
-                	
-                	if( input == 2 )
+                    
+                    if( input == 2 )
                     {
                         if ( registro != null ) 
                         {
@@ -79,8 +79,8 @@ public class ServidorAutomato
                        
                         return;
                     }
-            	}
-            	while( input == 0 );
+                }
+                while( input == 0 );
 
             }
             while ( input == 2 );
@@ -91,14 +91,14 @@ public class ServidorAutomato
         {
             Logger.getLogger( ServidorAutomato.class.getName( ) ).log( Level.SEVERE, null, ex );
         } 
-		catch (NotBoundException e) 
-		{
-			e.printStackTrace();
-		}
-		catch ( AlreadyBoundException ex ) 
-		{
-			ex.printStackTrace();
-		}
+        catch (NotBoundException e) 
+        {
+            e.printStackTrace();
+        }
+        catch ( AlreadyBoundException ex ) 
+        {
+            ex.printStackTrace();
+        }
         
         System.out.println( "Fim" );
     }
