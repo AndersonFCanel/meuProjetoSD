@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
  */
 public class ClienteAutomato extends Thread 
 {
-	static String  ipServer;
+	public static String  ipServer;
 	
 	public static void main ( String[ ] args ) 
 	{
@@ -96,11 +96,15 @@ public class ClienteAutomato extends Thread
         			    //Controle de execução //Próximo usuário será o B
         			    stub.setIdentificaUsuario( 'B' );
         			   
-        			    //Execução do primeiro método
         			    String isValid;
+        			    boolean verEntradasAnteriores;
+        			    String entrada ;
+        			    
+        			    //Execução do primeiro método
         			    do
         			    {
-        			    	isValid = stub.setAlfabeto( ClienteService.entrarConjuntoCaracteres_Alfabeto( ) );
+        			    	entrada = ClienteService.entrarConjuntoCaracteres_Alfabeto( ); 
+        			    	isValid = stub.setAlfabeto( entrada                         );
         			    
         			    	if( !"OK".equals( isValid ) )
         			    		JOptionPane.showMessageDialog( null, isValid );
@@ -128,16 +132,18 @@ public class ClienteAutomato extends Thread
         			    //Execução do terceiro método
         			    do 
            		        {
-           		     	    aguardarVezOutroUsuarioCli1( );
+        			    	ClienteService.aguardarVezOutroUsuarioCli1( );
 					    }      
            		        while ( stub.getContaPasso() != 3);
         			    
         			    ClienteService.tutorialTransicao( );
         			    do
-        			    {
-        			    	isValid = stub.setRegra( ClienteService.entraFuncaoTransicao( ) );
-        			     
-        			    	if( !"OK".equals( isValid ) )
+        			    {   
+        			        entrada        = ClienteService.entraFuncaoTransicao( ); 
+        			    	isValid               = stub.setRegra( entrada );
+        			    	verEntradasAnteriores = ClienteService.valoresAtuais( entrada, 'B' );
+        			    	
+        			    	if( !"OK".equals( isValid ) && verEntradasAnteriores )
         			    		JOptionPane.showMessageDialog( null, isValid );
         			    	else 
         			    	{
@@ -145,19 +151,19 @@ public class ClienteAutomato extends Thread
         			    		stub.incrementaContaPasso( );
         			    	}
         			    	
-        			    	if ("I".equalsIgnoreCase( isValid ) )  
+        			    	if ("I".equalsIgnoreCase( entrada ) )  
         					{
         			    		ClienteService.tutorialTransicao( );
         					}
         			    
         			    }
-        			    while( !"OK".equals( isValid ) );
+        			    while( !"OK".equals( isValid ) && verEntradasAnteriores );
 
         			    
         			    //Execução do quinto método
         			    do 
         		        {
-        		        	aguardarVezOutroUsuarioCli1( );
+        			    	ClienteService.aguardarVezOutroUsuarioCli1( );
 					    } 
         		        while ( stub.getContaPasso() != 5);
 				    
@@ -216,7 +222,11 @@ public class ClienteAutomato extends Thread
     					
             	try 
 				{
-            		    //Controle de execução //Próximo usuário será o C
+            		    String isValid;
+          		        String entrada;
+          		        boolean verEntradasAnteriores;
+          		        
+            		    //Controle de execução //Próximo usuário será o C (Não existe na nossa aplição)
             		     stub.setIdentificaUsuario( 'C' );
             		     
 					     // stub.setAlfabeto ( );
@@ -224,56 +234,66 @@ public class ClienteAutomato extends Thread
             		    //Executando segundo método 
             		    do 
             		    {
-            		    	aguardarVezOutroUsuarioCli2( );
+            		    	ClienteService.aguardarVezOutroUsuarioCli2( );
 						} 
             		    while ( stub.getContaPasso() != 2);
-                    
-            		    String isValid;
-            		    String entrada;
-            		    boolean checkEntradasAnteriores;
-            		    
+                   
          			    do
          			    {
-         			    	entrada = ClienteService.entraConjuntoEstado( );
-         			    	isValid = stub.setEstados( entrada );
-         			    	checkEntradasAnteriores = valoresAtuais( entrada );
+         			    	entrada               = ClienteService.entraConjuntoEstado(        );
+         			    	isValid               = stub.setEstados( entrada                   );
+         			    	verEntradasAnteriores = ClienteService.valoresAtuais( entrada, 'B' );
          			    	
-         			    	if( !"OK".equals( isValid ) && checkEntradasAnteriores  )
+         			    	if( !"OK".equals( isValid ) && verEntradasAnteriores  )
          			    		JOptionPane.showMessageDialog( null, isValid );
          			    	else 
          			    	{
          			    		JOptionPane.showMessageDialog( null, "Entrada Verificada" );
          			    		stub.incrementaContaPasso( );
          			    	}
-         			    
          			    }
-         			    while( !"OK".equals( isValid )  && checkEntradasAnteriores );
+         			    while( !"OK".equals( isValid )  && verEntradasAnteriores );
          			    
             		    // stub.setRegra ( );
-            		    
+         			   
+         			    //Executando Quarto Método
          			    do 
             		    {
-            		    	aguardarVezOutroUsuarioCli2( );
+         			    	ClienteService.aguardarVezOutroUsuarioCli2( );
 						} 
             		    while ( stub.getContaPasso() != 4);
-            		    
-         			    //Pronto ate aqui
+            		             			   
+         			    do
+       			        {
+         			    	entrada               = ClienteService.entraEstIN(                       );
+         			    	isValid               = stub.setEstInicial( entrada                      );
+	       			    	verEntradasAnteriores = ClienteService.valoresAtuais( entrada, 'B'       );
+	       			    	
+	       			    	if( !"OK".equals( isValid ) && verEntradasAnteriores )
+	       			    		JOptionPane.showMessageDialog( null, isValid );
+	       			    	else 
+	       			    	{
+	       			    		JOptionPane.showMessageDialog( null, "Entrada Verificada" );
+	       			    		stub.incrementaContaPasso( );
+	       			    	}
+       			        }
+       			        while( !"OK".equals( isValid ) && verEntradasAnteriores );
          			    
          			    
          			    
-					    stub.setEstInicial( );
-					    stub.setConjuntoEstadosFinais( );
-					    stub.incrementaContaPasso( );
+					    
+					    //stub.setConjuntoEstadosFinais( );
+					   // stub.incrementaContaPasso( );
 					     
 					     
 					     //stub.setConjuntoEstadosFinais( );
-					    do 
-            		    {
-            		    	aguardarVezOutroUsuarioCli2( );
-						} 
-            		    while ( stub.getContaPasso() != 6);
-					     stub.checaPalavra ( );
-					     stub.incrementaContaPasso( );
+					   // do 
+            		    //{
+            		    //	aguardarVezOutroUsuarioCli2( );
+						//} 
+            		   // while ( stub.getContaPasso() != 6);
+					    // stub.checaPalavra ( );
+					     //stub.incrementaContaPasso( );
             		//}
 				} 
 				catch ( RemoteException e ) 
@@ -293,45 +313,5 @@ public class ClienteAutomato extends Thread
        }
     };
     
-    
-    public static boolean valoresAtuais( String info ) throws RemoteException, NotBoundException
-	{
-		if ( info.equalsIgnoreCase( "?" ) ) 
-		{
-			// Obtendo referência do serviço de registro
-			Registry registro = LocateRegistry.getRegistry( ipServer, Util.PORTA );
 
-			// Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
-			AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
-			
-			JOptionPane.showInputDialog( null, stub.imprimirAutomatoCliente( ) );
-			
-			return false;
-		}	
-	    return true;
-	}
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //USUÁRIO VEZ
-	private static void aguardarVezOutroUsuarioCli1( )
-	{
-		JOptionPane.showMessageDialog( null, "Cli1 \nAguarde o outro usuário terminar!\nAguarde 30 segundos e tente novamente!" );
-	}
-	
-    //USUÁRIO VEZ
-    private static void aguardarVezOutroUsuarioCli2( )
-    {
-    	JOptionPane.showMessageDialog( null, "Cli2 \nAguarde o outro usuário terminar!\nAguarde 30 segundos e tente novamente!" );
-    }
 }

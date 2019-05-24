@@ -1,5 +1,10 @@
 package com.suamSD;
 
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+
 import javax.swing.JOptionPane;
 
 public class ClienteService
@@ -86,14 +91,50 @@ public class ClienteService
 			return delta;
 		}
 		
-		
+		// ENTRADA DO ESTADO INICIAL
+		public static String entraEstIN( ) throws RemoteException, NotBoundException
+		{
+			boolean validador = false;
+			String  estadoInicial; 
+			
+			do 
+			{
+				estadoInicial = JOptionPane.showInputDialog( null, "ESTADO INICIAL:\nEntre com o estado inicial q0: " );
+
+
+				if ( estadoInicial == null )
+				{
+					validador = true;
+				}
+				else
+				{ 
+					if ( estadoInicial.equalsIgnoreCase( "I" ) ) 
+					{
+						// Obtendo referência do serviço de registro
+						Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
+
+						// Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
+						AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
+						
+						Character k = 'k';
+						
+						stub.imprimirAutomatoCliente( k );
+					}
+				}
+				
+				
+				
+			} 
+			while ( validador );
+
+			return estadoInicial;
+		}
 		
 		
 		
 		
 		
 	    
-	    //Serão Utilizados na próxima fase
 	    // TUTORIAL DE ENTRADA PARA FUNȿO DE TRANSIÇÃO
 		public static void tutorialTransicao( ) 
 		{
@@ -110,5 +151,35 @@ public class ClienteService
 							+ "e a mesma deve estar da forma do exemplo abaixo:\n" + "EX: q0,a;q1",
 					"WARNING", JOptionPane.WARNING_MESSAGE );
 		}
+		
+		//Pegando valores atuais no servidor
+	    public static boolean valoresAtuais( String info, Character user ) throws RemoteException, NotBoundException
+		{
+			if ( info.equalsIgnoreCase( "?" ) ) 
+			{
+				// Obtendo referência do serviço de registro
+				Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
+
+				// Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
+				AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
+				
+				JOptionPane.showInputDialog( null, stub.imprimirAutomatoCliente( user ) );
+				
+				return false;
+			}	
+		    return true;
+		}
+	    
+	    //USUÁRIO VEZ
+		static void aguardarVezOutroUsuarioCli1( )
+		{
+			JOptionPane.showMessageDialog( null, "Cliente A \nAguarde o outro usuário terminar!\nAguarde 30 segundos e tente novamente!" );
+		}
+		
+	    //USUÁRIO VEZ
+	    static void aguardarVezOutroUsuarioCli2( )
+	    {
+	    	JOptionPane.showMessageDialog( null, "Cliente B \nAguarde o outro usuário terminar!\nAguarde 30 segundos e tente novamente!" );
+	    }
 	    	
 }

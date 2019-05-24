@@ -211,13 +211,17 @@ public class AutomatoService implements AutomatoInterface
 	 * o mesmo sem os caracteres desnecessários em uma variável do tipo int com o
 	 * valor correspondente a sua posição * no conjunto de estados.
 	 */
-	public void setEstInicial( )
+	public String setEstInicial( String ei )
 	{
-		estadoIni     = "{" + entraEstIN( conjuntoDeEstadosTerminaisEnaoTerminais ) + "}";
+		String validaEstadoI = "OK";
+		
+		estadoIni     = "{" + entraEstIN( ) + "}";
 		estadoIni     = removeNulos     ( estadoIni );
 		estIniIMPRIME = estadoIni;
         
 		estadoi = conjuntoDeEstadosTerminaisEnaoTerminais.indexOf( estadoIni );
+		
+		return validaEstadoI;
 	}
 
 	/**
@@ -831,8 +835,9 @@ public class AutomatoService implements AutomatoInterface
 	 * @param conjuntoDeEstados
 	 * @return
 	 */
-	private static String entraEstIN( String conjuntoDeEstados )
+	private static String entraEstIN( )
 	{
+		
 		boolean validador = true;
 		String  estadoInicial; 
 		
@@ -846,7 +851,7 @@ public class AutomatoService implements AutomatoInterface
 						estadoIni, conjuntoEstadosTerminais );
 			}
 			
-			if ( conjuntoDeEstados.contains( estadoInicial ) )
+			if ( conjuntoDeEstadosTerminaisEnaoTerminais.contains( estadoInicial ) )
 			{
 				validador = false;
 			} 
@@ -950,62 +955,11 @@ public class AutomatoService implements AutomatoInterface
 	
 	
 	//METODOS ESPECIFICOS PARA IMPRESSÃO DE DADOS DE 2 USUÁRIOS
-	
 
 	@Override
-	public void imprimirAutomatoUsuario1(String alf, String est, int[] estadoPartida, int[] estadoDestino,
-			Character[] le, String estIn, String conjuntoEstadosFinais) throws RemoteException {
-		
-		if ( !( estadoPartida != null ) )
-			estadoPartida = new int[ 0 ];
-		
-		if ( !( estadoDestino != null ) )
-		   estadoDestino = new int[ 0 ];
-		
-		if ( !( le != null ) )
-			   le = new Character[ 0 ];
-		
-		String[ ] estP = new String[ estadoPartida.length ];
-		
-		
-		
-		int b = 0;
-		for ( int key : estadoPartida ) 
-		{
-			estP[ b ] = conjuntoDeEstadosMap.get( key );
-			b++;
-		}
-
-		String[ ] estD = new String[ estadoDestino.length ];
-		;
-		int c = 0;
-		for ( int key : estadoDestino )
-		{
-			estD[c] = conjuntoDeEstadosMap.get( key );
-			c++;
-		}
-
-		JOptionPane.showMessageDialog( null,
-				"**************************************************\n" + "\tIMPRIMINDO ENTRADAS DO USUÁRIO\n"
-						+ "\t\t\t ==>NOTAÇÃO UTILIZADA <== \n" + "\tO conjunto de simbolos - alfabeto: Σ \n"
-						+ "\tAs transicoes: (δ: Q × Σ → Q)\n" + "\tO  estado Inicial: q0\n"
-						+ "\n\t\t ==>DADOS INFORMADOS <==\n" + "\tΣ   = " + alf + "\n" + "" + "\tQ   = " + est + "\n"
-						+ "CARACTER CONSUMIDO: Σ" + Arrays.toString(le) + "\n" + "ESTADO DESTINO:          Q"
-						+ Arrays.toString(estD) + "\n" + "" + "\tq0  = " + estIn + "\n" + "" + "\tF   = "
-						+ conjuntoEstadosFinais + "\n" + "" + "**************************************************" );
-	}
-
-	@Override
-	public void imprimirAutomatoUsuario2(String alf, String est, int[] estadoPartida, int[] estadoDestino,
-			Character[] le, String estIn, String conjuntoEstadosFinais) throws RemoteException {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public String imprimirAutomatoCliente() throws RemoteException {
-		return imprimirAutomato( alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, estadoDestino, le,
-				estadoIni, conjuntoEstadosTerminais );		
+	public String imprimirAutomatoCliente( Character c) throws RemoteException 
+	{
+		return "";	
 	}
 
 
