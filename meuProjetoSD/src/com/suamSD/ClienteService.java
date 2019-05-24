@@ -33,9 +33,8 @@ public class ClienteService
                 if ( alfabeto == null)
                 {
                     b = true;
-                    Thread.currentThread( ).interrupt( ) ;
-                    if ( Thread.interrupted( ) ) throw new InterruptedException( );
-                    	System.out.println("FIM");
+                    
+                    Util.interrompeThread ( ); 
                 }
              
             } 
@@ -64,9 +63,8 @@ public class ClienteService
                 if ( estados == null)
                 {
                     b = true;
-                    Thread.currentThread( ).interrupt( ) ;
-                    if ( Thread.interrupted( ) ) throw new InterruptedException( );
-                    	System.out.println("FIM");
+                    
+                    Util.interrompeThread ( ); 
                 }
                 
                 if ( "?".equals( estados ) )
@@ -92,7 +90,8 @@ public class ClienteService
         }
     
         // ENTRADA DA FUNÇÃO DE TRANSIÇAO
-        public static String entraFuncaoTransicao( )
+        public static String entraFuncaoTransicao( ) 
+        		throws InterruptedException
         {
             String delta;
             boolean b = false;
@@ -107,6 +106,8 @@ public class ClienteService
                 if ( delta == null)
                 {
                     b = true;
+                    
+                    Util.interrompeThread ( ); 
                 }
             } 
             while ( b );
@@ -115,7 +116,7 @@ public class ClienteService
         }
         
         // ENTRADA DO ESTADO INICIAL
-        public static String entraEstIN( ) throws RemoteException, NotBoundException
+        public static String entraEstIN( ) throws RemoteException, NotBoundException, InterruptedException
         {
             boolean validador = false;
             String  estadoInicial; 
@@ -128,6 +129,8 @@ public class ClienteService
                 if ( estadoInicial == null )
                 {
                     validador = true;
+                    
+                    Util.interrompeThread ( ); 
                 }
                 else
                 { 
@@ -154,6 +157,7 @@ public class ClienteService
         }
        
         public static String entraPalavra( ) 
+        		throws InterruptedException 
         {
             String  palavra;
             boolean b = false;
@@ -165,8 +169,10 @@ public class ClienteService
                                 + "\nPara sair digite s" );
                 if ( palavra == null)
                 {
-                    b = true;
-                    return "";
+                    b = false;
+                    JOptionPane.showMessageDialog( null, "Você saiu!", "WARNING", JOptionPane.WARNING_MESSAGE );
+                    
+                    Util.interrompeThread ( ); 
                 }
                 
             } 
@@ -177,7 +183,8 @@ public class ClienteService
         
         
         // ENTRADA DO ESTADO INICIAL
-        public static String entraCjtEstFinal( ) throws RemoteException, NotBoundException 
+        public static String entraCjtEstFinal( ) 
+        		throws RemoteException, NotBoundException, InterruptedException 
         {
             boolean validador = false;
             String  cjtEstFinal; 
@@ -190,6 +197,13 @@ public class ClienteService
                 if ( cjtEstFinal == null )
                 {
                     validador = true;
+                    
+                    Thread.currentThread( ).interrupt( ) ;
+                    if ( Thread.interrupted( ) ) 
+                    {
+                    	System.out.println("FIM");
+                    	throw new InterruptedException( );
+                    }
                 }
                 else
                 { 

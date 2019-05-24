@@ -50,8 +50,12 @@ public class ClienteAutomato extends Thread
 
                 default:
                     System.out.println( "Aplicação para usar com apenas 1 ou 2 Clients!" );
+                    
+                    stub.setIdentificaUsuario( 'A' );
+                    
                     t1.interrupt( );
                     t2.interrupt( );
+                    
                     break;
                 }
                 
@@ -64,11 +68,8 @@ public class ClienteAutomato extends Thread
         {
             e.printStackTrace( );
         }
-
-        
     }
 
-    
     private static Thread t1 = new Thread( new Thread( ) ) 
     {
         public void run( )
@@ -108,9 +109,9 @@ public class ClienteAutomato extends Thread
                         
                         resposta = resposta.trim( );
                         
-                        if ( resposta == null)
+                        if ( resposta == null )
                         {
-                            stub.setIdentificaUsuario( 'A' );
+                        	Util.interrompeThread( );;
                         }
                         if ( "1".equals( resposta ) )
                         {

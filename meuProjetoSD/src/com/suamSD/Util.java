@@ -36,5 +36,16 @@ public class Util {
         
         return ip;
     }
+
+	public static void interrompeThread ( ) 
+			throws InterruptedException
+	{
+		Thread.currentThread( ).interrupt( ) ;
+	    if ( Thread.interrupted( ) ) 
+	    {
+	    	System.out.println("Thread interrompida!");
+	    	throw new InterruptedException( );
+	    }
+	}
     
 }
