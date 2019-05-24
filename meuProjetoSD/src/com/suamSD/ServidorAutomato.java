@@ -21,15 +21,13 @@ public class ServidorAutomato
 {
     public static void main( String args[ ] )
     {
-        /*String ipServer = Util.defineIPservidor( );
+        String ipServer = Util.defineIPservidor( );
         
         if ( ipServer == null )
         {
             System.out.println( "IP inválido" );
             return;
-        }*/
-        
-        String ipServer = Util.IPSERVIDOR;
+        }
         
         String javaHome = System.getenv( "JAVA_HOME" );
         

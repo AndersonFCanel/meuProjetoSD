@@ -263,27 +263,27 @@ public class ClienteAutomato extends Thread
                          */
                         if( stub.getIdentificaUsuario( ) =='A' )
                         { 
-                           do 
-                           {
-                                ClienteService.aguardarVezOutroUsuarioCli2( );
-                           } 
-                           while ( stub.getContaPasso() != 4);
-                                               
-                           do
-                           {
-                            entrada               = ClienteService.entraPalavra (              );
-                            isValid               = stub.checaPalavra           ( entrada      );
-                            verEntradasAnteriores = ClienteService.valoresAtuais( entrada, 'B' );
-                            
-                           if( !"OK".equals( isValid ) && verEntradasAnteriores )
-                                JOptionPane.showMessageDialog( null, isValid );
-                           else 
-                           {
-                               JOptionPane.showMessageDialog( null, "Entrada Verificada" );
-                               stub.incrementaContaPasso( );
-                           }
-                           }
-                           while( !"OK".equals( isValid ) && verEntradasAnteriores );
+                            do 
+                            {
+                                 ClienteService.aguardarVezOutroUsuarioCli2( );
+                            } 
+                            while ( stub.getContaPasso() != 4);
+                                                
+                            do
+                            {
+                             entrada               = ClienteService.entraPalavra (              );
+                             isValid               = stub.checaPalavra           ( entrada      );
+                             verEntradasAnteriores = ClienteService.valoresAtuais( entrada, 'B' );
+                             
+                            if( !"OK".equals( isValid ) && verEntradasAnteriores )
+                                 JOptionPane.showMessageDialog( null, isValid );
+                            else 
+                            {
+                                JOptionPane.showMessageDialog( null, "Entrada Verificada" );
+                                stub.incrementaContaPasso( );
+                            }
+                            }
+                            while( !"OK".equals( isValid ) && verEntradasAnteriores );
                        }
       
                 }
@@ -396,21 +396,20 @@ public class ClienteAutomato extends Thread
                                            
                        do
                        {
-                        entrada               = ClienteService.entraPalavra (              );
-                        isValid               = stub.checaPalavra           ( entrada      );
-                        verEntradasAnteriores = ClienteService.valoresAtuais( entrada, 'B' );
-                        
-                        if( !"OK".equals( isValid ) && verEntradasAnteriores )
-                            JOptionPane.showMessageDialog( null, isValid );
-                        else 
-                        {
-                            JOptionPane.showMessageDialog( null, "Entrada Verificada" );
-                            stub.incrementaContaPasso( );
-                        }
+                           entrada               = ClienteService.entraPalavra (              );
+                           isValid               = stub.checaPalavra           ( entrada      );
+                           verEntradasAnteriores = ClienteService.valoresAtuais( entrada, 'B' );
+                           
+                           if( !"OK".equals( isValid ) && verEntradasAnteriores )
+                               JOptionPane.showMessageDialog( null, isValid );
+                           else // implementar entrada igual a 0
+                           {
+                               JOptionPane.showMessageDialog( null, "Entrada Verificada" );
+                               stub.incrementaContaPasso( );
+                           }
                        }
                        while( !"OK".equals( isValid ) && verEntradasAnteriores );
-                         //stub.incrementaContaPasso( );
-                    //}
+                     
                 } 
                 catch ( RemoteException e ) 
                 {
