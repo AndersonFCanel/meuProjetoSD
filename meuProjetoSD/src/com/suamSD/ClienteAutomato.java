@@ -93,13 +93,28 @@ public class ClienteAutomato extends Thread
 
         		try 
 				{
-        			//synchronized (t1) {
+        			    //Controle de execução
         			    stub.setContaUsuario( stub.getContaUsuario( ) + 1 );
-        			      
         			   
-					    stub.setAlfabeto( );
+        			    //Execução do primeiro método
+        			    String isValid;
+        			    do
+        			    {
+        			    	isValid = stub.setAlfabeto( ClienteService.entrarConjuntoCaracteres_Alfabeto( ) );
+        			    
+        			    	if( !"OK".equals( isValid ) )
+        			    		JOptionPane.showMessageDialog( null, isValid );
+        			    	else 
+        			    	{
+        			    		JOptionPane.showMessageDialog( null, "Entrada Verificada" );
+        			    		stub.incrementaContaPasso( );
+        			    	}
+        			    
+        			    }
+        			    while( !"OK".equals( isValid ) );
+        			    				    
 					    //Execução de um cliente apenas
-					    if( stub.getContaUsuario( ) == 2 )
+					    /*if( stub.getContaUsuario( ) == 2 )
 					    {
 					         stub.setEstados ( );
 					         stub.incrementaContaPasso( );
@@ -114,6 +129,9 @@ public class ClienteAutomato extends Thread
 					 }      
             		        while ( stub.getContaPasso() != 3);
 					    }
+                        */					    
+					    
+        			   //Execução do terceiro método
 					    stub.setRegra( );
 					    stub.incrementaContaPasso( );
 					    
@@ -187,7 +205,31 @@ public class ClienteAutomato extends Thread
             		    	aguardarVezOutroUsuarioCli2( );
 						} 
             		    while ( stub.getContaPasso() != 2);
-            		    stub.setEstados( );
+            		    
+            		     
+            		    //Executando segundo método 
+            		    String isValid;
+            		    String entrada;
+            		    boolean checkEntradasAnteriores;
+            		    
+         			    do
+         			    {
+         			    	entrada = ClienteService.entraConjuntoEstado( );
+         			    	isValid = stub.setEstados( entrada );
+         			    	checkEntradasAnteriores = valoresAtuais( entrada );
+         			    	
+         			    	if( !"OK".equals( isValid ) && checkEntradasAnteriores  )
+         			    		JOptionPane.showMessageDialog( null, isValid );
+         			    	else 
+         			    	{
+         			    		JOptionPane.showMessageDialog( null, "Entrada Verificada" );
+         			    		stub.incrementaContaPasso( );
+         			    	}
+         			    
+         			    }
+         			    while( !"OK".equals( isValid )  && checkEntradasAnteriores );
+         			    
+         			    
             		    stub.incrementaContaPasso( );
 	     			    
             		    // stub.setRegra ( );
@@ -228,6 +270,36 @@ public class ClienteAutomato extends Thread
            
        }
     };
+    
+    
+    public static boolean valoresAtuais( String info ) throws RemoteException, NotBoundException
+	{
+		if ( info.equalsIgnoreCase( "?" ) ) 
+		{
+			// Obtendo referência do serviço de registro
+			Registry registro = LocateRegistry.getRegistry( ipServer, Util.PORTA );
+
+			// Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
+			AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
+			
+			JOptionPane.showInputDialog( null, stub.imprimirAutomatoCliente( ) );
+			
+			return false;
+		}	
+	    return true;
+	}
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     //USUÁRIO VEZ
 	private static void aguardarVezOutroUsuarioCli1( )

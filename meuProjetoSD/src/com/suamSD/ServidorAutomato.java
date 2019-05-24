@@ -37,7 +37,7 @@ public class ServidorAutomato
 		try 
         {
             // Criando objeto autômato
-            ServiceAutomato automatoRemoto = new ServiceAutomato( );
+            AutomatoService automatoRemoto = new AutomatoService( );
             
             //Criando contador
             //ServiceContaExecucao c =  new ServiceContaExecucao( );
