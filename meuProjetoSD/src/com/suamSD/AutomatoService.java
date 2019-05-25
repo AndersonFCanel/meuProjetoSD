@@ -9,6 +9,8 @@ import javax.swing.JOptionPane;
 
 public class AutomatoService implements AutomatoInterface 
 {
+	static int contadorFuncTran = 0;
+	
     static Character identificaUsuario = 'A';
         
     public Character getIdentificaUsuario( ) 
@@ -64,9 +66,9 @@ public class AutomatoService implements AutomatoInterface
     public String setAlfabeto( String alf )
     {
         String  alfabeto = alf; 
-        String  validAlf; 
+        String  responseValidAlf; 
 
-        validAlf = verificaConjuntoCaracteres_Alfabeto( alfabeto );
+        responseValidAlf = verificaConjuntoCaracteres_Alfabeto( alfabeto );
         
         //Armazenando para imprimir, tratando a formatação
         alfabetoIMPRIME = alfabeto;
@@ -84,7 +86,7 @@ public class AutomatoService implements AutomatoInterface
         
         //conjuntodeSimbolos_Alfabeto = alfabeto.chars( ).mapToObj( c -> ( char ) c ).toArray( Character[ ]::new ); 
         
-        return validAlf;
+        return responseValidAlf;
     }
 
     /**
@@ -97,12 +99,12 @@ public class AutomatoService implements AutomatoInterface
      */
     public String setEstados( String est ) 
     {
-        String validEst;
+        String responseValidEst;
 
         //do
         //{
             conjuntoDeEstadosTerminaisEnaoTerminais =  est;// entraConjuntoEstado( );
-            validEst = verificaEst( conjuntoDeEstadosTerminaisEnaoTerminais );
+            responseValidEst = verificaEst( conjuntoDeEstadosTerminaisEnaoTerminais );
         //}
         //while ( validEst ) ;
 
@@ -121,7 +123,7 @@ public class AutomatoService implements AutomatoInterface
             a++;
         }
         
-         return validEst;
+         return responseValidEst;
     }
 
     /**
@@ -131,13 +133,12 @@ public class AutomatoService implements AutomatoInterface
      */
     public String setRegra( String func ) 
     {
-        String validaFunc = "OK";
-        //tutorialTransicao( );
+        String responseValidaFunc = "OK";
 
         int quantidadeDeFuncTransPossiveis = conjuntodeSimbolos_Alfabeto.length
                 * conjuntoDeEstadosTerminaisEnaoTerminais.length( );
         
-        String[ ] conjuntoFuncaoDeTransicaoDeEstados  = entrarConjuntoFuncTran(
+        /*String[ ] conjuntoFuncaoDeTransicaoDeEstados  = entrarConjuntoFuncTran(
                 quantidadeDeFuncTransPossiveis , func );
         
         String[ ] estadoPartidaS  = new String[ quantidadeDeFuncTransPossiveis ];
@@ -163,7 +164,8 @@ public class AutomatoService implements AutomatoInterface
 
             estadoPartidaS [ i ] = p2[ 0 ];
             caracConsumidoS[ i ] = p2[ 1 ];
-            estadoDestinoS [ i ] = p1[ 1 ];
+            estadoDestinoS [ i ] = p1[ 1 ];  
+           
         }
 
         for ( int p = 0; p < quantidadeDeFuncTransPossiveis; p++ )
@@ -184,8 +186,9 @@ public class AutomatoService implements AutomatoInterface
                     if ( ch.toString( ).equals( estadoDestinoS[ j ] ) ) 
                         estadoDestino[ j ] = h;
                 }
-                h++;
+                h++;   
             }
+            
             aux = caracConsumidoS[ p ];
             
             if ( aux != null )
@@ -197,7 +200,81 @@ public class AutomatoService implements AutomatoInterface
                 le[ p ] = ( Character ) null;
             }
         }
-        return validaFunc ;
+        
+        
+        if( contadorFuncTran < quantidadeDeFuncTransPossiveis ) 
+        {
+        	responseValidaFunc = "OK";
+        }
+        else
+        {
+        	responseValidaFunc = "";
+        }
+        */
+		
+		
+		String[ ] conjuntoFuncaoDeTransicaoDeEstados  = entrarConjuntoFuncTran(
+				quantidadeDeFuncTransPossiveis, func );
+		
+		String[ ] estadoPartidaS  = new String[ quantidadeDeFuncTransPossiveis ];
+		String[ ] caracConsumidoS = new String[ quantidadeDeFuncTransPossiveis ];
+		String[ ] estadoDestinoS  = new String[ quantidadeDeFuncTransPossiveis ];
+
+		estadoPartida = new int 	 [ quantidadeDeFuncTransPossiveis ];
+		estadoDestino = new int		 [ quantidadeDeFuncTransPossiveis ];
+		le            = new Character[ quantidadeDeFuncTransPossiveis ];
+
+		for ( int i = 0; i < quantidadeDeFuncTransPossiveis; i++ ) 
+		{
+			if ( conjuntoFuncaoDeTransicaoDeEstados[ i ] == null )
+				//break;
+				continue;
+			
+			if ( conjuntoFuncaoDeTransicaoDeEstados[ i ].isEmpty( ) )
+				//break;
+				continue;
+				
+			String[ ] p1 = conjuntoFuncaoDeTransicaoDeEstados[ i ].split( ";" );
+			String[ ] p2 = p1[0].split(",");
+
+			estadoPartidaS [ i ] = p2[ 0 ];
+			caracConsumidoS[ i ] = p2[ 1 ];
+			estadoDestinoS [ i ] = p1[ 1 ];
+		}
+
+		for ( int p = 0; p < quantidadeDeFuncTransPossiveis; p++ )
+		{
+			String aux = estadoPartidaS[ p ];
+			int h = 0;
+
+			for ( Character ch : conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( ) ) 
+			{
+				for ( int j = 0; j < quantidadeDeFuncTransPossiveis; j++ ) 
+				{
+					if ( ch.toString( ).equals( estadoPartidaS[ j ] ) ) 
+						estadoPartida[ j ] = h;
+				}
+
+				for ( int j = 0; j < quantidadeDeFuncTransPossiveis; j++ )
+				{
+					if ( ch.toString( ).equals( estadoDestinoS[ j ] ) ) 
+						estadoDestino[ j ] = h;
+				}
+				h++;
+			}
+			aux = caracConsumidoS[ p ];
+			
+			if ( aux != null )
+			{
+				le[ p ] = aux.charAt( 0 );
+			}
+			else
+			{
+				le[ p ] = ( Character ) null;
+			}
+		}
+        
+        return responseValidaFunc ;
     }
 
     /**
@@ -208,7 +285,7 @@ public class AutomatoService implements AutomatoInterface
      */
     public String setEstInicial( String ei )
     {
-        String validaEstadoI = "OK";
+        String responseValidaEstadoI = "OK";
         
         estadoIni     = "{" + verificaEstInicial( ei ) + "}";
         estadoIni     = removeNulos            ( estadoIni );
@@ -216,7 +293,7 @@ public class AutomatoService implements AutomatoInterface
         
         estadoi = conjuntoDeEstadosTerminaisEnaoTerminais.indexOf( estadoIni );
         
-        return validaEstadoI;
+        return responseValidaEstadoI;
     }
 
     /**
@@ -326,21 +403,22 @@ public class AutomatoService implements AutomatoInterface
     {
         String palavraS;
         boolean flagPal;
-        String validaPalavra = "OK";
+        String responseValidaPalavra = "OK";
         
         do {
             int teste = 0;
             //int w     = 0;
             
-            palavraS = JOptionPane.showInputDialog( null,
+            palavraS = palavraInserida;
+            /*JOptionPane.showInputDialog( null,
                     "Entre com a palavra a ser verificada: "
                     + "\nPara conferir os valores dos conjuntos e regras de produção digite 'i'"
-                    + "\nPara sair digite s" );
+                    + "\nPara sair digite s" );*/
             
-            if (palavraS.equalsIgnoreCase( "s" ) )
+            /*if (palavraS.equalsIgnoreCase( "s" ) )
             {
                 break;
-            }
+            }*/
             
             /*if (palavraS.equalsIgnoreCase( "I" ) )
             {
@@ -406,7 +484,7 @@ public class AutomatoService implements AutomatoInterface
                      return  "PALAVRA ACEITA PELO AUTOMATO\n\n";
                     // break;
                 } else {
-                    return "PALAVRA NÃO ACEITA PELO AUTOMATO\n\n";
+                    return   "PALAVRA NÃO ACEITA PELO AUTOMATO\n\n";
                     // break;
                 }
             }
@@ -414,14 +492,12 @@ public class AutomatoService implements AutomatoInterface
         while ( !palavraS.equalsIgnoreCase( "s" ) );
              
         //JOptionPane.showMessageDialog(null, "Voce finalizou a aplição, obrigado!");
-        return validaPalavra;
+        return responseValidaPalavra;
     }
 
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     // %---------------METODOS UTILIZADOS NO CÓDIGO------------%
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-   
 
     private static String[ ] entrarConjuntoFuncTran( int i, String func ) 
     {
@@ -429,7 +505,7 @@ public class AutomatoService implements AutomatoInterface
         conjuntoFuncaoDeTransicaoDeEstados = new String[ i ];
         boolean valFunc                    = false;
         
-        String validaConjuntoFuncTran[ ] = new String [1];
+        /*String validaConjuntoFuncTran[ ] = new String [1];
 
         for1: for ( int c = 0; c < i; c++ ) 
         {
@@ -439,32 +515,22 @@ public class AutomatoService implements AutomatoInterface
             {
                 if ( funcaoDeTransicao.equals( null ) )
                 {
-                	validaConjuntoFuncTran[ 0 ] = "Vazio";
-                	return  validaConjuntoFuncTran;
+                	//validaConjuntoFuncTran[ 0 ] = "Vazio";
+                	//return  validaConjuntoFuncTran;
                 }
             } 
             catch ( Exception e )
             {
-                JOptionPane.showMessageDialog( null, "ENTRADA INVÁLIDA\n" + "Para sair use a tecla 's'!" );
+                //JOptionPane.showMessageDialog( null, "ENTRADA INVÁLIDA\n" + "Para sair use a tecla 's'!" );
                 c--;
                 continue for1;
             }
 
-            if ( "S".equalsIgnoreCase( funcaoDeTransicao ) ) 
-            {
-                break for1;
-            }
-
-            /*if ("I".equalsIgnoreCase( funcaoDeTransicao ) )  
-            {
-                tutorialTransicao( );
-                c--;
-                continue for1;
-            }*/
+            
 
             if ( "A".equalsIgnoreCase( funcaoDeTransicao ) ) 
             {
-            	validaConjuntoFuncTran[ 0 ] = "Transições informadas até o momento:\n" + Arrays.toString(conjuntoFuncaoDeTransicaoDeEstados );
+            	validaConjuntoFuncTran[ 0 ] = "Transições informadas até o momento:\n" + Arrays.toString( conjuntoFuncaoDeTransicaoDeEstados );
                 c--;
                 continue for1;
             }
@@ -481,9 +547,64 @@ public class AutomatoService implements AutomatoInterface
             {
             	c--;
             	validaConjuntoFuncTran[ 0 ] = "ENTRADA INVÁLIDA\n";
-            	return  validaConjuntoFuncTran;
+            	//return  validaConjuntoFuncTran;
             }
-        }
+        }*/
+        
+
+		
+
+		for1: for ( int c = 0; c < i; c++ ) 
+		{
+			funcaoDeTransicao = func;
+
+			try 
+			{
+				if ( funcaoDeTransicao.equals( null ) )
+				{
+				}
+			} 
+			catch ( Exception e )
+			{
+				JOptionPane.showMessageDialog( null, "ENTRADA INVALIDA\n" + "Para sair use a tecla 's'!" );
+				c--;
+				continue for1;
+			}
+
+			if ( "S".equalsIgnoreCase( funcaoDeTransicao ) ) 
+			{
+				break for1;
+			}
+
+			if ("I".equalsIgnoreCase( funcaoDeTransicao ) )  
+			{
+				//tutorialTransicao( );
+				c--;
+				continue for1;
+			}
+
+			if ( "A".equalsIgnoreCase( funcaoDeTransicao ) ) 
+			{
+				JOptionPane.showMessageDialog( null,
+						"Transições informadas até o momento:\n" + Arrays.toString(conjuntoFuncaoDeTransicaoDeEstados ) );
+				c--;
+				continue for1;
+			}
+
+			valFunc = true; // checkFunc(delta, conjuntoDeEstadosTerminaisEnaoTerminais);
+			// valFunc2 = checkEqualsFunc(delta, alfArray,
+			// estArray,funcDeltaAux); //CORRIGIR VALIDADOR
+			if ( valFunc ) 
+			{
+				conjuntoFuncaoDeTransicaoDeEstados[ c ] = funcaoDeTransicao;
+			} 
+			else 
+			{
+				//entradaInvalida( );
+				c--;
+			}
+		}
+	
         return conjuntoFuncaoDeTransicaoDeEstados;
     }
     
@@ -807,8 +928,7 @@ public class AutomatoService implements AutomatoInterface
         return imprimirAutomatoCliAouB(alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, 
                 estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME, 'B');  
        	}
-		return null;
-    	
+		return null;  	
    	}
     
     private static String imprimirAutomatoCliAouB( String alf, String est, int[ ] estadoPartida, int[ ] estadoDestino, Character[ ] le,

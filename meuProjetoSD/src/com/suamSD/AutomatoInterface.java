@@ -14,6 +14,11 @@ public interface AutomatoInterface extends Remote
     public String    setEstInicial         ( String s )    throws RemoteException;
                                                            
     public String setConjuntoEstadosFinais ( String s )    throws RemoteException;
+    
+    public String    checaPalavra          ( String s )    throws RemoteException;
+    
+    public String  imprimirAutomatoCliente ( Character c ) throws RemoteException;
+    
     //Métodos de controle                  
     public void      setIdentificaUsuario  ( Character i ) throws RemoteException;
                                                            
@@ -23,8 +28,6 @@ public interface AutomatoInterface extends Remote
                                                            
     public void      incrementaContaPasso  ( )             throws RemoteException;
                                            
-    public String    checaPalavra          ( String s )    throws RemoteException;
-                                           
-    public String  imprimirAutomatoCliente ( Character c ) throws RemoteException;
+   
     
 }
