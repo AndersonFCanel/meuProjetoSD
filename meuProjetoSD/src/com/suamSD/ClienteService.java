@@ -131,11 +131,13 @@ public class ClienteService
                      // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
                      AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
                      
-                     //Caracter que idenifica entradas globais de ambos os clientes
+                     //Caracter que identifica entradas globais de ambos os clientes
                      Character k = '@';
                      
                      JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( k ) );
 				}
+                
+                
             } 
             while ( b );
             

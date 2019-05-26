@@ -19,15 +19,49 @@ public interface AutomatoInterface extends Remote
     
     public String  imprimirAutomatoCliente ( Character c ) throws RemoteException;
     
-    //Métodos de controle                  
-    public void      setIdentificaUsuario  ( Character i ) throws RemoteException;
-                                                           
-    public Character getIdentificaUsuario  ( )             throws RemoteException; 
-                                                           
-    public Integer   getContaPasso         ( )             throws RemoteException; 
-                                                           
-    public void      incrementaContaPasso  ( )             throws RemoteException;
-                                           
-   
+    /************************
+     * Métodos para controle                  
+     ************************/
     
+    /**
+     * Identificação do usuário corrente
+     * @param i
+     * @throws RemoteException
+     */
+    public void      setIdentificaUsuario  ( Character i ) throws RemoteException;
+
+    /**
+     * Identificação do usuário corrente
+     * @param i
+     * @throws RemoteException
+     */
+    public Character getIdentificaUsuario  ( )             throws RemoteException; 
+                                       
+    /**
+     * Identificação da evolução da execução do programa, a cada método executado deve ocorrer um incremento no controle.
+     * @return
+     * @throws RemoteException
+     */
+    public Integer   getContaPasso         ( )             throws RemoteException; 
+            
+    /**
+     * Identificação da evolução da execução do programa, a cada método executado deve ocorrer um incremento no controle.
+     * @return
+     * @throws RemoteException
+     */
+    public void      incrementaContaPasso  ( )             throws RemoteException;
+    
+    /**
+    * Identificação da evolução da inserção de dados no conjunto delta
+    * @return
+    */
+    public int getContadorFuncTran         ( )             throws RemoteException; 
+    
+    /**
+     * Identificação da evolução da inserção de dados no conjunto delta
+     * @return
+     */
+	public int getTamanhoCjtFuncTran       ( )             throws RemoteException; 
+	
+                                     
 }
