@@ -4,8 +4,6 @@ import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import javax.swing.JOptionPane;
-
 public class AutomatoService implements AutomatoInterface 
 {
 	public static  int       contadorFuncTran  = 0;
@@ -173,18 +171,21 @@ public class AutomatoService implements AutomatoInterface
      */
     public String setRegra( String func ) 
     {   	
-
+    	if( !func.matches( "^\\S*,\\S*;\\S$*" ) )
+        {
+    		if( !"".equals( func ) )
+    			return "Formato inválido";
+   		}
+    	
     	if(contadorFuncTran == 0)
     	     inicializaVetores( );
-        
-    	setContadorFuncTran( );
     	
-    	String responseValidaFunc = "";
-   
-        conjuntoFuncaoDeTransicaoDeEstados[ contadorFuncTran - 1]  = func;
+    	String responseValidaFunc = "Entrada Verificada";
+    	
+    	setContadorFuncTran( );
+    
+    	conjuntoFuncaoDeTransicaoDeEstados[ contadorFuncTran - 1]  = func;
         
-		System.out.println("===>>>" + conjuntoFuncaoDeTransicaoDeEstados[ contadorFuncTran -1 ] );
-
 		for ( int i = 0; i < quantidadeDeFuncTransPossiveis; i++ ) 
 		{
 			if ( conjuntoFuncaoDeTransicaoDeEstados[ i ] == null )
@@ -194,6 +195,7 @@ public class AutomatoService implements AutomatoInterface
 			if ( conjuntoFuncaoDeTransicaoDeEstados[ i ].isEmpty( ) )
 				//break;
 				continue;
+			
 				
 			String[ ] p1 = conjuntoFuncaoDeTransicaoDeEstados[ i ].split( ";" );
 			String[ ] p2 = p1[0].split                                  ( "," );
