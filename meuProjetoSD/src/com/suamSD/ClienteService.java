@@ -208,6 +208,14 @@ public class ClienteService
                 {
                     b = false;
                     JOptionPane.showMessageDialog( null, "Você saiu!", "WARNING", JOptionPane.WARNING_MESSAGE );
+                   
+                 // Obtendo referência do serviço de registro
+                    Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
+
+                    // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
+                    AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
+                 
+                    stub.incrementaContaPasso(); 
                     
                     Util.interrompeThread ( ); 
                 }

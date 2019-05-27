@@ -19,8 +19,8 @@ public class ClienteAutomato extends Thread
     
     public static void main ( String[ ] args ) 
     {
-        //ipServer = Util.defineIPservidor( );
-        ipServer = "127.0.0.1";
+        ipServer = Util.defineIPservidor( );
+        //ipServer = "127.0.0.1";
     	
         if ( ipServer == null )
         {
@@ -293,6 +293,8 @@ public class ClienteAutomato extends Thread
                             }
                             while( !"OK".equals( isValid ) && verEntradasAnteriores );
                        }
+                        
+                        verEntradasAnteriores = ClienteService.valoresAtuais( entrada, 'A' );
       
                 }
                 catch ( RemoteException e ) 
@@ -413,13 +415,21 @@ public class ClienteAutomato extends Thread
                            isValid               = stub.checaPalavra           ( entrada      );
                            verEntradasAnteriores = ClienteService.valoresAtuais( entrada, 'B' );
                            
-                           if( !"OK".equals( isValid ) && verEntradasAnteriores )
-                               JOptionPane.showMessageDialog( null, isValid );
-                           else // implementar entrada igual a 0
+                           if ( entrada == null )
                            {
-                               JOptionPane.showMessageDialog( null, "Entrada Verificada" );
-                               stub.incrementaContaPasso( );
+                        	   verEntradasAnteriores = ClienteService.valoresAtuais( entrada, 'B' );
                            }
+                           else
+                           {
+                               if( !"OK".equals( isValid ) && verEntradasAnteriores )
+                                   JOptionPane.showMessageDialog( null, isValid );
+                               else // implementar entrada igual a 0
+                               {
+                                   JOptionPane.showMessageDialog( null, "Entrada Verificada" );
+                                   stub.incrementaContaPasso( );
+                               }
+                           }
+                           
                        }
                        while( !"OK".equals( isValid ) && verEntradasAnteriores );
                      
