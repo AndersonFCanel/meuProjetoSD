@@ -117,7 +117,6 @@ public class AutomatoService implements AutomatoInterface
     private static final Pattern PATTERN_ESTADOS = Pattern.compile( "(^\\S+,\\S+$)|(^\\S+$)" );
     private static final Pattern PATTERN_ALFBETO = Pattern.compile( "(^\\S+,\\S+$)|(^\\S+$)" );
     
-    
     private static HashMap<Integer, String> conjuntoDeEstadosMap = new HashMap<Integer, String>( );
     //private static HashMap<Integer, String> conjuntoDeEstadosFinaisMap = new HashMap<Integer, String>( );
     
