@@ -3,6 +3,7 @@ package com.suamSD;
 import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.regex.Pattern;
 
 public class AutomatoService implements AutomatoInterface 
 {
@@ -60,39 +61,64 @@ public class AutomatoService implements AutomatoInterface
         contaPasso++;
         
     }
-    
-    private static HashMap<Integer, String> conjuntoDeEstadosMap = new HashMap<Integer, String>( );
-    //private static HashMap<Integer, String> conjuntoDeEstadosFinaisMap = new HashMap<Integer, String>( );
 
-    //***********************************************************************
     //Variáveis para armazenar valores correntes a serem IMPRIMIDOS. 
     private static String alfabetoIMPRIME;
     private static String conjuntoDeEstadosTerminaisIMPRIME;
     private static String estIniIMPRIME;
     private static String conjEstTermIMPRIME;
-    //***********************************************************************
-    
-    //***********************************************************************
-    private static String estadoIni = "";
-    private static String conjuntoEstadosTerminais = "";
-       
+ 
+    /*
+     * Variáveis para armazenar as entradas inseridas;
+     */
     private static Character[ ] conjuntodeSimbolos_Alfabeto;
     private static String       conjuntoDeEstadosTerminaisEnaoTerminais = "";
+    private static String       estadoIni                               = "";
+    private static String       conjuntoEstadosTerminais                = "";
     private static String   [ ] conjuntoFuncaoDeTransicaoDeEstados;
     
+    /*
+     * ---------
+     */
+    
+    /*Variáveis para receber valores inseridos no delta
+    /*( elemento do conjunto transição de estados ).
+     * Exemplo: 
+     * 1,a;2
+     *  estadoPartidaS  = 1;
+     *  caracConsumidoS = a;
+     *  estadoDestinoS  = 2;
+     */
+    private static String [ ] estadoPartidaS  ;
+    private static String [ ] caracConsumidoS ;
+    private static String [ ] estadoDestinoS  ;
+   
+    //Variáveis para conversão ( para manipulação )
+    //de cada elemento  de cada função( delta ) 
+    //de transição de estados
+    private static Integer   [ ] estadoPartida ; 
+    private static Character [ ] le ;
+    private static Integer   [ ] estadoDestino ;
+    
+    /*
+     * ---------
+     */
+   
+    
+    //Variáveis para conversão ( para manipulação ) 
+    //de cada elemento do conjunto de estados Finais
+    //e estado inicial.
     private static int     estadoi;
     private static int [ ] estadosf;
+
+    private static final Pattern PATTERN_DELTA = Pattern.compile( "^\\S*,\\S*;\\S$*" );
     
-    static int quantidadeDeFuncTransPossiveis ;
     
-    private static String[ ] estadoPartidaS  ;
-    private static String[ ] caracConsumidoS ;
-    private static String[ ] estadoDestinoS  ;
     
-    private static Integer  [ ] estadoPartida ; 
-    private static Character[ ] le ;
-    private static Integer  [ ] estadoDestino ;
-    //***********************************************************************
+    private static HashMap<Integer, String> conjuntoDeEstadosMap = new HashMap<Integer, String>( );
+    //private static HashMap<Integer, String> conjuntoDeEstadosFinaisMap = new HashMap<Integer, String>( );
+    
+    static int quantidadeDeFuncTransPossiveis;
     
     public int getTamanhoCjtFuncTran( )
 	{
@@ -120,6 +146,7 @@ public class AutomatoService implements AutomatoInterface
         conjuntodeSimbolos_Alfabeto = new Character[ alfabeto.length( ) ];
         
         int z = 0;
+        
         for (char ch : alfabeto.toCharArray( )) {
             conjuntodeSimbolos_Alfabeto[z] = ch;
             z++;
@@ -142,28 +169,33 @@ public class AutomatoService implements AutomatoInterface
     {
         String responseValidEst;
 
-        conjuntoDeEstadosTerminaisEnaoTerminais =  est;// entraConjuntoEstado( );
-        responseValidEst = verificaEst( conjuntoDeEstadosTerminaisEnaoTerminais );
+        responseValidEst = verificaEst( est );
      
-        conjuntoDeEstadosTerminaisIMPRIME       = conjuntoDeEstadosTerminaisEnaoTerminais;
-        conjuntoDeEstadosTerminaisEnaoTerminais = removeNulos( conjuntoDeEstadosTerminaisEnaoTerminais );// Removendo {,}
-
-        int   estados           = conjuntoDeEstadosTerminaisEnaoTerminais.length( );
-        int[ ] conjuntoDeEstados = new int[ estados ];
+        if( !est.matches( "(^\\S+,\\S+$)|(^\\S+$)" ) )
+        {
+    		if( !"".equals( est ) )
+    			return "Formato inválido";
+   		}
+        
+        conjuntoDeEstadosTerminaisIMPRIME       = est;
+        
+        String [ ] conjuntoDeEstados =  conjuntoDeEstadosTerminaisEnaoTerminais.split( "," );
+        
+        conjuntoDeEstadosTerminaisEnaoTerminais = removeNulos( est );// Removendo {,}
+        
         int a = 0;
 
         //Mapeando posição dos estados
-        for (Character ch : conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( ) )
+        for ( String estado : conjuntoDeEstados )
         {
-            conjuntoDeEstadosMap.put( a, ch.toString( ) );
-            conjuntoDeEstados [ a ] = a;
+            conjuntoDeEstadosMap.put( a, estado );
             a++;
         }
         
          return responseValidEst;
     }
     
-   void inicializaVetores( ) 
+   void inicializaVariaveis( ) 
    {
 	   quantidadeDeFuncTransPossiveis = conjuntodeSimbolos_Alfabeto.length
                                        * conjuntoDeEstadosTerminaisEnaoTerminais.length( );
@@ -186,14 +218,14 @@ public class AutomatoService implements AutomatoInterface
      */
     public String setRegra( String func ) 
     {   	
-    	if( !func.matches( "^\\S*,\\S*;\\S$*" ) )
+    	if( !PATTERN_DELTA.matcher( func ).matches( ) )
         {
     		if( !"".equals( func ) )
     			return "Formato inválido";
    		}
     	
     	if(contadorFuncTran == 0)
-    	     inicializaVetores( );
+    	     inicializaVariaveis( );
     	
     	String responseValidaFunc = "Entrada Verificada";
     	
@@ -319,12 +351,13 @@ public class AutomatoService implements AutomatoInterface
         	 y                   = 0;
                                  
         //***********Sugestão de código Eclipse
-        char[] charArray = conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( );
-        
-        for (int i = 0; i < charArray.length; i++) {
-            for ( Character ch1 : conjuntoEstadosTerminais.toCharArray( ) )
+        String [ ] conjuntoDeEstados          = conjuntoDeEstadosTerminaisEnaoTerminais.split( "," );
+        String [ ] conjuntoDeEstadosTerminais = conjuntoEstadosTerminais.split               ( "," );
+       
+        for (int i = 0; i < conjuntoDeEstados.length; i++) {
+            for ( String ef : conjuntoDeEstadosTerminais )
             {
-                if ( conjuntoDeEstadosMap.get( y ).equals( ch1.toString( ) ) )
+                if ( conjuntoDeEstadosMap.get( y ).equals( ef.toString( ) ) )
                 {
                     estadosf[ b ] = y;
                     b++;
@@ -701,20 +734,8 @@ public class AutomatoService implements AutomatoInterface
         return valor.split(",");// Divide a String quando ocorrer ","
     }
 
-    
-    /*public static String valoresAtuais( String info )
-    {
-        if ( info.equalsIgnoreCase( "?" ) ) 
-        {
-        	return imprimirAutomato( alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, estadoDestino, le,
-                    estadoIni, conjuntoEstadosTerminais );
-            
-        }   
-        return "";
-    }*/
-    
- 
-    //METODOS ESPECIFICOS PARA IMPRESSÃO DE DADOS DE 2 USUÁRIOS
+
+    //METODOS ESPECIFICOS PARA IMPRESSÃO DE DADOS DE 2 USUÁRIOS ALTERNADOS
     /*
     * Cliente 1 - Insere conjunto de caracteres.
       Cliente 2 - Insere conjunto de estados terminais e não terminais.

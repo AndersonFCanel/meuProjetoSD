@@ -7,15 +7,15 @@ import javax.swing.JOptionPane;
 public class Util {
 
     /*
-     * Constantes que indicam onde est� sendo executado o servi�o de registro, qual
-     * porta e qual o nome do objeto distribu�do
+     * Constantes que indicam onde está sendo executado o serviço de registro, qual
+     * porta e qual o nome do objeto distribuído
      */
     public static final String LOCALHOST   = "localhost";
     public static final String IPSERVIDOR  = "127.0.0.1";
     public static final int    PORTA       =  1099;
     public static final String NOMEOBJDIST = "MeuAutomato";
     
-    private static final Pattern PATTERN = Pattern.compile(
+    private static final Pattern PATTERN_IP = Pattern.compile(
             "^(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");
     
     public static String defineIP( ) 
@@ -31,7 +31,7 @@ public class Util {
                     "Entre com o IP do servidor:\n "
                     + "Para 127.0.0.1 'localhost', apenas clique OK!\n" );
             
-            if( !PATTERN.matcher( ip ).matches( ) && !( "".equals( ip ) ) )
+            if( !PATTERN_IP.matcher( ip ).matches( ) && !( "".equals( ip ) ) )
             {
             	 JOptionPane.showMessageDialog( null, "Formato inválido" );
             	 b = true;
@@ -52,19 +52,19 @@ public class Util {
                 break;
             }
         }
-        
-        System.out.println(" O IP do servidorAutomato é: "+ ip);
+        JOptionPane.showMessageDialog( null, "O IP do servidorAutomato é: " + ip );
+        System.out.println( "O IP do servidorAutomato é: "+ ip );
         
         return ip;
     }
 
-	public static void interrompeThread ( ) 
+	public static void interrompeThread( ) 
 			throws InterruptedException
 	{
 		Thread.currentThread( ).interrupt( ) ;
 	    if ( Thread.interrupted( ) ) 
 	    {
-	    	System.out.println("Thread interrompida!");
+	    	System.out.println( "Thread interrompida!" );
 	    	throw new InterruptedException( );
 	    }
 	}

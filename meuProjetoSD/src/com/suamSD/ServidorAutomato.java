@@ -55,7 +55,6 @@ public class ServidorAutomato
             registro.bind( Util.NOMEOBJDIST, stubAutomato );
             System.out.println("registro.bind: "+ Util.NOMEOBJDIST + " stubAutomato" );
    
-
             int input ;
             do 
             {
