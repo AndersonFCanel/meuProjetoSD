@@ -70,7 +70,7 @@ public class ClienteAutomato extends Thread
         }
         catch ( InterruptedException e ) 
         {
-			e.printStackTrace();
+			e.printStackTrace( );
 		}
     }
 
