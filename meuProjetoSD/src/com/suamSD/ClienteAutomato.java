@@ -299,8 +299,10 @@ public class ClienteAutomato extends Thread
                             while( !"OK".equals( isValid ) && verEntradasAnteriores );
                        }
                         
-                        verEntradasAnteriores = ClienteService.valoresAtuais( entrada, 'A' );
-      
+                        if( stub.getIdentificaUsuario( ) !='A' )
+                        {
+                            verEntradasAnteriores = ClienteService.valoresAtuais( entrada, 'A' );
+                        }
                 }
                 catch ( RemoteException e ) 
                 {
@@ -317,7 +319,6 @@ public class ClienteAutomato extends Thread
             {
                 Logger.getLogger( ClienteAutomato.class.getName( ) ).log( Level.SEVERE, null, ex );
             }
- 
         }
     };
  

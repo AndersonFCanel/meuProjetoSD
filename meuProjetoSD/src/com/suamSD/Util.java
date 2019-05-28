@@ -1,5 +1,7 @@
 package com.suamSD;
 
+import java.util.regex.Pattern;
+
 import javax.swing.JOptionPane;
 
 public class Util {
@@ -13,13 +15,32 @@ public class Util {
     public static final int    PORTA       =  1099;
     public static final String NOMEOBJDIST = "MeuAutomato";
     
+    private static final Pattern PATTERN = Pattern.compile(
+            "^(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");
+    
     public static String defineIP( ) 
-    {       
-        String ip = JOptionPane.showInputDialog( null,
-                "Entre com o IP do servidor:\n "
-                + "Para 127.0.0.1 'localhost', apenas clique OK!\n" );
-        
-        if ( ip != null)
+    {      
+    	String ip;
+    	boolean b = false;
+    	
+    	do
+    	{
+    		b = false;
+    		
+            ip = JOptionPane.showInputDialog( null,
+                    "Entre com o IP do servidor:\n "
+                    + "Para 127.0.0.1 'localhost', apenas clique OK!\n" );
+            
+            if( !PATTERN.matcher( ip ).matches( ) && !( "".equals( ip ) ) )
+            {
+            	 JOptionPane.showMessageDialog( null, "Formato inválido" );
+            	 b = true;
+            }
+    	}
+    	
+    	while ( b );
+    	
+        if ( ip != null  )
         {
             switch ( ip ) 
             {
