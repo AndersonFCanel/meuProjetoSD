@@ -134,6 +134,7 @@ public class AFDmain
                 for (int j = 0; j < ( conjuntodeSimbolos_Alfabeto.length  *
                                       conjuntoDeEstadosTerminaisEnaoTerminais.length( ) ); j++ )
                 {
+                	
                     if ( estadoPartidaS[ j ].equals( ch.toString( ) ) ) 
                     {
                          estadoPartida[ j ] = h;

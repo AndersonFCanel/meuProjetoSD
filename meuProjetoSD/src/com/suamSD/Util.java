@@ -13,7 +13,7 @@ public class Util {
     public static final int    PORTA       =  1099;
     public static final String NOMEOBJDIST = "MeuAutomato";
     
-    public static String defineIPservidor( ) 
+    public static String defineIP( ) 
     {       
         String ip = JOptionPane.showInputDialog( null,
                 "Entre com o IP do servidor:\n "
@@ -32,7 +32,7 @@ public class Util {
             }
         }
         
-        System.out.println(" O ip do servidorAutomato é: "+ ip);
+        System.out.println(" O IP do servidorAutomato é: "+ ip);
         
         return ip;
     }

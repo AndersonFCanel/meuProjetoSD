@@ -57,6 +57,8 @@ public class ClienteService
             boolean b = false;
             
             do {
+            	b = false;
+            	
                 estados  = JOptionPane.showInputDialog( null,
                         "ATENÇÃO AO MODELO DE INSERÇÃO NO CONJUNTO DE ESTADOS\nCada estado deve ser "
                                 + "separado por virgula, sem espaço.\n" 
@@ -66,6 +68,7 @@ public class ClienteService
                                 + "       Mínimo = 1(um)   elemento. \n"
                                 + "       Máximo = 3(três) elementos.\n"
                                 + "Para checar entradas anteriores digite '?'.\n\n" );
+                
                 if ( estados == null)
                 {
                     b = true;
@@ -86,7 +89,7 @@ public class ClienteService
                      //Caracter que idenifica entradas globais de ambos os clientes
                      Character k = '@';
                      
-                     stub.imprimirAutomatoCliente( k );
+                     JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( k ) );
 				}
                 
             } 
@@ -97,12 +100,14 @@ public class ClienteService
     
         // ENTRADA DA FUNÇÃO DE TRANSIÇAO
         public static String entraFuncaoTransicao( ) 
-        		throws InterruptedException
+        		throws InterruptedException, RemoteException, NotBoundException
         {
             String delta;
             boolean b = false;
             
             do {
+            	b = false;
+            	
                 delta = JOptionPane.showInputDialog( null,
                         "\nEntre com as transiçãos de estado (δ: Q × Σ → Q):\n" + "\nPara ver o tutorial  novamente : 'i'"
                                 + "\nPara sair : 's'\n" 
@@ -115,6 +120,24 @@ public class ClienteService
                     
                     Util.interrompeThread ( ); 
                 }
+                
+                if ( "?".equals( delta ) )
+                {
+                	 b = true;
+                	 
+                	// Obtendo referência do serviço de registro
+                     Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
+
+                     // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
+                     AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
+                     
+                     //Caracter que identifica entradas globais de ambos os clientes
+                     Character k = '@';
+                     
+                     JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( k ) );
+				}
+                
+                
             } 
             while ( b );
             
@@ -124,17 +147,19 @@ public class ClienteService
         // ENTRADA DO ESTADO INICIAL
         public static String entraEstIN( ) throws RemoteException, NotBoundException, InterruptedException
         {
-            boolean validador = false;
+            boolean b = false;
             String  estadoInicial; 
             
             do 
             {
+            	b = false;
+            	
                 estadoInicial = JOptionPane.showInputDialog( null, "ESTADO INICIAL:\nEntre com o estado inicial q0: " );
 
 
                 if ( estadoInicial == null )
                 {
-                    validador = true;
+                    b = true;
                     
                     Util.interrompeThread ( ); 
                 }
@@ -142,6 +167,8 @@ public class ClienteService
                 { 
                     if ( estadoInicial.equalsIgnoreCase( "I" ) ) 
                     {
+                    	b = true;
+                    	
                         // Obtendo referência do serviço de registro
                         Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
 
@@ -150,36 +177,64 @@ public class ClienteService
                         
                         Character k = 'k';
                         
-                        stub.imprimirAutomatoCliente( k );
+                        JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( k ) );
                     }
                 }
                 
                 
                 
             } 
-            while ( validador );
+            while ( b );
 
             return estadoInicial;
         }
        
         public static String entraPalavra( ) 
-        		throws InterruptedException 
+        		throws InterruptedException, RemoteException, NotBoundException 
         {
             String  palavra;
             boolean b = false;
             
             do {
+            	
+            	b = false;
+            	
                 palavra  = JOptionPane.showInputDialog( null,
                                   "Entre com a palavra a ser verificada: "
                                 + "\nPara conferir os valores dos conjuntos e regras de produção digite 'i'"
                                 + "\nPara sair digite s" );
+                
                 if ( palavra == null)
                 {
                     b = false;
                     JOptionPane.showMessageDialog( null, "Você saiu!", "WARNING", JOptionPane.WARNING_MESSAGE );
+                   
+                 // Obtendo referência do serviço de registro
+                    Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
+
+                    // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
+                    AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
+                 
+                    stub.incrementaContaPasso(); 
                     
                     Util.interrompeThread ( ); 
                 }
+                
+                if ( "?".equals( palavra ) )
+                {
+                	 b = true;
+                	 
+                	// Obtendo referência do serviço de registro
+                     Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
+
+                     // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
+                     AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
+                     
+                     //Caracter que idenifica entradas globais de ambos os clientes
+                     Character k = '@';
+                     
+                     JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( k ) );
+				}
                 
             } 
             while ( b );
@@ -192,17 +247,19 @@ public class ClienteService
         public static String entraCjtEstFinal( ) 
         		throws RemoteException, NotBoundException, InterruptedException 
         {
-            boolean validador = false;
+            boolean b = false;
             String  cjtEstFinal; 
             
             do 
             {
+            	b = false;
+            	
                  cjtEstFinal = JOptionPane.showInputDialog( null, "\nEntre com o conjunto dos estados finais F:"
                         + "\nCada estado deve ser separado por virgula, sem espaços.\nEX: A,B,C ... e1,e2,e3 ..." );
         
                 if ( cjtEstFinal == null )
                 {
-                    validador = true;
+                    b = true;
                     
                     Thread.currentThread( ).interrupt( ) ;
                     if ( Thread.interrupted( ) ) 
@@ -215,6 +272,8 @@ public class ClienteService
                 { 
                     if ( cjtEstFinal.equalsIgnoreCase( "I" ) ) 
                     {
+                    	b = false;
+                    	
                         // Obtendo referência do serviço de registro
                         Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
         
@@ -228,7 +287,7 @@ public class ClienteService
                 }
         
             } 
-            while ( validador );
+            while ( b );
         
             return cjtEstFinal;
         }

@@ -8,7 +8,6 @@ import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.swing.JOptionPane;
 
 /**
@@ -22,7 +21,7 @@ public class ServidorAutomato
     public static void main( String args[ ] ) 
     		throws InterruptedException
     {
-        String ipServer = Util.defineIPservidor( );
+        String ipServer = Util.defineIP( );
         
         if ( ipServer == null )
         {
@@ -38,11 +37,11 @@ public class ServidorAutomato
         {
             // Criando objeto autômato
             AutomatoService automatoRemoto = new AutomatoService( );           
-            System.out.println( "automatoRemoto Instânciado" );      
+            System.out.println( "Criada a instancia de automatoRemoto." );      
             
             // Definindo o hostname do servidor
             System.setProperty( "java.rmi.server.hostname", ipServer );
-            System.out.println("HOSTNAME: "  +"java.rmi.server.hostname " + ipServer);
+            System.out.println("System.setProperty: "  +"java.rmi.server.hostname" + ipServer);
             
             //Exportando objeto remoto autômato 
             AutomatoInterface stubAutomato = (AutomatoInterface) UnicastRemoteObject.exportObject( automatoRemoto, 0 );
@@ -54,7 +53,7 @@ public class ServidorAutomato
 
             //Registrando objeto distribuído
             registro.bind( Util.NOMEOBJDIST, stubAutomato );
-            System.out.println("Registrado o objeto distribuído: "+ Util.NOMEOBJDIST + " stubAutomato" );
+            System.out.println("registro.bind: "+ Util.NOMEOBJDIST + " stubAutomato" );
    
 
             int input ;
@@ -93,17 +92,17 @@ public class ServidorAutomato
             System.out.println( "Você parou o servidor" );
 
         } 
-        catch ( RemoteException ex )
+        catch ( RemoteException e )
         {
-            Logger.getLogger( ServidorAutomato.class.getName( ) ).log( Level.SEVERE, null, ex );
+            Logger.getLogger( ServidorAutomato.class.getName( ) ).log( Level.SEVERE, null, e );
         } 
         catch (NotBoundException e) 
         {
             e.printStackTrace( );
         }
-        catch ( AlreadyBoundException ex ) 
+        catch ( AlreadyBoundException e ) 
         {
-            ex.printStackTrace( );
+            e.printStackTrace( );
         } 
         catch (InterruptedException e) 
         {
