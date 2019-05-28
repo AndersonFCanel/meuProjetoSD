@@ -111,8 +111,11 @@ public class AutomatoService implements AutomatoInterface
     private static int     estadoi;
     private static int [ ] estadosf;
 
-    private static final Pattern PATTERN_DELTA = Pattern.compile( "^\\S*,\\S*;\\S$*" );
     
+    
+    private static final Pattern PATTERN_DELTA   = Pattern.compile( "^\\S*,\\S*;\\S$*"       );
+    private static final Pattern PATTERN_ESTADOS = Pattern.compile( "(^\\S+,\\S+$)|(^\\S+$)" );
+    private static final Pattern PATTERN_ALFBETO = Pattern.compile( "(^\\S+,\\S+$)|(^\\S+$)" );
     
     
     private static HashMap<Integer, String> conjuntoDeEstadosMap = new HashMap<Integer, String>( );
@@ -171,13 +174,13 @@ public class AutomatoService implements AutomatoInterface
 
         responseValidEst = verificaEst( est );
      
-        if( !est.matches( "(^\\S+,\\S+$)|(^\\S+$)" ) )
+        if( !PATTERN_ESTADOS.matcher( est ).matches( ) )
         {
     		if( !"".equals( est ) )
     			return "Formato inválido";
    		}
         
-        conjuntoDeEstadosTerminaisIMPRIME       = est;
+        conjuntoDeEstadosTerminaisIMPRIME = est;
         
         String [ ] conjuntoDeEstados =  conjuntoDeEstadosTerminaisEnaoTerminais.split( "," );
         
