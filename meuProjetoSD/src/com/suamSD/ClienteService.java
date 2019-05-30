@@ -200,15 +200,17 @@ public class ClienteService
             	
                 palavra  = JOptionPane.showInputDialog( null,
                                   "Entre com a palavra a ser verificada: "
-                                + "\nPara conferir os valores dos conjuntos e regras de produção digite 'i'"
-                                + "\nPara sair digite s" );
-                
+                                + "\nPara conferir os valores dos conjuntos e regras de produção digite '?'"
+                                + "\nPara sair entre cancelar." );
+                                                
+              	  
+              	
                 if ( palavra == null)
                 {
                     b = false;
                     JOptionPane.showMessageDialog( null, "Você saiu!", "WARNING", JOptionPane.WARNING_MESSAGE );
-                   
-                 // Obtendo referência do serviço de registro
+
+                    // Obtendo referência do serviço de registro
                     Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
 
                     // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
@@ -216,7 +218,20 @@ public class ClienteService
                  
                     stub.incrementaContaPasso( ); 
                     
-                    Util.interrompeThread ( ); 
+                    
+                    if( stub.getIdentificaUsuario( ) =='A' )
+                    {
+                        ClienteService.valoresAtuais( "?", '@' );
+                    }
+                    else
+                    {
+                    	ClienteService.valoresAtuais( "?", 'B' );
+                    		
+                    }
+                    break;
+                    
+                    //Util.interrompeThread ( ); 
+                    
                 }
                 
                 if ( "?".equals( palavra ) )
