@@ -4,10 +4,8 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.swing.JOptionPane;
 
 /**
@@ -89,10 +87,10 @@ public class ClienteAutomato extends Thread
                 
                 System.out.println("\n***********************************************************************");
                 System.out.println( "CONTADOR DE EXECUÇÃO: " + stub.getIdentificaUsuario( ) +"\n\n");               
-                System.out.println( "ID: "         + Thread.currentThread( ).getId( )       );
-                System.out.println( "Nome: "       + Thread.currentThread( ).getName( )     );
-                System.out.println( "Prioridade: " + Thread.currentThread( ).getPriority( ) );
-                System.out.println( "Estado: "     + Thread.currentThread( ).getState( )    );
+                System.out.println( "ID: "         + Thread.currentThread( ).getId( )              );
+                System.out.println( "Nome: "       + Thread.currentThread( ).getName( )            );
+                System.out.println( "Prioridade: " + Thread.currentThread( ).getPriority( )        );
+                System.out.println( "Estado: "     + Thread.currentThread( ).getState( )           );
                 System.out.println("***********************************************************************\n");
 
                 try 
@@ -106,6 +104,7 @@ public class ClienteAutomato extends Thread
                     String  entrada ;
                     String  isValid;
                     
+                    /*
                     do 
                     {
                         resposta = JOptionPane.showInputDialog( null,
@@ -126,8 +125,14 @@ public class ClienteAutomato extends Thread
                             stub.setIdentificaUsuario( 'B' );
                         }
                     } 
+                    while ( b ); 
+                    */
                     
-                    while ( b );
+                    if ( stub.getQtdUsuario( ) == 2 ) 
+                    {
+                    	stub.setIdentificaUsuario( 'B' );
+					}
+                    
                         /**
                          * Execução do primeiro método  - Passo 1
                          */
@@ -349,6 +354,12 @@ public class ClienteAutomato extends Thread
                         String isValid;
                         String entrada;
                         boolean verEntradasAnteriores;
+                        
+                        /*if( stub.getIdentificaUsuario( ) != 'A' )
+                        {
+                        	JOptionPane.showMessageDialog( null, "O servidor esta disponível apenas para 1 cliente." );
+                        	Util.interrompeThread( );
+                        }*/
                         
                         //Controle de execução //Próximo usuário será o C (Não existe na nossa aplição)
                          stub.setIdentificaUsuario( 'C' );

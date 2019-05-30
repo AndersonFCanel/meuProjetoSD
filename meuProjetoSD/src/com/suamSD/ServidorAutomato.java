@@ -28,9 +28,9 @@ public class ServidorAutomato
             System.out.println( "IP inválido" );
             Util.interrompeThread( );
         }
-        
+      
         String javaHome = System.getenv( "JAVA_HOME" );
-        
+      
         System.out.println( "Versão do JDK local: " + javaHome );
         
         try 
@@ -55,6 +55,39 @@ public class ServidorAutomato
             registro.bind( Util.NOMEOBJDIST, stubAutomato );
             System.out.println("registro.bind: "+ Util.NOMEOBJDIST + " stubAutomato" );
    
+            
+            String resposta;
+            do 
+            {
+            	//Definindo a quantidade de usuários que irão utilizar o sistema.
+                resposta = JOptionPane.showInputDialog( null,
+                        "Para utilizar o programa com UM cliente ENTRE 1, para DOIS ENTRE 2." );
+            	resposta = resposta.trim( );
+                
+                if ( resposta == null )
+                {
+                	UnicastRemoteObject.unexportObject( automatoRemoto, true );
+                    System.out.println                ( "unexportObject"     );
+                    registro.unbind                   ( Util.NOMEOBJDIST     ) ;
+               
+                    System.out.println("FINALIZANDO.....");
+                    
+                	Util.interrompeThread( );;
+                }
+                if ( "1".equals( resposta ) )
+                {
+                    stubAutomato.setIdentificaUsuario( 'A' );
+                	stubAutomato.setQtdUsuario( 1 );
+                }
+                if ( "2".equals( resposta ) )
+                {
+                    stubAutomato.setIdentificaUsuario( 'A' );
+                    stubAutomato.setQtdUsuario( 2 );
+                }
+                
+			} while ( !("1".equals( resposta ) ) && !("2".equals( resposta ) ) );
+            
+            
             int input ;
             do 
             {

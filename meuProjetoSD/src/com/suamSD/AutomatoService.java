@@ -845,6 +845,21 @@ public class AutomatoService implements AutomatoInterface
 		return null;
     }
 
+    public static int qtdUsers;
+    
+	@Override
+	public void setQtdUsuario( int i ) throws RemoteException
+	{
+		 this.qtdUsers = i;
+		
+	}
+
+	@Override
+	public int getQtdUsuario( ) throws RemoteException 
+	{
+		return this.qtdUsers;
+	}
+
 
     
 }

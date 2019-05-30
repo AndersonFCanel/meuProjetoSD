@@ -48,8 +48,7 @@ public class ClienteService
             
             return alfabeto;
         }
-     
-     
+         
         public static String entraConjuntoEstado( ) 
         		throws RemoteException, NotBoundException, InterruptedException 
         {
@@ -215,7 +214,7 @@ public class ClienteService
                     // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
                     AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
                  
-                    stub.incrementaContaPasso(); 
+                    stub.incrementaContaPasso( ); 
                     
                     Util.interrompeThread ( ); 
                 }
