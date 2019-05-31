@@ -164,7 +164,7 @@ public class ClienteService
                 }
                 else
                 { 
-                    if ( estadoInicial.equalsIgnoreCase( "I" ) ) 
+                    if ( estadoInicial.equalsIgnoreCase( "?" ) ) 
                     {
                     	b = true;
                     	
@@ -178,10 +178,7 @@ public class ClienteService
                         
                         JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( k ) );
                     }
-                }
-                
-                
-                
+                }   
             } 
             while ( b );
 

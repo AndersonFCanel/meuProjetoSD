@@ -113,9 +113,10 @@ public class AutomatoService implements AutomatoInterface
 
     
     
-    private static final Pattern PATTERN_DELTA   = Pattern.compile( "^\\S*,\\S*;\\S$*"       );
-    private static final Pattern PATTERN_ESTADOS = Pattern.compile( "(^\\S+,\\S+$)|(^\\S+$)" );
-    private static final Pattern PATTERN_ALFBETO = Pattern.compile( "(^\\S+,\\S+$)|(^\\S+$)" );
+    private static final Pattern PATTERN_DELTA      = Pattern.compile( "^\\S*,\\S*;\\S$*"       );
+    private static final Pattern PATTERN_ESTADOS    = Pattern.compile( "(^\\S+,\\S+$)|(^\\S+$)" );
+    private static final Pattern PATTERN_ALFBETO    = Pattern.compile( "(^\\S+,\\S+$)|(^\\S+$)" );
+    private static final Pattern PATTERN_ESTADO_INI = Pattern.compile( "(^\\S{1}$)" );
     
     private static HashMap<Integer, String> conjuntoDeEstadosMap = new HashMap<Integer, String>( );
     //private static HashMap<Integer, String> conjuntoDeEstadosFinaisMap = new HashMap<Integer, String>( );
@@ -136,9 +137,9 @@ public class AutomatoService implements AutomatoInterface
     public String setAlfabeto( String alf )
     {
         String  alfabeto = alf; 
-        String  responseValidAlf; 
+        String  responseValidAlf = "OK"; 
         
-        responseValidAlf = verificaConjuntoCaracteres_Alfabeto( alfabeto );
+        responseValidAlf = verificaConjuntoCaracteres_Alfabeto( alf );
         
         //Armazenando para imprimir, tratando a formatação
         alfabetoIMPRIME = alfabeto;
@@ -171,17 +172,11 @@ public class AutomatoService implements AutomatoInterface
     {
         String responseValidEst;
 
-        responseValidEst = verificaEst( est );
-     
-        if( !PATTERN_ESTADOS.matcher( est ).matches( ) )
-        {
-    		if( !"".equals( est ) )
-    			return "Formato inválido";
-   		}
+        String [ ] conjuntoDeEstados =  est.split( "," );
+        
+        responseValidEst = verificaEst( est ); 
         
         conjuntoDeEstadosTerminaisIMPRIME = est;
-        
-        String [ ] conjuntoDeEstados =  conjuntoDeEstadosTerminaisEnaoTerminais.split( "," );
         
         conjuntoDeEstadosTerminaisEnaoTerminais = removeNulos( est );// Removendo {,}
         
@@ -226,7 +221,7 @@ public class AutomatoService implements AutomatoInterface
     			return "Formato inválido";
    		}
     	
-    	if(contadorFuncTran == 0)
+    	if( contadorFuncTran == 0 )
     	     inicializaVariaveis( );
     	
     	String responseValidaFunc = "Entrada Verificada";
@@ -300,11 +295,11 @@ public class AutomatoService implements AutomatoInterface
     public String setEstInicial( String ei )
     {
         String responseValidaEstadoI = "OK";
+ 
+        estadoIni = responseValidaEstadoI = verificaEstInicial( ei ) ;
         
-        estadoIni     = "{" + verificaEstInicial( ei ) + "}";
-        estadoIni     = removeNulos            ( estadoIni );
-        estIniIMPRIME = estadoIni;
-        
+        //estadoIni   = removeNulos            ( estadoIni );
+        estIniIMPRIME = "{" + estadoIni + "}";
         estadoi = conjuntoDeEstadosTerminaisEnaoTerminais.indexOf( estadoIni );
         
         return responseValidaEstadoI;
@@ -322,30 +317,27 @@ public class AutomatoService implements AutomatoInterface
      public String setConjuntoEstadosFinais( String cjtFin )
      {
         // ENTRA COM ESTADOS FINAIS
-        boolean validEstFim = false;
         String[ ] estFin;
         String validaConjuntoEstadosFin = "OK";
         
-        do {
-            conjuntoEstadosTerminais = cjtFin;
+        conjuntoEstadosTerminais = cjtFin;
 
-            estFin = splitVirgula( conjuntoEstadosTerminais );
-            
-            for ( String est : estFin ) 
+        if( !PATTERN_ESTADOS.matcher( cjtFin ).matches( ) )
+        {
+    		if( !"".equals( cjtFin ) )
+    			return "ENTRADA INVALIDA\n" + "Formato inválido";
+   		}
+        
+        estFin = splitVirgula( conjuntoEstadosTerminais );
+        
+        for ( String est : estFin ) 
+        {
+            if ( !( conjuntoDeEstadosTerminaisEnaoTerminais.contains( est ) ) )
             {
-                if ( conjuntoDeEstadosTerminaisEnaoTerminais.contains( est ) )
-                {
-                    validEstFim = false;
-                } 
-                else
-                {
-                    validEstFim = true;
-                    return "Estado no inexistente no conjunto de estados." ;
-                }
-            }       
-        }
-        while ( validEstFim );
-
+            	 return "Estado no inexistente no conjunto de estados." ;
+            } 
+        }      
+        
         conjEstTermIMPRIME       = conjuntoEstadosTerminais;
         conjuntoEstadosTerminais = removeNulos( conjuntoEstadosTerminais );
         estadosf                 = new int[ conjuntoEstadosTerminais.length( ) ];
@@ -368,8 +360,8 @@ public class AutomatoService implements AutomatoInterface
             }
             y++;
             
-            imprimirAutomato(alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, 
-                             estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME);
+            imprimirAutomato( alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, 
+                             estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME );
         }
         //****************
 
@@ -544,9 +536,16 @@ public class AutomatoService implements AutomatoInterface
     private static String verificaConjuntoCaracteres_Alfabeto( String alfabeto )
     {
         String validadorAlf = "OK";
-
+        
+        if( !PATTERN_ALFBETO.matcher( alfabeto ).matches( ) )
+        {
+    		if( !"".equals( alfabeto ) )
+    			return "ENTRADA INVÁLIDA\n" +"Formato inválido";
+   	    }
+        
         // Entrada Vazia
-        if (alfabeto.equals(" ") || alfabeto.length( ) < 1 || alfabeto.isEmpty( ) || alfabeto.length( ) > 5)
+        if ( " ".equals( alfabeto ) || alfabeto.length( ) < 1 
+        		|| alfabeto.isEmpty( ) || alfabeto.length( ) > 5 || "".equals( alfabeto ) )
         {
             return  "ENTRADA INVÁLIDA\n" + "Tamanho do alfabeto fora do range permitido!";
         }
@@ -562,7 +561,7 @@ public class AutomatoService implements AutomatoInterface
         
         for1: for ( int k = 0; k < alfabeto.length( ); k = k + 2 ) 
         {
-            if  (k == alfabeto.length( ) || w == alfabeto.length( ) )
+            if  ( k == alfabeto.length( ) || w == alfabeto.length( ) )
             {
                 break for1;
             }
@@ -595,11 +594,17 @@ public class AutomatoService implements AutomatoInterface
     private static String verificaEst( String estados )
     {
         String validador = "OK";
-
-        // ESTADO COM TAMANHO INFERIOR AO PERMITIDO, = 0 ou >5.
-        if ( estados.length( ) < 1 || estados.length( ) > 5 || estados.equals(" ") || estados.isEmpty( ) )
+        
+        if( !PATTERN_ESTADOS.matcher( estados ).matches( ) )
         {
-            return "ENTRADA INVALIDA\n" + "Tamanho do conjunto fora do range permitido!";
+    		if( !"".equals( estados ) )
+    			return "ENTRADA INVALIDA\n" + "Formato inválido";
+   		}
+        
+        // ESTADO COM TAMANHO INFERIOR AO PERMITIDO, = 0 ou >5.
+        if ( estados.length( ) < 1 || estados.length( ) > 5 || " ".equals( estados ) || estados.isEmpty( ) )
+        {
+            return  "Tamanho do conjunto fora do range permitido!";
         }
 
         // INSERÇÃO DE ESTADOS NÃO PODE COMEÇAR PELA VIRGULA.
@@ -607,32 +612,7 @@ public class AutomatoService implements AutomatoInterface
         {
             return "ENTRADA INVALIDA\n" + "Não começe a inserção pela virgula";
         }
-
-        // ESTADOS IGUIAS
-        if ( !( "OK".equals( verificaConjuntoEstados( estados ) ) ) ) 
-        {
-            return    "ENTRADA INVALIDA\n"
-                    + "Existem elementos iguais no conjunto!";
-        }
         
-        return validador;// = false;
-    }
-
-    // ===>>>#####ESTADOS IGUAIS --- CORRIGIR VALIDADOR DE ESTADOS
-    private static String verificaConjuntoEstados( String estados ) 
-    {
-        try 
-        {
-            if ( estados.equals( null ) ) 
-            {
-            	return "ERRO";
-            }
-        } 
-        catch ( Exception e )
-        {
-            return "";
-        }
-
         String[ ] estAux = estados.split( "," );
 
         for ( int i = 0; i < estAux.length; i++ )
@@ -641,13 +621,15 @@ public class AutomatoService implements AutomatoInterface
             {
                 if ( estAux[ i ].equals(estAux[ j ] ) )
                 {
-                	i = estAux.length;
+                	//i = estAux.length;
                     return    "ENTRADA INVALIDA\n"
-                            + "Existem elementos iguais no conjunto!";
+                            + "Existem elementos iguais no conjunto!\n" 
+                            +  estAux[ i ] + " = " + estAux[ j ];
                 }
             }
         }
-        return "OK";
+        
+        return validador;// = false;
     }
 
     /**
@@ -656,14 +638,28 @@ public class AutomatoService implements AutomatoInterface
      * @param conjuntoDeEstados
      * @return
      */
-    private static String verificaEstInicial(  String estIn)
+    private static String verificaEstInicial(  String estIn )
     {
         
-        String  estadoInicial = estIn; 
+        String  estadoInicial = "OK";//= estIn; 
 
+        if( !PATTERN_ESTADO_INI.matcher( estIn ).matches( ) )
+        {
+    		if( !"".equals( estIn ) )
+    			return "Formato inválido";
+   		}
+        
+        if( "".equals( estIn ) )
+        	return "Entrada Vazia, não permitida!";
+        
         if ( !conjuntoDeEstadosTerminaisEnaoTerminais.contains( estadoInicial ) )
         {
             return "Estado no inexistente no conjunto de estados." ;
+        } 
+        
+        if ( conjuntoDeEstadosTerminaisEnaoTerminais.length( ) > 1 )
+        {
+            return "Existe apenas um estado inicial." ;
         } 
     
         return estadoInicial;
@@ -752,18 +748,18 @@ public class AutomatoService implements AutomatoInterface
     {
     	if( c == '@')
     	{
-        return imprimirAutomato(alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, 
-                estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME);  
+    		return imprimirAutomato( alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, 
+    								 estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME );  
        	}
     	if( c == 'A')
     	{
-        return imprimirAutomatoCliAouB(alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, 
-                estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME, 'A');  
+    		return imprimirAutomatoCliAouB( alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, 
+    										estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME, 'A' );  
        	}
     	if( c == 'B')
     	{
-        return imprimirAutomatoCliAouB(alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, 
-                estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME, 'B');  
+    		return imprimirAutomatoCliAouB( alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, 
+    										estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME, 'B' );  
        	}
 		return null;  	
    	}
@@ -850,16 +846,14 @@ public class AutomatoService implements AutomatoInterface
 	@Override
 	public void setQtdUsuario( int i ) throws RemoteException
 	{
-		 this.qtdUsers = i;
+		 AutomatoService.qtdUsers = i;
 		
 	}
 
 	@Override
 	public int getQtdUsuario( ) throws RemoteException 
 	{
-		return this.qtdUsers;
+		return AutomatoService.qtdUsers;
 	}
 
-
-    
 }

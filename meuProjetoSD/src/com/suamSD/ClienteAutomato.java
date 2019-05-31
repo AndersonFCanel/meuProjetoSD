@@ -206,7 +206,7 @@ public class ClienteAutomato extends Thread
                         				 
                                 entrada               = ClienteService.entraFuncaoTransicao(              ); 
                                 isValid               = stub.setRegra                      ( entrada      );
-                                verEntradasAnteriores = ClienteService.valoresAtuais       ( entrada, 'B' );
+                                verEntradasAnteriores = ClienteService.valoresAtuais       ( entrada, stub.getIdentificaUsuario( ) =='A' ? '@' : 'A');
                                                         
                                 if( !"OK".equals( isValid ) && verEntradasAnteriores )
                                     JOptionPane.showMessageDialog( null, isValid );
@@ -265,7 +265,7 @@ public class ClienteAutomato extends Thread
                         {
                             entrada               = ClienteService.entraCjtEstFinal(              );
                             isValid               = stub.setConjuntoEstadosFinais  ( entrada      );
-                            verEntradasAnteriores = ClienteService.valoresAtuais   ( entrada, 'B' );
+                            verEntradasAnteriores = ClienteService.valoresAtuais   ( entrada,  stub.getIdentificaUsuario( ) =='A' ? '@' : 'A' );
                             
                             if( !"OK".equals( isValid ) && verEntradasAnteriores )
                                 JOptionPane.showMessageDialog( null, isValid );
