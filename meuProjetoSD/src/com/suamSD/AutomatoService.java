@@ -643,15 +643,14 @@ public class AutomatoService implements AutomatoInterface
         
         String  estadoInicial = "OK";//= estIn; 
 
-        if( !PATTERN_ESTADO_INI.matcher( estIn ).matches( ) )
-        {
-    		if( !"".equals( estIn ) )
-    			return "Formato inválido";
-   		}
-        
         if( "".equals( estIn ) )
         	return "Entrada Vazia, não permitida!";
         
+        if( !PATTERN_ESTADO_INI.matcher( estIn ).matches( ) )
+        {
+    			return "Formato inválido";
+   		}
+                
         if ( !conjuntoDeEstadosTerminaisEnaoTerminais.contains( estadoInicial ) )
         {
             return "Estado no inexistente no conjunto de estados." ;
