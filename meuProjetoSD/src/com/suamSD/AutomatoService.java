@@ -112,10 +112,14 @@ public class AutomatoService implements AutomatoInterface
     private static int [ ] estadosf;
 
     
+    //No caso de elementos compostos por mais de um carater ( não implementado )
+    //private static final Pattern PATTERN_DELTA      = Pattern.compile( "^\\S*,\\S*;\\S$*"       );
+    //private static final Pattern PATTERN_ESTADOS    = Pattern.compile( "(^\\S+,\\S+$)|(^\\S+$)" );
+    //private static final Pattern PATTERN_ALFBETO    = Pattern.compile( "(^\\S+,\\S+$)|(^\\S+$)" );
     
-    private static final Pattern PATTERN_DELTA      = Pattern.compile( "^\\S*,\\S*;\\S$*"       );
-    private static final Pattern PATTERN_ESTADOS    = Pattern.compile( "(^\\S+,\\S+$)|(^\\S+$)" );
-    private static final Pattern PATTERN_ALFBETO    = Pattern.compile( "(^\\S+,\\S+$)|(^\\S+$)" );
+    private static final Pattern PATTERN_DELTA      = Pattern.compile( "^\\S,\\S;\\S$"       );
+    private static final Pattern PATTERN_ESTADOS    = Pattern.compile( "(^\\S,\\S$)|(^\\S$)" );
+    private static final Pattern PATTERN_ALFBETO    = Pattern.compile( "(^\\S,\\S$)|(^\\S$)" );
     private static final Pattern PATTERN_ESTADO_INI = Pattern.compile( "(^\\S{1}$)" );
     
     private static HashMap<Integer, String> conjuntoDeEstadosMap = new HashMap<Integer, String>( );
@@ -639,8 +643,7 @@ public class AutomatoService implements AutomatoInterface
      * @return
      */
     private static String verificaEstInicial(  String estIn )
-    {
-        
+    {        
         String  estadoInicial = "OK";//= estIn; 
 
         if( "".equals( estIn ) )

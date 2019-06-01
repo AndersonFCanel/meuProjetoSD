@@ -75,7 +75,7 @@ public class ClienteService
                     Util.interrompeThread ( ); 
                 }
                 
-                if ( "?".equals( estados ) )
+                if ( "?".trim( ).equals( estados ) )
                 {
                 	 b = true;
                 	 
@@ -120,7 +120,7 @@ public class ClienteService
                     Util.interrompeThread ( ); 
                 }
                 
-                if ( "?".equals( delta ) )
+                if ( "?".trim( ).equals( delta ) )
                 {
                 	 b = true;
                 	 
@@ -153,7 +153,9 @@ public class ClienteService
             {
             	b = false;
             	
-                estadoInicial = JOptionPane.showInputDialog( null, "ESTADO INICIAL:\nEntre com o estado inicial q0: " );
+                estadoInicial = JOptionPane.showInputDialog( null, "ESTADO INICIAL:\nEntre com o estado inicial q0: \n"
+                		+ "O estado inicial deve ser inserido na forma 'estado', sem vírgulas ou qualquer outro adereço,\n"
+                		+ "o estado inicial é único.\n " );
 
 
                 if ( estadoInicial == null )
@@ -162,23 +164,22 @@ public class ClienteService
                     
                     Util.interrompeThread ( ); 
                 }
-                else
-                { 
-                    if ( estadoInicial.equalsIgnoreCase( "?" ) ) 
-                    {
-                    	b = true;
-                    	
-                        // Obtendo referência do serviço de registro
-                        Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
+                
+                if ( estadoInicial.trim( ).equalsIgnoreCase( "?" ) ) 
+                {
+                	b = true;
+                	
+                    // Obtendo referência do serviço de registro
+                    Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
 
-                        // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
-                        AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
-                        
-                        Character k = 'k';
-                        
-                        JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( k ) );
-                    }
-                }   
+                    // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
+                    AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
+                    
+                    Character k = 'k';
+                    
+                    JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( k ) );
+                }
+                 
             } 
             while ( b );
 
@@ -231,7 +232,7 @@ public class ClienteService
                     
                 }
                 
-                if ( "?".equals( palavra ) )
+                if ( "?".trim( ).equals( palavra ) )
                 {
                 	 b = true;
                 	 
@@ -281,7 +282,7 @@ public class ClienteService
                 }
                 else
                 { 
-                    if ( cjtEstFinal.equalsIgnoreCase( "I" ) ) 
+                    if ( cjtEstFinal.trim( ).equalsIgnoreCase( "I" ) ) 
                     {
                     	b = false;
                     	
@@ -324,7 +325,7 @@ public class ClienteService
         //Pegando valores atuais no servidor
         public static boolean valoresAtuais( String info, Character idUser ) throws RemoteException, NotBoundException
         {
-            if ( info.equalsIgnoreCase( "?" ) ) 
+            if ( info.trim( ).equalsIgnoreCase( "?" ) ) 
             {
                 // Obtendo referência do serviço de registro
                 Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );

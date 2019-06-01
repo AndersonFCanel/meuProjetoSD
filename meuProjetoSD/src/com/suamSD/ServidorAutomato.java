@@ -57,35 +57,46 @@ public class ServidorAutomato
    
             
             String resposta;
+            boolean b = true;
             do 
             {
             	//Definindo a quantidade de usuários que irão utilizar o sistema.
                 resposta = JOptionPane.showInputDialog( null,
                         "Para utilizar o programa com UM cliente ENTRE 1, para DOIS ENTRE 2." );
-            	resposta = resposta.trim( );
+            	
+                if( resposta != null )
+            		resposta = resposta.trim( );
                 
                 if ( resposta == null )
                 {
                 	UnicastRemoteObject.unexportObject( automatoRemoto, true );
                     System.out.println                ( "unexportObject"     );
-                    registro.unbind                   ( Util.NOMEOBJDIST     ) ;
+                    registro.unbind                   ( Util.NOMEOBJDIST     );
                
                     System.out.println("FINALIZANDO.....");
                     
                 	Util.interrompeThread( );;
                 }
-                if ( "1".equals( resposta ) )
+                if ( "1".equals( resposta ) || resposta.isEmpty( ) )
                 {
+                	b = false;
+                	
                     stubAutomato.setIdentificaUsuario( 'A' );
                 	stubAutomato.setQtdUsuario( 1 );
+                	
+                	System.out.println( "Operando com 1 cliente apenas." );
                 }
                 if ( "2".equals( resposta ) )
                 {
+                	b = false;
+                	
                     stubAutomato.setIdentificaUsuario( 'A' );
                     stubAutomato.setQtdUsuario( 2 );
+
+                	System.out.println( "Operando com 2 clientes." );
                 }
                 
-			} while ( !("1".equals( resposta ) ) && !("2".equals( resposta ) ) );
+			} while ( b );
             
             
             int input ;
