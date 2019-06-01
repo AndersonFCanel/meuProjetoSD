@@ -1,11 +1,17 @@
 package com.suamSD;
 
+import java.awt.Dimension;
+import java.io.ObjectInputStream.GetField;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 
 public class ClienteService
 {
@@ -348,41 +354,48 @@ public class ClienteService
         }
           
         static void info( ) 
-        {
-        	JOptionPane.showMessageDialog( null, "Teoria dos autômatos é o estudo das máquinas abstratas ou autômatos, \n"
-        			 						   + "bem como problemas computacionais que podem ser resolvidos usando esses \n"
-        			                           + "objetos. É objeto de estudo tanto da Ciência da Computação Teórica como \n"
-        			 						   + "da Matemática Discreta. A palavra autômato vem da palavra grega αὐτόματα \n"
-        									   + "que significa “autoação” (em tradução livre), isto é, sem influência externa." );
-        
-        	JOptionPane.showMessageDialog( null, "Autômatos\r\n\n" + 
-        			"Definição de máquina de estados finita:\r\n" + 
-        			"Um autômato determinístico finito é representado formalmente por uma 5-tupla (Q,Σ,δ,q0,F), "
-        			+ "onde:\r\n" + 
-        			"Q é um conjunto finito de estados.\r\n" + 
-        			"Σ é um conjunto finito de símbolos, chamado de alfabeto do autômato.\r\n" + 
-        			"δ é a função de transição, isto é, δ: Q x Σ → Q.\r\n" + 
-        			"q0 é o estado inicial,\n"
-        			+ "   isto é, o estado do autômato antes de qualquer entrada ser processada, onde q0 ∈ Q.\r\n" + 
-        			"F é um conjunto de estados de Q (isto é, F ⊆ Q) chamado de estados de aceitação.\r\n" +
-        			"\n\n" +
-        			"Palavra de entrada\r\n" + 
-        			"Um autômato lê uma string (cadeia de caracteres) finita de símbolos a1,a2,...., an,\n"
-        			+ "onde ai ∈ Σ, que é chamada de palavra de entrada. "
-        			+ "\nO conjunto de todas as palavras é denotado por Σ*.\r\n\n" + 
-        			"Execução\r\n" + 
-        			"A execução de um autômato sobre uma palavra de entrada w = a1,a2,....,\n "
-        			+ "an ∈ Σ*, é uma sequência de estados q0, q1,q2,...., qn, "
-        			+ "\nonde qi ∈ Q tal que q0 é o estado inicial e qi = δ(qi-1,ai) para 0 < i ≤ n.\n "
-        			+ "Em outras palavras, no começo o autômato está no estado inicial q0, \n"
-        			+ "e então o autômato lê símbolos da palavra de entrada sequencialmente. \n"
-        			+ "Quando o autômato lê o símbolo ai ele pula para o estado qi = δ(qi-1,ai). \n"
-        			+ "Diz-se que qn é o estado final da execução.\r\n" + 
-        			"Palavra de aceitação\r\n" + 
-        			"Uma palavra w ∈ Σ* é aceita pelo autômato se qn ∈ F.\r\n" + 
-        			"Linguagem reconhecida\r\n" + 
-        			"Um autômato pode reconhecer uma linguagem formal. A linguagem L ⊆ Σ* reconhecida por um autômato é o conjunto de todas as palavras que são aceitas pelo autômato.\r\n" + 
-        			"Linguagens reconhecíveis\r\n" + 
-        			"As linguagens reconhecíveis são o conjunto de linguagens que são reconhecidas por algum autômato. Para a definição acima de autômatos, as linguagens reconhecíveis são linguagens regulares. Para diferentes definições de autômatos, a definição de linguagens reconhecíveis é diferente.");
-        }
+        {    
+        	String texto = "Teoria dos autômatos é o estudo das máquinas abstratas ou autômatos, \n"           +
+                           "bem como problemas computacionais que podem ser resolvidos usando esses \n"        +
+                           "objetos. É objeto de estudo tanto da Ciência da Computação Teórica como \n"        +
+                           "da Matemática Discreta. A palavra autômato vem da palavra grega αὐτόματα \n"       +
+                           "que significa “autoação” (em tradução livre), isto é, sem influência externa.\n\n" ;
+        	
+        	String texto2 = "Autômatos\r\n\n"                                                                                +
+        			        "Definição de máquina de estados finita:\r\n"                                                    +
+        		            "Um autômato determinístico finito é representado formalmente por uma 5-tupla (Q,Σ,δ,q0,F),\n "    +
+        			        "onde:\r\n"                                                                                      +
+        			        "Q é um conjunto finito de estados.\r\n"                                                         +
+        			        "Σ é um conjunto finito de símbolos, chamado de alfabeto do autômato.\r\n"                       +
+        			        "δ é a função de transição, isto é, δ: Q x Σ → Q.\r\n"                                           +
+        			        "q0 é o estado inicial,\n"                                                                       +
+        			        "   isto é, o estado do autômato antes de qualquer entrada ser processada, onde q0 ∈ Q.\r\n"      +
+        			        "F é um conjunto de estados de Q (isto é, F ⊆ Q) chamado de estados de aceitação."               +
+        			        "\n\n"  																				         ;                                                                                         
+        	
+        	String texto3 = "Palavra de entrada\r\n\n"                                                                +
+        			        "Um autômato lê uma string (cadeia de caracteres) finita de símbolos a1,a2,...., an,\n"   +
+        			        "onde ai ∈ Σ, que é chamada de palavra de entrada. \n"                                     +
+        			        "O conjunto de todas as palavras é denotado por Σ*."									  +
+        			        "\n\n"																					  ;                               
+        	
+        	String texto4 = "Execução ( breve descrição )\r\n\n"                                             +
+        			        "A execução de um autômato sobre uma palavra de entrada w = a1,a2,....,\n "      +
+        			        "an ∈ Σ*, é uma sequência de estados q0, q1,q2,...., qn,\n "                      +
+        			        "onde qi ∈ Q tal que q0 é o estado inicial e qi = δ(qi-1,ai) para 0 < i ≤ n.\n "  +
+        			        "Em outras palavras, no começo o autômato está no estado inicial q0, \n"         +
+        			        "e então o autômato lê símbolos da palavra de entrada sequencialmente. \n"       +
+        			        "Quando o autômato lê o símbolo ai ele pula para o estado qi = δ(qi-1,ai). \n"   +
+        			        "Diz-se que qn é o estado final da execução."                                    +
+        			        "\n\n"                                                                           ;                            
+        			
+        	        	
+        	JTextArea textArea = new JTextArea( texto + texto2 + texto3 + texto4 );
+        	JScrollPane scrollPane = new JScrollPane(  textArea );
+        	textArea.setWrapStyleWord(true );
+        	scrollPane.setPreferredSize( new Dimension( 550, 550 ) );
+        	JOptionPane.showMessageDialog(null, scrollPane, "Informações sobre os autômatos finitos determonistícos ou AFD", 
+        			JOptionPane.INFORMATION_MESSAGE);
+
+     }
 }
