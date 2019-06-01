@@ -26,6 +26,8 @@ public class ClienteAutomato extends Thread
             return;
         }
         
+        ClienteService.info( );
+        
         try 
         {
             // Obtendo referência do serviço de registro
@@ -471,8 +473,6 @@ public class ClienteAutomato extends Thread
             {
                 Logger.getLogger( ClienteAutomato.class.getName( ) ).log( Level.SEVERE, null, ex );
             }
-            
-           
        }
     };
     
