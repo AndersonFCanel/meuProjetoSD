@@ -10,6 +10,14 @@ public class AutomatoService implements AutomatoInterface
 	public static  int       contadorFuncTran  = 0;
 	public static  Character identificaUsuario = 'A';
 	static         Integer   contaPasso        = 1;
+
+	/**
+	 * Zera o valor da posição de inserção no conjuno de regras de transição.
+	 */
+	public void zeraContadorFuncTran( )
+    {
+		AutomatoService.contadorFuncTran = 0;
+	}
 	
 	/**
 	 * Retorna o valor da posição de inserção no conjuno de regras de transição.
@@ -61,6 +69,16 @@ public class AutomatoService implements AutomatoInterface
         contaPasso++;
         
     }
+    
+    /**
+     * Zera contador para uma nova execução.
+     * @return
+     */
+     public void zeraContaPasso( ) throws RemoteException
+     {
+         contaPasso = 1;
+         
+     }
 
     //Variáveis para armazenar valores correntes a serem IMPRIMIDOS. 
     private static String alfabetoIMPRIME;

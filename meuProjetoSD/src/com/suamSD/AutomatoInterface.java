@@ -52,6 +52,12 @@ public interface AutomatoInterface extends Remote
     public void      incrementaContaPasso  ( )throws RemoteException;
     
     /**
+	 * Zera contador para uma nova execução
+	 * @throws RemoteException
+	 */
+    public void zeraContaPasso             ( ) throws RemoteException;
+    
+    /**
     * Identificação da evolução da inserção de dados no conjunto delta
     * @return
     */
@@ -63,7 +69,11 @@ public interface AutomatoInterface extends Remote
      */
 	public int getTamanhoCjtFuncTran       ( )throws RemoteException; 
 	
-	
+	/**
+	 * Zera contador para uma nova execução
+	 * @throws RemoteException
+	 */
+	public void zeraContadorFuncTran       ( )throws RemoteException; 
 
     /**
      * Definição de quantidade de usuários no sistenma

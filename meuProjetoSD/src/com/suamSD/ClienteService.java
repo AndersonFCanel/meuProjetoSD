@@ -1,14 +1,10 @@
 package com.suamSD;
 
 import java.awt.Dimension;
-import java.io.ObjectInputStream.GetField;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-
-import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -146,7 +142,12 @@ public class ClienteService
                     Util.interrompeThread ( ); 
                 }
                 
-                if ( "?".trim( ).equals( delta ) )
+                if ("I".equalsIgnoreCase( delta.trim( ) ) )  
+                {
+                    tutorialTransicao( );
+                }
+                
+                if ( "?".equalsIgnoreCase( delta.trim( ) ) )
                 {
                 	 b = true;
                 	 
@@ -190,7 +191,7 @@ public class ClienteService
                     Util.interrompeThread ( ); 
                 }
                 
-                if ( estadoInicial.trim( ).equalsIgnoreCase( "?" ) ) 
+                if ( "?".equalsIgnoreCase( estadoInicial .trim( ) ) ) 
                 {
                 	b = true;
                 	
@@ -241,7 +242,7 @@ public class ClienteService
                 }
                 else
                 { 
-                    if ( cjtEstFinal.trim( ).equalsIgnoreCase( "?" ) ) 
+                    if ( "?".equalsIgnoreCase( cjtEstFinal.trim( ) ) ) 
                     {
                     	b = false;
                     	
@@ -292,9 +293,7 @@ public class ClienteService
                 palavra  = JOptionPane.showInputDialog( null,
                                   "Entre com a palavra a ser verificada: "
                                 + "\nPara conferir os valores dos conjuntos e regras de produção digite '?'"
-                                + "\nPara sair entre cancelar." );
-                                                
-              	  
+                                + "\nPara sair entre cancelar." ); 
               	
                 if ( palavra == null)
                 {

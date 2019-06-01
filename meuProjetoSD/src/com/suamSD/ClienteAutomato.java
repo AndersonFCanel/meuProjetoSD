@@ -51,26 +51,24 @@ public class ClienteAutomato extends Thread
             default:
             	JOptionPane.showMessageDialog( null, "Aplicação funciona apenas 1 ou 2 Clientes!" );
      
-                 Util.interrompeThread( );
-                 
-                //stub.setIdentificaUsuario( 'A' );
-                //t1.interrupt( );
-                //t2.interrupt( );
-                
+                Util.interrompeThread( );
                 break;
             }  
         }
         catch ( RemoteException e ) 
         {
+        	JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + e );
             e.printStackTrace();
         } 
         catch ( NotBoundException e )
         {
-            e.printStackTrace( );
+        	JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + e );
+        	e.printStackTrace( );
         }
         catch ( InterruptedException e ) 
         {
-			e.printStackTrace( );
+        	JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + e );
+            e.printStackTrace( );
 		}
     }
 
@@ -98,37 +96,10 @@ public class ClienteAutomato extends Thread
                 try 
                 {
                     //Variáveis para armazenar valores devolvidos do servidor.
-                    boolean verEntradasAnteriores = false;
                     String  entrada ;
-                    String  isValid;
-                 
-                    //Controle de execução //se houver, próximo usuário será o 'B'
-                    //String  resposta;
-                    //boolean b = false;
-                    /*
-                    do 
-                    {
-                        resposta = JOptionPane.showInputDialog( null,
-                                "Para um cliente ENTRE 1, para dois ENTRE 2." );
-                        
-                        resposta = resposta.trim( );
-                        
-                        if ( resposta == null )
-                        {
-                        	Util.interrompeThread( );;
-                        }
-                        if ( "1".equals( resposta ) )
-                        {
-                            stub.setIdentificaUsuario( 'A' );
-                        }
-                        if ( "2".equals( resposta ) )
-                        {
-                            stub.setIdentificaUsuario( 'B' );
-                        }
-                    } 
-                    while ( b ); 
-                    */
-                   
+                    String  responseIsValid;
+                    stub.zeraContaPasso( );
+                    
                     /**
                      * Caso no servidor tenha sido informado que a 
                      * aplicação será executada com dois clientes
@@ -139,201 +110,198 @@ public class ClienteAutomato extends Thread
                     {
                     	stub.setIdentificaUsuario( 'B' );
 					}
-                    
-                        /**
-                         * Execução do primeiro método  - Passo 1
-                         */
-                        do
-                        {
-                            entrada = ClienteService.entrarConjuntoCaracteres_Alfabeto( ); 
-                            isValid = stub.setAlfabeto( entrada                         );
-                        
-                            if( !"OK".equals( isValid ) )
-                                JOptionPane.showMessageDialog( null, isValid );
-                            else 
-                            {
-                                JOptionPane.showMessageDialog( null, "Entrada Verificada" );
-                                stub.incrementaContaPasso( );
-                            }
-                        
-                        }
-                        while( !"OK".equals( isValid ) );
-                         
-                        if( !( stub.getIdentificaUsuario( ) =='A' ) )
-                        {
-                            do 
-                            {
-                                ClienteService.aguardarVezOutroUsuarioCli( "A" );
-                            } 
-                            while ( stub.getContaPasso( ) <= 2  );
-                        }
-                        
-                        //CASO A EXECUÇÃO SEJA APENAS DE UM CLIENTE
-                        /**
-                         * Execução do Segundo método  - Passo 2
-                         */
-                        if( stub.getIdentificaUsuario( ) =='A' )
-                        {
-                            do
-                            {
-                                entrada               = ClienteService.entraConjuntoEstado(        );
-                                isValid               = stub.setEstados( entrada                   );
-                                verEntradasAnteriores = ClienteService.valoresAtuais( entrada, '@' );
-                                
-                                if( !"OK".equals( isValid ) && verEntradasAnteriores  )
-                                    JOptionPane.showMessageDialog( null, isValid );
-                                else 
-                                {
-                                    JOptionPane.showMessageDialog( null, "Entrada Verificada" );
-                                    stub.incrementaContaPasso( );
-                                }
-                            }
-                            while( !"OK".equals( isValid )  && verEntradasAnteriores );
-                        }
-                       
-                        
-                        /**
-                         * Execução do terceiro método  - Passo 3
-                         */
-                       
-                        int cont1 = stub.getTamanhoCjtFuncTran( );
-                        int cont2 = stub.getContadorFuncTran  ( );
-                        ClienteService.tutorialTransicao( );
-                        	
-                         do
-                         {   
-                        	 while ( cont2 < cont1 )
-                             {
-                        		cont2 = stub.getContadorFuncTran  ( ) + 1;
-                        				 
-                                entrada               = ClienteService.entraFuncaoTransicao(              ); 
-                                isValid               = stub.setRegra                      ( entrada      );
-                                verEntradasAnteriores = ClienteService.valoresAtuais       ( entrada, stub.getIdentificaUsuario( ) =='A' ? '@' : 'A');
-                                                        
-                                if( !"OK".equals( isValid ) && verEntradasAnteriores )
-                                    JOptionPane.showMessageDialog( null, isValid );
-                                else 
-                                {
-                                    JOptionPane.showMessageDialog( null, "Entrada Verificada" );
-                                    stub.incrementaContaPasso( );
-                                }
-                                
-                                if ("I".equalsIgnoreCase( entrada ) )  
-                                {
-                                    ClienteService.tutorialTransicao( );
-                                }
-                              }
-                          }
-                          while( !"OK".equals( isValid ) && verEntradasAnteriores );
-                        
-                        
-                         
-                        if( !( stub.getIdentificaUsuario( ) =='A' ) )
-                        {
-                            do 
-                            {
-                                ClienteService.aguardarVezOutroUsuarioCli( "A" );
-                            } 
-                            while ( stub.getContaPasso( ) <= 4  );
-                        }
-                        
-                        //CASO A EXECUÇÃO SEJA APENAS DE UM CLIENTE
-                        /**
-                         * Execução do Quarto método  - Passo 4
-                         */
-                        if( stub.getIdentificaUsuario( ) =='A' )
-                        {                     
-                            do
-                            {
-                                entrada               = ClienteService.entraEstIN   (              );
-                                isValid               = stub.setEstInicial          ( entrada      );
-                                verEntradasAnteriores = ClienteService.valoresAtuais( entrada, '@' );
-                                
-                                if( !"OK".equals( isValid ) && verEntradasAnteriores )
-                                    JOptionPane.showMessageDialog( null, isValid );
-                                else 
-                                {
-                                    JOptionPane.showMessageDialog( null, "Entrada Verificada" );
-                                    stub.incrementaContaPasso( );
-                                }
-                            }
-                            while( !"OK".equals( isValid ) && verEntradasAnteriores );
-                        }
-                        
-                        /**
-                         * Execução do quinto método  - Passo 5
-                         */               
-                        do
-                        {
-                            entrada               = ClienteService.entraCjtEstFinal(              );
-                            isValid               = stub.setConjuntoEstadosFinais  ( entrada      );
-                            verEntradasAnteriores = ClienteService.valoresAtuais   ( entrada,  stub.getIdentificaUsuario( ) =='A' ? '@' : 'A' );
-                            
-                            if( !"OK".equals( isValid ) && verEntradasAnteriores )
-                                JOptionPane.showMessageDialog( null, isValid );
-                            else 
-                            {
-                                JOptionPane.showMessageDialog( null, "Entrada Verificada" );
-                                stub.incrementaContaPasso( );
-                            }
-                        }
-                        while( !"OK".equals( isValid ) && verEntradasAnteriores );
-                        
-                        if( !( stub.getIdentificaUsuario( ) =='A' ) )
-                        {
-                            do 
-                            {
-                                ClienteService.aguardarVezOutroUsuarioCli( "A" );
-                            } 
-                            while (  stub.getContaPasso( ) <= 6  );
-                        }
-                        
-                        //CASO A EXECUÇÃO SEJA APENAS DE UM CLIENTE
-                        /**
-                         * Execução do Quarto método  - Passo 6
-                         */
-                        if( stub.getIdentificaUsuario( ) =='A' )
-                        {                    
-                            do
-                            {
-                                  entrada               = ClienteService.entraPalavra (              );
-                                  isValid               = stub.checaPalavra           ( entrada      );
-                                  verEntradasAnteriores = ClienteService.valoresAtuais( entrada, '@' );
                                   
-                                 if( !"OK".equals( isValid ) && verEntradasAnteriores )
-                                      JOptionPane.showMessageDialog( null, isValid );
-                                 else 
-                                 {
-                                     JOptionPane.showMessageDialog( null, "Entrada Verificada" );
-                                     stub.incrementaContaPasso( );
-                                 }
-
+                    /**
+                     * Execução do primeiro método  - Passo 1
+                     */
+                    do
+                    {
+                        entrada         = ClienteService.entrarConjuntoCaracteres_Alfabeto( ); 
+                        responseIsValid = stub.setAlfabeto( entrada                         );
+                    
+                        if( !"OK".equals( responseIsValid ) )
+                            JOptionPane.showMessageDialog( null, responseIsValid );
+                        else 
+                        {
+                            JOptionPane.showMessageDialog( null, "Entrada Verificada" );
+                            stub.incrementaContaPasso( );
+                        }
+                    
+                    }
+                    while( !"OK".equals( responseIsValid ) );
+                    //Fim - passo 3 
+                    
+                    if( !( stub.getIdentificaUsuario( ) =='A' ) )
+                    {
+                        do 
+                        {
+                            ClienteService.aguardarVezOutroUsuarioCli( "A" );
+                        } 
+                        while ( stub.getContaPasso( ) <= 2  );
+                    }
+                    
+                    //CASO A EXECUÇÃO SEJA APENAS DE UM CLIENTE
+                    /**
+                     * Execução do Segundo método  - Passo 2
+                     */
+                    if( stub.getIdentificaUsuario( ) =='A' )
+                    {
+                        do
+                        {
+                            entrada         = ClienteService.entraConjuntoEstado(        );
+                            responseIsValid = stub.setEstados( entrada                   );
+                            
+                            if( !"OK".equals( responseIsValid ) )
+                                JOptionPane.showMessageDialog( null, responseIsValid );
+                            else 
+                            {
+                                JOptionPane.showMessageDialog( null, "Entrada Verificada" );
+                                stub.incrementaContaPasso( );
                             }
-                            while( !"OK".equals( isValid ) && verEntradasAnteriores );
-                       }
+                        }
+                        while( !"OK".equals( responseIsValid ) );
+                    }
+                   //Fim - passo 2
+                    
+                    /**
+                     * Execução do terceiro método  - Passo 3
+                     */
+                    stub.zeraContadorFuncTran( );
+                    int cont1 = stub.getTamanhoCjtFuncTran( );
+                    int cont2 = stub.getContadorFuncTran  ( );
+                    ClienteService.tutorialTransicao( );
+                   
+                    do
+                     {   
+                    	 while ( cont2 < cont1 )
+                         {
+                    		cont2 = stub.getContadorFuncTran  ( ) + 1;
+                    				 
+                            entrada         = ClienteService.entraFuncaoTransicao(              ); 
+                            responseIsValid = stub.setRegra                      ( entrada      );
+                                                     
+                            if( !"OK".equals( responseIsValid ) )
+                                JOptionPane.showMessageDialog( null, responseIsValid );
+                            else 
+                            {
+                                JOptionPane.showMessageDialog( null, "Entrada Verificada" );
+                                stub.incrementaContaPasso( );
+                            }
+                          }
+                      }
+                      while( !"OK".equals( responseIsValid ) );
+                    //Fim passo - 3
+                    
+                     
+                    if( !( stub.getIdentificaUsuario( ) =='A' ) )
+                    {
+                        do 
+                        {
+                            ClienteService.aguardarVezOutroUsuarioCli( "A" );
+                        } 
+                        while ( stub.getContaPasso( ) <= 4  );
+                    }
+                    
+                    //CASO A EXECUÇÃO SEJA APENAS DE UM CLIENTE
+                    /**
+                     * Execução do Quarto método  - Passo 4
+                     */
+                    if( stub.getIdentificaUsuario( ) =='A' )
+                    {                     
+                        do
+                        {                    
+                            entrada         = ClienteService.entraEstIN   (              );
+                            responseIsValid = stub.setEstInicial          ( entrada      );
+                            
+                            if( !"OK".equals( responseIsValid ) )
+                                JOptionPane.showMessageDialog( null, responseIsValid );
+                            else 
+                            {
+                                JOptionPane.showMessageDialog( null, "Entrada Verificada" );
+                                stub.incrementaContaPasso( );
+                            }
+                        }
+                        while( !"OK".equals( responseIsValid ) );
+                    }
+                    //Fim - passo 4
+                    
+                    /**
+                     * Execução do quinto método  - Passo 5
+                     */               
+                    do
+                    {
+                        entrada         = ClienteService.entraCjtEstFinal(         );
+                        responseIsValid = stub.setConjuntoEstadosFinais  ( entrada );
                         
-                        if( stub.getIdentificaUsuario( ) =='A' )
+                        if( !"OK".equals( responseIsValid ) )
+                            JOptionPane.showMessageDialog( null, responseIsValid );
+                        else 
                         {
-                            ClienteService.valoresAtuais( "?", '@' );
+                            JOptionPane.showMessageDialog( null, "Entrada Verificada" );
+                            stub.incrementaContaPasso( );
                         }
-                        else
+                    }
+                    while( !"OK".equals( responseIsValid ) );
+                    
+                    if( !( stub.getIdentificaUsuario( ) =='A' ) )
+                    {
+                        do 
                         {
-                        	 ClienteService.valoresAtuais( "?", 'A' );
+                            ClienteService.aguardarVezOutroUsuarioCli( "A" );
+                        } 
+                        while (  stub.getContaPasso( ) <= 6  );
+                    }
+                    
+                    //CASO A EXECUÇÃO SEJA APENAS DE UM CLIENTE
+                    /**
+                     * Execução do Quarto método  - Passo 6
+                     */
+                    if( stub.getIdentificaUsuario( ) =='A' )
+                    {                    
+                        do
+                        {
+                              entrada         = ClienteService.entraPalavra (         );
+                              responseIsValid = stub.checaPalavra           ( entrada );
+                              
+                             if( !"OK".equals( responseIsValid ) )
+                                  JOptionPane.showMessageDialog( null, responseIsValid );
+                             else 
+                             {
+                                 JOptionPane.showMessageDialog( null, "Entrada Verificada" );
+                                 stub.incrementaContaPasso( );
+                             }
+
                         }
+                        while( !"OK".equals( responseIsValid ) );
+                    }
+                    
+                    if( stub.getIdentificaUsuario( ) =='A' )
+                    {
+                        ClienteService.valoresAtuais( "?", '@' );
+                    }
+                    else
+                    {
+                    	 ClienteService.valoresAtuais( "?", 'A' );
+                    }
                 }
                 catch ( RemoteException e ) 
                 {
                     stub.setIdentificaUsuario( 'A' );
+                    JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + e );
                     e.printStackTrace( );
-                } catch (InterruptedException e) {
-					e.printStackTrace();
+                } 
+                catch (InterruptedException e) 
+                {
+                	stub.setIdentificaUsuario( 'A' );
+                	JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + e );
+                	e.printStackTrace();
 				}
-                
-                
+
                 System.out.println( "Fim da execução do cliente_1!" );
             } 
             catch (RemoteException | NotBoundException ex) 
             {
+            	JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + ex );
                 Logger.getLogger( ClienteAutomato.class.getName( ) ).log( Level.SEVERE, null, ex );
             }
         }
@@ -363,70 +331,62 @@ public class ClienteAutomato extends Thread
                         
                 try 
                 {
-                        String isValid;
+                        String responseIsValid;
                         String entrada;
-                        boolean verEntradasAnteriores;
-                        
-                        /*if( stub.getIdentificaUsuario( ) != 'A' )
-                        {
-                        	JOptionPane.showMessageDialog( null, "O servidor esta disponível apenas para 1 cliente." );
-                        	Util.interrompeThread( );
-                        }*/
-                        
+                                               
                         //Controle de execução //Próximo usuário será o C (Não existe na nossa aplição)
-                         stub.setIdentificaUsuario( 'C' );
+                        //É setado um usuário inválido para impedir que o 2 cliente seja executado de forma duplicada.
+                        stub.setIdentificaUsuario( 'C' );
                          
                         //Método executado pelo Cliente A 
                         // stub.setAlfabeto ( );  - Passo 1
                        
-                        //Executando segundo método   - Passo 2
                          do 
                          {
                              ClienteService.aguardarVezOutroUsuarioCli( "B" );
                          } 
                          while ( stub.getContaPasso( ) <= 1);
                    
+                        //Executando segundo método   - Passo 2
                         do
                         {
                             entrada               = ClienteService.entraConjuntoEstado(        );
-                            isValid               = stub.setEstados( entrada                   );
-                            verEntradasAnteriores = ClienteService.valoresAtuais( entrada, 'B' );
-                            
-                            if( !"OK".equals( isValid ) && verEntradasAnteriores  )
-                                JOptionPane.showMessageDialog( null, isValid );
+                            responseIsValid               = stub.setEstados( entrada                   );
+                                                      
+                            if( !"OK".equals( responseIsValid ) )
+                                JOptionPane.showMessageDialog( null, responseIsValid );
                             else 
                             {
                                 JOptionPane.showMessageDialog( null, "Entrada Verificada" );
                                 stub.incrementaContaPasso( );
                             }
                         }
-                        while( !"OK".equals( isValid )  && verEntradasAnteriores );
+                        while( !"OK".equals( responseIsValid ) );
                         
                         //Método executado pelo Cliente A 
                         // stub.setRegra ( );  - Passo 3
-                       
-                        //Executando Quarto Método  - Passo 4
+                     
                         do 
                         {
                             ClienteService.aguardarVezOutroUsuarioCli( "B" );
                         } 
                         while ( stub.getContaPasso( ) <= 3  );
-                                               
+                           
+                        //Executando Quarto Método  - Passo 4
                         do
                         {
                             entrada               = ClienteService.entraEstIN   (              );
-                            isValid               = stub.setEstInicial          ( entrada      );
-                            verEntradasAnteriores = ClienteService.valoresAtuais( entrada, 'B' );
+                            responseIsValid               = stub.setEstInicial          ( entrada      );
                             
-                            if( !"OK".equals( isValid ) && verEntradasAnteriores )
-                                JOptionPane.showMessageDialog( null, isValid );
+                            if( !"OK".equals( responseIsValid ) )
+                                JOptionPane.showMessageDialog( null, responseIsValid );
                             else 
                             {
                                 JOptionPane.showMessageDialog( null, "Entrada Verificada" );
                                 stub.incrementaContaPasso( );
                             }
                         }
-                        while( !"OK".equals( isValid ) && verEntradasAnteriores );
+                        while( !"OK".equals( responseIsValid ) );
                         
                        //Método executado pelo Cliente A 
                        //stub.setConjuntoEstadosFinais( );  - Passo 5
@@ -441,29 +401,29 @@ public class ClienteAutomato extends Thread
                        do
                        {
                            entrada               = ClienteService.entraPalavra (              );
-                           isValid               = stub.checaPalavra           ( entrada      );
-                           verEntradasAnteriores = ClienteService.valoresAtuais( entrada, 'B' );
+                           responseIsValid               = stub.checaPalavra           ( entrada      );
                                                      
-                           if( !"OK".equals( isValid ) && verEntradasAnteriores )
-                               JOptionPane.showMessageDialog( null, isValid );
+                           if( !"OK".equals( responseIsValid ) )
+                               JOptionPane.showMessageDialog( null, responseIsValid );
                            else // implementar entrada igual a 0
                            {
                                JOptionPane.showMessageDialog( null, "Entrada Verificada" );
                                stub.incrementaContaPasso( );                     
                            }
                        }
-                       while( !"OK".equals( isValid ) && verEntradasAnteriores );
-                  
-                      
-                       
+                       while( !"OK".equals( responseIsValid ) );
+     
                 } 
                 catch ( RemoteException e ) 
                 {
+                	JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + e );
                     stub.setIdentificaUsuario( 'B' );
                     e.printStackTrace( );
                 } 
                 catch ( InterruptedException e ) 
                 {
+                	JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + e );
+                	stub.setIdentificaUsuario( 'B' );
 					e.printStackTrace( );
 				} 
                 
@@ -471,10 +431,9 @@ public class ClienteAutomato extends Thread
             } 
             catch (RemoteException | NotBoundException ex) 
             {
+            	JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + ex );
                 Logger.getLogger( ClienteAutomato.class.getName( ) ).log( Level.SEVERE, null, ex );
             }
        }
     };
-    
-
 }
