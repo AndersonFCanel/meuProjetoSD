@@ -300,11 +300,15 @@ public class AutomatoService implements AutomatoInterface
     {
         String responseValidaEstadoI = "OK";
  
-        estadoIni = responseValidaEstadoI = verificaEstInicial( ei ) ;
-        
-        //estadoIni   = removeNulos            ( estadoIni );
-        estIniIMPRIME = "{" + estadoIni + "}";
-        estadoi = conjuntoDeEstadosTerminaisEnaoTerminais.indexOf( estadoIni );
+        responseValidaEstadoI = verificaEstInicial( ei ) ;
+ 
+        if( "OK".equals( responseValidaEstadoI ) )
+        {
+            estadoIni = ei;
+            //estadoIni   = removeNulos            ( estadoIni );
+            estIniIMPRIME = "{" + estadoIni + "}";
+            estadoi = conjuntoDeEstadosTerminaisEnaoTerminais.indexOf( ei.trim( ) );
+        }
         
         return responseValidaEstadoI;
     }
@@ -654,7 +658,7 @@ public class AutomatoService implements AutomatoInterface
     			return "Formato inválido";
    		}
                 
-        if ( !conjuntoDeEstadosTerminaisEnaoTerminais.contains( estadoInicial ) )
+        if ( !conjuntoDeEstadosTerminaisEnaoTerminais.contains( estIn ) )
         {
             return "Estado no inexistente no conjunto de estados." ;
         } 

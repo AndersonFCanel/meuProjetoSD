@@ -85,7 +85,7 @@ public class ServidorAutomato
                     stubAutomato.setIdentificaUsuario( 'A' );
                 	stubAutomato.setQtdUsuario( 1 );
                 	
-                	System.out.println( "Operando com 1 cliente apenas." );
+                	System.out.println( "\nOperando com 1 cliente apenas.\n" );
                 }
                 if ( "2".equals( resposta ) )
                 {
@@ -94,7 +94,7 @@ public class ServidorAutomato
                     stubAutomato.setIdentificaUsuario( 'A' );
                     stubAutomato.setQtdUsuario( 2 );
 
-                	System.out.println( "Operando com 2 clientes." );
+                	System.out.println( "\nOperando com 2 clientes.\n" );
                 }
                 
 			} while ( b );
