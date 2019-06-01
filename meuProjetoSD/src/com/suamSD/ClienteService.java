@@ -29,12 +29,15 @@ public class ClienteService
             do 
             {
                 alfabeto = JOptionPane.showInputDialog( null,
-                        "Entre com o alfabeto Σ:\nCada caracter deve ser separado por virgula, "
-                                + "sem espaço.\nEX: a,b,c,d,e ...\n"
-                                + "Lembre-se, tratando de conjunto não são permitidos elementos duplicados."
-                                + "\nTamanho permitido:\n" 
-                                + "       Mínimo = 1(um)   elemento. \n"
-                                + "       Máximo = 3(três) elementos.\n" );
+                        "Entre com o alfabeto Σ:\n\n"
+                        + "ATENÇÃO AS INSTRUÇÕES: \n"
+                      + "\nCada caracter deve ser separado por virgula,\n "
+                      + "não é permitida a utilização de espaço.\n"
+                      + "EX: a,b,c,d,e ...\n"
+                      + "Lembre-se, tratando de conjunto não são permitidos elementos duplicados."
+                      + "\nTamanho permitido (Número de elementos possíveis):\n" 
+                      + "       Mínimo = 1(um)   elemento. \n"
+                      + "       Máximo = 3(três) elementos.\n\n" );
                 
                 if ( alfabeto == null)
                 {
@@ -59,14 +62,15 @@ public class ClienteService
             	b = false;
             	
                 estados  = JOptionPane.showInputDialog( null,
-                        "ATENÇÃO AO MODELO DE INSERÇÃO NO CONJUNTO DE ESTADOS\nCada estado deve ser "
-                                + "separado por virgula, sem espaço.\n" 
-                                + "EX: A,B,C ... e1,e2,e3...\n"
-                                + "Lembre-se, tratando de conjunto não são permitidos elementos duplicados."
-                                + "\nTamanho permitido:\n"
-                                + "       Mínimo = 1(um)   elemento. \n"
-                                + "       Máximo = 3(três) elementos.\n"
-                                + "Para checar entradas anteriores digite '?'.\n\n" );
+                		  "ATENÇÃO AS INSTRUÇÕES: \n\n"
+                        + "\nCada ESTADO deve ser separado por virgula,\n "
+                        + "não é permitida a utilização de espaço.\n"
+                        + "EX: A,B,C ... e1,e2,e3...\n"
+                        + "Lembre-se, tratando de conjunto não são permitidos elementos duplicados."
+                        + "\nTamanho permitido (Número de elementos possíveis):\n" 
+                        + "       Mínimo = 1(um)   elemento. \n"
+                        + "       Máximo = 3(três) elementos.\n"
+                        + "Para checar dados do autômato  digite '?'.\n\n" );
                 
                 if ( estados == null)
                 {
@@ -127,7 +131,7 @@ public class ClienteService
                         "\nEntre com as transiçãos de estado (δ: Q × Σ → Q):\n" + "\nPara ver o tutorial  novamente : 'i'"
                                 + "\nPara sair : 's'\n" 
                                 //+ "\nVer entradas anteriores 'a'" + "\n "
-                                + "Para checar entradas anteriores digite ?\n\n" );
+                                + "Para checar dados do autômato  digite ?\n\n" );
                 
                 if ( delta == null)
                 {
@@ -170,7 +174,7 @@ public class ClienteService
                 		+ "ATENÇÃO:\n"
                 		+ "O estado inicial deve ser inserido na forma 'estado', sem vírgulas ou qualquer outro adereço,\n"
                 		+ "o estado inicial é único.\n "
-                        + "Para checar entradas anteriores digite '?'.\n");
+                        + "Para checar dados do autômato  digite '?'.\n");
 
 
                 if ( estadoInicial == null )
@@ -216,7 +220,7 @@ public class ClienteService
                         + "\nTamanho permitido:\n"
                         + "       Mínimo = 1(um)   elemento. \n"
                         + "       Máximo = 3(três) elementos.\n"
-                        + "Para checar entradas anteriores digite '?'.\n\n" );
+                        + "Para checar dados do autômato  digite '?'.\n\n" );
         
                 if ( cjtEstFinal == null )
                 {
