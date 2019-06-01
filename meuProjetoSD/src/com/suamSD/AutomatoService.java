@@ -146,7 +146,7 @@ public class AutomatoService implements AutomatoInterface
         responseValidAlf = verificaConjuntoCaracteres_Alfabeto( alf );
         
         //Armazenando para imprimir, tratando a formatação
-        alfabetoIMPRIME = alfabeto;
+        alfabetoIMPRIME = "{ " + alfabeto + " }";
         alfabeto        = removeNulos( alfabeto );// Removendo {,}
 
         // Poderia ser um array de object, caso cada elemento do conjunto fosse um conjunto de simbolos
@@ -180,7 +180,7 @@ public class AutomatoService implements AutomatoInterface
         
         responseValidEst = verificaEst( est ); 
         
-        conjuntoDeEstadosTerminaisIMPRIME = est;
+        conjuntoDeEstadosTerminaisIMPRIME = "{ " + est + " }";
         
         conjuntoDeEstadosTerminaisEnaoTerminais = removeNulos( est );// Removendo {,}
         
@@ -344,7 +344,7 @@ public class AutomatoService implements AutomatoInterface
             } 
         }      
         
-        conjEstTermIMPRIME       = conjuntoEstadosTerminais;
+        conjEstTermIMPRIME       = "{ " + conjuntoEstadosTerminais + " }";
         conjuntoEstadosTerminais = removeNulos( conjuntoEstadosTerminais );
         estadosf                 = new int[ conjuntoEstadosTerminais.length( ) ];
         int  b                   = 0, 

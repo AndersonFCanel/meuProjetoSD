@@ -316,7 +316,7 @@ public class ClienteAutomato extends Thread
                         }
                         else
                         {
-                        	 ClienteService.valoresAtuais( "?", 'B' );
+                        	 ClienteService.valoresAtuais( "?", 'A' );
                         }
                 }
                 catch ( RemoteException e ) 
