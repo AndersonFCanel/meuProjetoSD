@@ -324,8 +324,6 @@ public class AutomatoService implements AutomatoInterface
      */
      public String setConjuntoEstadosFinais( String cjtFin )
      {
-        // ENTRA COM ESTADOS FINAIS
-        String[ ] estFin;
         String validaConjuntoEstadosFin = "OK";
         
         conjuntoEstadosTerminais = cjtFin;
@@ -336,7 +334,7 @@ public class AutomatoService implements AutomatoInterface
     			return "ENTRADA INVALIDA\n" + "Formato inválido";
    		}
         
-        estFin = splitVirgula( conjuntoEstadosTerminais );
+        String[ ] estFin = splitVirgula( conjuntoEstadosTerminais );
         
         for ( String est : estFin ) 
         {
@@ -366,11 +364,11 @@ public class AutomatoService implements AutomatoInterface
                     break;
                 }
             }
-            y++;
-            
-            imprimirAutomato( alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, 
-                             estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME );
+            y++;  
         }
+        
+        imprimirAutomato( alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, 
+                          estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME );
         //****************
 
         /*Meu código

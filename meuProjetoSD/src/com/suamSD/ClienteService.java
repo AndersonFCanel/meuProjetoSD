@@ -167,8 +167,10 @@ public class ClienteService
             	b = false;
             	
                 estadoInicial = JOptionPane.showInputDialog( null, "ESTADO INICIAL:\nEntre com o estado inicial q0: \n"
+                		+ "ATENÇÃO:\n"
                 		+ "O estado inicial deve ser inserido na forma 'estado', sem vírgulas ou qualquer outro adereço,\n"
-                		+ "o estado inicial é único.\n " );
+                		+ "o estado inicial é único.\n "
+                        + "Para checar entradas anteriores digite '?'.\n");
 
 
                 if ( estadoInicial == null )
@@ -209,7 +211,12 @@ public class ClienteService
             	b = false;
             	
                  cjtEstFinal = JOptionPane.showInputDialog( null, "\nEntre com o conjunto dos estados finais F:"
-                        + "\nCada estado deve ser separado por virgula, sem espaços.\nEX: A,B,C ... e1,e2,e3 ..." );
+                        + "\nCada estado deve ser separado por virgula, sem espaços.\nEX: A,B,C ... e1,e2,e3 ...\n"
+                        + "Lembre-se, tratando de conjunto não são permitidos elementos duplicados."
+                        + "\nTamanho permitido:\n"
+                        + "       Mínimo = 1(um)   elemento. \n"
+                        + "       Máximo = 3(três) elementos.\n"
+                        + "Para checar entradas anteriores digite '?'.\n\n" );
         
                 if ( cjtEstFinal == null )
                 {
@@ -224,7 +231,7 @@ public class ClienteService
                 }
                 else
                 { 
-                    if ( cjtEstFinal.trim( ).equalsIgnoreCase( "I" ) ) 
+                    if ( cjtEstFinal.trim( ).equalsIgnoreCase( "?" ) ) 
                     {
                     	b = false;
                     	
