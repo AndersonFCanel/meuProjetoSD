@@ -136,11 +136,12 @@ public class AutomatoService implements AutomatoInterface
     //private static final Pattern PATTERN_ALFBETO    = Pattern.compile( "(^\\S+,\\S+$)|(^\\S+$)" );
     
     private static final Pattern PATTERN_DELTA      = Pattern.compile( "^\\S,\\S;\\S$"       );
-    private static final Pattern PATTERN_ESTADOS    = Pattern.compile( "(^\\S,\\S$)|(^\\S$)" );
-    private static final Pattern PATTERN_ALFBETO    = Pattern.compile( "(^\\S,\\S$)|(^\\S$)" );
+    private static final Pattern PATTERN_ESTADOS    = Pattern.compile( "(^\\S,\\S$)*|(^\\S$)" );
+    private static final Pattern PATTERN_ALFBETO    = Pattern.compile( "(^\\S,\\S$)*|(^\\S$)" );
     private static final Pattern PATTERN_ESTADO_INI = Pattern.compile( "(^\\S{1}$)" );
     
-    private static HashMap<Integer, String> conjuntoDeEstadosMap = new HashMap<Integer, String>( );
+    private static HashMap<Integer, String> conjuntoDeEstadosMap   = new HashMap<Integer, String>( );
+    private static HashMap<String, String> listaDePalavrasTestadas = new HashMap<String, String>( );
     //private static HashMap<Integer, String> conjuntoDeEstadosFinaisMap = new HashMap<Integer, String>( );
     
     static int quantidadeDeFuncTransPossiveis;
@@ -460,9 +461,13 @@ public class AutomatoService implements AutomatoInterface
                 
                 if ( teste == 1 ) 
                 {
+                	 listaDePalavrasTestadas.put( palavraS , "PALAVRA ACEITA PELO AUTOMATO" );
                      return  "PALAVRA ACEITA PELO AUTOMATO\n\n";
                     // break;
-                } else {
+                }
+                else 
+                {
+                	listaDePalavrasTestadas.put( palavraS , "PALAVRA NÃO ACEITA PELO AUTOMATO" );
                     return   "PALAVRA NÃO ACEITA PELO AUTOMATO\n\n";
                     // break;
                 }
@@ -782,6 +787,11 @@ public class AutomatoService implements AutomatoInterface
     		return imprimirAutomatoCliAouB( alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, 
     										estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME, 'B' );  
        	}
+    	if( c == 'P')
+    	{
+    		return imprimirAutomatoCliAouB( alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, 
+    										estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME, 'P' );  
+       	}
 		return null;  	
    	}
     
@@ -859,10 +869,44 @@ public class AutomatoService implements AutomatoInterface
                    + "\n"
                    + "**************************************************";
         }
+        
+        if( cliente == 'P') {
+        	 // Apresenta o contéudo do Map       
+        	String[] listaPalavras = listaDePalavrasTestadas.toString( ).split(",");
+           
+        	sb = new StringBuilder( );
+        	
+        	for (String string : listaPalavras) {
+        		sb.append ( string +"\n" );
+			}
+        	
+        	
+        	return  "**************************************************\n" 
+        	        + "\tIMPRIMINDO DADOS DO AUTOMATO\n"
+        	        + "\t\t\t ==>NOTAÇÃO UTILIZADA <== \n" 
+        	        + "\tO conjunto de simbolos - alfabeto: Σ \n"
+        	        + "\tO conjunto dos estados terminais e não terminais: Q = {S1, S2...}\n"
+        	        + "\tAs transicoes: (δ: Q × Σ → Q)\n" 
+        	        + "\tO  estado Inicial: q0\n"
+        	        + "\tO conjunto dos estados terminais: F\n" 
+        	        + "\tM = (Q, Σ, (δ: Q × Σ → Q), q0, F)\n"
+        	        + "\n\t\t ==>DADOS INFORMADOS <==\n" + "\tΣ   = " + alf + "\n" + "" 
+        	        + "\tQ   = " + est + "\n"
+        	        + "\tδ   = \n"
+        	        + "ESTADO PARTIDA:         Q" + Arrays.toString(estP) + "\n"
+        	        + "CARACTER CONSUMIDO: Σ" + Arrays.toString(le) + "\n" 
+        	        + "ESTADO DESTINO:          Q"+ Arrays.toString(estD) + "\n" + "" 
+        	        + "\tq0  = " + estIn + "\n" 
+        	        + "" + "\tF   = "+ conjuntoEstadosFinais + "\n" + ""
+        	        + "**************************************************"
+        	        +"\n\nPalavras Testadas:\n\n"
+                    +sb;
+       }
 		return null;
     }
 
     public static int qtdUsers;
+	private static StringBuilder sb;
     
 	@Override
 	public void setQtdUsuario( int i ) throws RemoteException

@@ -5,6 +5,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -316,6 +317,7 @@ public class ClienteService
                      
                      //Caracter que idenifica entradas globais de ambos os clientes
                       JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( '@' ) );
+
 				}
                 
             } 

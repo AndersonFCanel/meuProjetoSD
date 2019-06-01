@@ -1,5 +1,6 @@
 package com.suamSD;
 
+import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -7,6 +8,8 @@ import java.rmi.registry.Registry;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+
+import com.suamSD.gravadorArquivo.CriaArquivo;
 
 /**
  * Cliente aplicação Java RMI
@@ -270,7 +273,7 @@ public class ClienteAutomato extends Thread
                               
                               if ( entrada == null)
                               {
-                            	  System.out.println( "Clinete encerrado!" );
+                            	  System.out.println( "Cliente encerrado!" );
                             	  break;
                               }
                             	  requestIsValid = stub.checaAceitacaoPalavra( entrada );
@@ -283,6 +286,7 @@ public class ClienteAutomato extends Thread
                                  stub.incrementaContaPasso( );
                              }
                              System.out.println( "PASSO CORRENTE: " + stub.getContaPasso( ) );
+                             
                         }
                         while( !"OK".equals( requestIsValid ) );
                     }
@@ -295,6 +299,19 @@ public class ClienteAutomato extends Thread
                     {
                     	 ClienteService.valoresAtuais( "?", 'A' );
                     }
+                    
+                    System.out.println( "\nENTRADAS::\n\n" + stub.imprimirAutomatoCliente( 'P' ) );
+                    
+                    //método responsável pela criação do arquivo (automato.txt)
+           			CriaArquivo f = new CriaArquivo( );
+           			try 
+           			{
+           				f.criarArq( stub.imprimirAutomatoCliente( 'P' ) );
+           			} 
+           			catch ( IOException e )
+           			{
+           				e.printStackTrace();
+           			}
                 }
                 catch ( RemoteException e ) 
                 {
@@ -432,7 +449,18 @@ public class ClienteAutomato extends Thread
                            System.out.println( "PASSO CORRENTE: " + stub.getContaPasso( ) );
                        }
                        while( !"OK".equals( requestIsValid ) );
-                                       
+                                     
+                       //método responsável pela criação do arquivo (automato.txt)
+              			CriaArquivo f = new CriaArquivo( );
+              			try 
+              			{
+              				f.criarArq( stub.imprimirAutomatoCliente( 'P' ) );
+              			} 
+              			catch ( IOException e )
+              			{
+              				e.printStackTrace();
+              			}
+              			
                        ClienteService.valoresAtuais( "?", 'B' );
                } 
                 catch ( RemoteException e ) 
