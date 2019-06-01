@@ -188,9 +188,9 @@ public class ClienteAutomato extends Thread
                                 JOptionPane.showMessageDialog( null, "Entrada Verificada" );
                                 stub.incrementaContaPasso( );
                             }
+                            System.out.println( "PASSO CORRENTE: " + stub.getContaPasso( ) + 
+           			             "\nPosição função corrente: " + stub.getContadorFuncTran( ) );
                           }
-                    	 System.out.println( "PASSO CORRENTE: " + stub.getContaPasso( ) + 
-                    			             "\nPosição função corrente: " + stub.getContadorFuncTran( ) );
                       }
                       while( !"OK".equals( requestIsValid ) );
                     //Fim passo - 3
@@ -235,7 +235,7 @@ public class ClienteAutomato extends Thread
                     do
                     {
                         entrada         = ClienteService.entraCjtEstFinal(         );
-                        requestIsValid = stub.setConjuntoEstadosFinais  ( entrada );
+                        requestIsValid  = stub.setConjuntoEstadosFinais  ( entrada );
                         
                         if( !"OK".equals( requestIsValid ) )
                             JOptionPane.showMessageDialog( null, requestIsValid );
@@ -266,13 +266,14 @@ public class ClienteAutomato extends Thread
                     {                    
                         do
                         {
-                              entrada         = ClienteService.entraPalavra (         );
-                              if  ( entrada == null)
+                              entrada = ClienteService.entraPalavra (  );
+                              
+                              if ( entrada == null)
                               {
                             	  System.out.println( "Clinete encerrado!" );
                             	  break;
                               }
-                            	  requestIsValid = stub.checaAceitacaoPalavra           ( entrada );
+                            	  requestIsValid = stub.checaAceitacaoPalavra( entrada );
                               
                              if( !"OK".equals( requestIsValid ) )
                                   JOptionPane.showMessageDialog( null, requestIsValid );
@@ -431,8 +432,9 @@ public class ClienteAutomato extends Thread
                            System.out.println( "PASSO CORRENTE: " + stub.getContaPasso( ) );
                        }
                        while( !"OK".equals( requestIsValid ) );
-     
-                } 
+                                       
+                       ClienteService.valoresAtuais( "?", 'B' );
+               } 
                 catch ( RemoteException e ) 
                 {
                 	JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + e );

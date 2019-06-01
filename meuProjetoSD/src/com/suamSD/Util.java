@@ -1,5 +1,6 @@
 package com.suamSD;
 
+import java.net.InetAddress;
 import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
@@ -20,24 +21,31 @@ public class Util {
     
     public static String defineIP( ) 
     {      
-    	String ip;
+    	String ip = "";
     	boolean b = false;
     	
     	do
     	{
     		b = false;
-    		
-            ip = JOptionPane.showInputDialog( null,
-                    "Entre com o IP do servidor:\n "
-                    + "Para 127.0.0.1 'localhost', apenas clique OK!\n" );
-            
-            if( !PATTERN_IP.matcher( ip ).matches( ) && !( "".equals( ip ) ) )
+    		try 
             {
-            	 JOptionPane.showMessageDialog( null, "Formato inválido" );
-            	 b = true;
-            }
+                System.out.println( "Seu Ip local é: " + InetAddress.getLocalHost( ).getHostAddress( ) );
+                
+                ip = JOptionPane.showInputDialog( null,
+                        "Entre com o IP do servidor:\n "
+                        + "Para 127.0.0.1 'localhost', apenas clique OK!\n");
+                
+                if( !PATTERN_IP.matcher( ip ).matches( ) && !( "".equals( ip ) ) )
+                {
+                	 JOptionPane.showMessageDialog( null, "Formato inválido" );
+                	 b = true;
+                }
+            } 
+            catch (  Exception e)
+            {
+            	e.printStackTrace( );
+    	    }
     	}
-    	
     	while ( b );
     	
         if ( ip != null  )

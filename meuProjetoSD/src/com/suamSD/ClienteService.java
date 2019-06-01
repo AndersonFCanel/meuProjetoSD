@@ -81,7 +81,7 @@ public class ClienteService
                     Util.interrompeThread ( ); 
                 }
                 
-                if ( "?".trim( ).equals( estados ) )
+                if ( "?".trim( ).equalsIgnoreCase( estados ) )
                 {
                 	 b = true;
                 	 
@@ -159,8 +159,6 @@ public class ClienteService
                      
                      JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( '@' ) );
 				}
-                
-                
             } 
             while ( b );
             
@@ -191,18 +189,19 @@ public class ClienteService
                     Util.interrompeThread ( ); 
                 }
                 
-                if ( "?".equalsIgnoreCase( estadoInicial .trim( ) ) ) 
+                if ( "?".trim( ).equalsIgnoreCase( estadoInicial.trim( ) ) )
                 {
-                	b = true;
-                	
-                    // Obtendo referência do serviço de registro
-                    Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
+                	 b = true;
+                	 
+                	// Obtendo referência do serviço de registro
+                     Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
 
-                    // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
-                    AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
-
-                    JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( '@' ) );
-                }
+                     // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
+                     AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
+                     
+                     //Caracter que idenifica entradas globais de ambos os clientes
+                     JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( '@' ) );
+				}
                  
             } 
             while ( b );
@@ -233,28 +232,22 @@ public class ClienteService
                 {
                     b = true;
                     
-                    Thread.currentThread( ).interrupt( ) ;
-                    if ( Thread.interrupted( ) ) 
-                    {
-                    	System.out.println("FIM");
-                    	throw new InterruptedException( );
-                    }
+                    Util.interrompeThread ( ); 
                 }
              
-                if ( "?".equalsIgnoreCase( cjtEstFinal.trim( ) ) ) 
+                if ( "?".trim( ).equalsIgnoreCase( cjtEstFinal.trim( ) ) )
                 {
-                	b = true;
-                	
-                    // Obtendo referência do serviço de registro
-                    Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
-        
-                    // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
-                    AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
-                    
-                    stub.imprimirAutomatoCliente( '@' );
-                }
-             
-        
+                	 b = true;
+                	 
+                	// Obtendo referência do serviço de registro
+                     Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
+
+                     // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
+                     AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
+                     
+                     //Caracter que idenifica entradas globais de ambos os clientes
+                     JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( '@' ) );
+				}
             } 
             while ( b );
         
@@ -306,16 +299,7 @@ public class ClienteService
                     AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
                  
                     stub.incrementaContaPasso( ); 
-                    
-                    
-                    if( stub.getIdentificaUsuario( ) =='A' )
-                    {
-                        ClienteService.valoresAtuais( "?", '@' );
-                    }
-                    else
-                    {
-                    	ClienteService.valoresAtuais( "?", 'B' );
-                    }
+
                     //break;                    
                     //Util.interrompeThread ( ); 
                 }

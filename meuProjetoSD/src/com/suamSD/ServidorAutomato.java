@@ -1,5 +1,8 @@
 package com.suamSD;
 
+import java.awt.HeadlessException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -21,6 +24,15 @@ public class ServidorAutomato
     public static void main( String args[ ] ) 
     		throws InterruptedException
     {
+    	try {
+			JOptionPane.showMessageDialog( null,  "O ip local é: " + InetAddress.getLocalHost( ).getHostAddress( ) + "\n"
+			                		+ "Para atribui-lo basta digitar no input a seguir." );
+		}
+    	catch (HeadlessException | UnknownHostException e1) 
+    	{
+			e1.printStackTrace();
+		}
+    	
         String ipServer = Util.defineIP( );
         
         if ( ipServer == null )
@@ -62,8 +74,8 @@ public class ServidorAutomato
             {
             	//Definindo a quantidade de usuários que irão utilizar o sistema.
                 resposta = JOptionPane.showInputDialog( null,
-                        "Para utilizar o programa com UM cliente ENTRE 1 ou  pressione OK,\n"
-                        + " para DOIS ENTRE 2 e pressione OK." );
+                        "Para utilizar o programa com UM cliente ENTRE 1 ou (||)  pressione OK,\n"
+                        + " para DOIS, ENTRE 2 e (&&) pressione OK." );
             	
                 if( resposta != null )
             		resposta = resposta.trim( );
