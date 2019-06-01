@@ -808,7 +808,7 @@ public class AutomatoService implements AutomatoInterface
                   + "\tO conjunto de simbolos - alfabeto: Σ \n" 
                   + "\tAs transicoes: (δ: Q × Σ → Q)\n" 
                   + "\tO conjunto dos estados terminais: F\n"
-                  + "\tM = (Q, Σ, (δ: Q × Σ → Q), q0, F)\n"
+                  //+ "\tM = (Q, Σ, (δ: Q × Σ → Q), q0, F)\n"
                   + "\n\t\t ==>DADOS INFORMADOS <==\n" 
                   + "\tΣ   = " + alf + "\n" 
                   + "\tδ   = \n" 
@@ -832,7 +832,7 @@ public class AutomatoService implements AutomatoInterface
                    + "\tO conjunto dos estados terminais e não terminais: Q = {S1, S2...}\n"
                    + "\tO  estado Inicial: q0\n"
                    + "\tO conjunto dos estados terminais: F\n"
-                   + "\tM = (Q, Σ, (δ: Q × Σ → Q), q0, F)\n"
+                  // + "\tM = (Q, Σ, (δ: Q × Σ → Q), q0, F)\n"
                    + "\n\t\t ==>DADOS INFORMADOS <==\n" 
                    + "\tQ   = " 
                    + est 

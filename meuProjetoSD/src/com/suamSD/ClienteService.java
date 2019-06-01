@@ -309,9 +309,9 @@ public class ClienteService
                     	ClienteService.valoresAtuais( "?", 'B' );
                     		
                     }
-                    break;
+                    //break;
                     
-                    //Util.interrompeThread ( ); 
+                    Util.interrompeThread ( ); 
                     
                 }
                 
