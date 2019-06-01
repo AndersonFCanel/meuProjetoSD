@@ -663,7 +663,7 @@ public class AutomatoService implements AutomatoInterface
             return "Estado no inexistente no conjunto de estados." ;
         } 
         
-        if ( conjuntoDeEstadosTerminaisEnaoTerminais.length( ) > 1 )
+        if ( estIn.length( ) > 1 )
         {
             return "Existe apenas um estado inicial." ;
         } 
