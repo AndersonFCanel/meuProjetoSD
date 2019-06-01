@@ -62,7 +62,8 @@ public class ServidorAutomato
             {
             	//Definindo a quantidade de usuários que irão utilizar o sistema.
                 resposta = JOptionPane.showInputDialog( null,
-                        "Para utilizar o programa com UM cliente ENTRE 1, para DOIS ENTRE 2." );
+                        "Para utilizar o programa com UM cliente ENTRE 1 ou  pressione OK,\n"
+                        + " para DOIS ENTRE 2 e pressione OK." );
             	
                 if( resposta != null )
             		resposta = resposta.trim( );

@@ -86,9 +86,7 @@ public class ClienteService
                      AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
                      
                      //Caracter que idenifica entradas globais de ambos os clientes
-                     Character k = '@';
-                     
-                     JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( k ) );
+                     JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( '@' ) );
 				}
                 
             } 
@@ -97,6 +95,24 @@ public class ClienteService
         return estados;
         }
     
+        // TUTORIAL DE ENTRADA PARA FUNȿO DE TRANSIÇÃO
+        public static void tutorialTransicao( ) 
+        {
+            JOptionPane.showMessageDialog( null,
+                    "       * Conjunto de regras de transição (Regra de Produção), funciona da seguinte forma: *\n"
+                            + "         {* # ESTADO (LADO ESQUERDO), CONSOME (CENTRO); VAI PARA ESTADO (LADO DIREITO)# *}"
+                            + "\n\nATENÇÃO AOS PASSOS PARA ENTRADA DA FUNÇÃO DE TRANSIÇÃO DE ESTADOS\n"
+                            + "PASSO 1: Primeiro entre com o estado inicial - EX: q0\n"
+                            + "PASSO 2: DIGITE UMA VIRGULA \",\"\n"
+                            + "PASSO 3: Entre com o caracter a ser consumido pelo estado inicial - EX: a\n"
+                            + "PASSO 4: DIGITE PONTO E VIRGULA. \";\"\n"
+                            + "PASSO 5: Entre com o estado de destino - EX: q1\n" + "PASSO 6: APERTE ENTER\n"
+                            + "A entrada pode ser verificada com a inserção da letra i + enter\n"
+                            + "e a mesma deve estar da forma do exemplo abaixo:\n" + "EX: q0,a;q1",
+                    "WARNING", JOptionPane.WARNING_MESSAGE );
+        }
+       
+        
         // ENTRADA DA FUNÇÃO DE TRANSIÇAO
         public static String entraFuncaoTransicao( ) 
         		throws InterruptedException, RemoteException, NotBoundException
@@ -130,10 +146,7 @@ public class ClienteService
                      // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
                      AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
                      
-                     //Caracter que identifica entradas globais de ambos os clientes
-                     Character k = '@';
-                     
-                     JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( k ) );
+                     JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( '@' ) );
 				}
                 
                 
@@ -174,10 +187,8 @@ public class ClienteService
 
                     // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
                     AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
-                    
-                    Character k = 'k';
-                    
-                    JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( k ) );
+
+                    JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( '@' ) );
                 }
                  
             } 
@@ -185,7 +196,72 @@ public class ClienteService
 
             return estadoInicial;
         }
-       
+        
+        // ENTRADA DO ELEMENTOS CONJUNTO DE ESTADOS FINAIS
+        public static String entraCjtEstFinal( ) 
+        		throws RemoteException, NotBoundException, InterruptedException 
+        {
+            boolean b = false;
+            String  cjtEstFinal; 
+            
+            do 
+            {
+            	b = false;
+            	
+                 cjtEstFinal = JOptionPane.showInputDialog( null, "\nEntre com o conjunto dos estados finais F:"
+                        + "\nCada estado deve ser separado por virgula, sem espaços.\nEX: A,B,C ... e1,e2,e3 ..." );
+        
+                if ( cjtEstFinal == null )
+                {
+                    b = true;
+                    
+                    Thread.currentThread( ).interrupt( ) ;
+                    if ( Thread.interrupted( ) ) 
+                    {
+                    	System.out.println("FIM");
+                    	throw new InterruptedException( );
+                    }
+                }
+                else
+                { 
+                    if ( cjtEstFinal.trim( ).equalsIgnoreCase( "I" ) ) 
+                    {
+                    	b = false;
+                    	
+                        // Obtendo referência do serviço de registro
+                        Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
+        
+                        // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
+                        AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
+                        
+                        stub.imprimirAutomatoCliente( '@' );
+                    }
+                }
+        
+            } 
+            while ( b );
+        
+            return cjtEstFinal;
+        } 
+        
+        //Pegando valores atuais no servidor
+        public static boolean valoresAtuais( String info, Character idUser ) throws RemoteException, NotBoundException
+        {
+            if ( info.trim( ).equalsIgnoreCase( "?" ) ) 
+            {
+                // Obtendo referência do serviço de registro
+                Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
+
+                // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
+                AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
+                
+                JOptionPane.showInputDialog( null, stub.imprimirAutomatoCliente( idUser ) );
+                
+                return false;
+            }   
+            return true;
+        }
+        
         public static String entraPalavra( ) 
         		throws InterruptedException, RemoteException, NotBoundException 
         {
@@ -254,98 +330,10 @@ public class ClienteService
         return palavra;
         }
         
-        
-        // ENTRADA DO ESTADO INICIAL
-        public static String entraCjtEstFinal( ) 
-        		throws RemoteException, NotBoundException, InterruptedException 
-        {
-            boolean b = false;
-            String  cjtEstFinal; 
-            
-            do 
-            {
-            	b = false;
-            	
-                 cjtEstFinal = JOptionPane.showInputDialog( null, "\nEntre com o conjunto dos estados finais F:"
-                        + "\nCada estado deve ser separado por virgula, sem espaços.\nEX: A,B,C ... e1,e2,e3 ..." );
-        
-                if ( cjtEstFinal == null )
-                {
-                    b = true;
-                    
-                    Thread.currentThread( ).interrupt( ) ;
-                    if ( Thread.interrupted( ) ) 
-                    {
-                    	System.out.println("FIM");
-                    	throw new InterruptedException( );
-                    }
-                }
-                else
-                { 
-                    if ( cjtEstFinal.trim( ).equalsIgnoreCase( "I" ) ) 
-                    {
-                    	b = false;
-                    	
-                        // Obtendo referência do serviço de registro
-                        Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
-        
-                        // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
-                        AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
-                        
-                        Character k = 'k';
-                        
-                        stub.imprimirAutomatoCliente( k );
-                    }
-                }
-        
-            } 
-            while ( b );
-        
-            return cjtEstFinal;
-        }
-            
-        
-        // TUTORIAL DE ENTRADA PARA FUNȿO DE TRANSIÇÃO
-        public static void tutorialTransicao( ) 
-        {
-            JOptionPane.showMessageDialog( null,
-                    "       * Conjunto de regras de transição (Regra de Produção), funciona da seguinte forma: *\n"
-                            + "         {* # ESTADO (LADO ESQUERDO), CONSOME (CENTRO); VAI PARA ESTADO (LADO DIREITO)# *}"
-                            + "\n\nATENÇÃO AOS PASSOS PARA ENTRADA DA FUNÇÃO DE TRANSIÇÃO DE ESTADOS\n"
-                            + "PASSO 1: Primeiro entre com o estado inicial - EX: q0\n"
-                            + "PASSO 2: DIGITE UMA VIRGULA \",\"\n"
-                            + "PASSO 3: Entre com o caracter a ser consumido pelo estado inicial - EX: a\n"
-                            + "PASSO 4: DIGITE PONTO E VIRGULA. \";\"\n"
-                            + "PASSO 5: Entre com o estado de destino - EX: q1\n" + "PASSO 6: APERTE ENTER\n"
-                            + "A entrada pode ser verificada com a inserção da letra i + enter\n"
-                            + "e a mesma deve estar da forma do exemplo abaixo:\n" + "EX: q0,a;q1",
-                    "WARNING", JOptionPane.WARNING_MESSAGE );
-        }
-        
-        //Pegando valores atuais no servidor
-        public static boolean valoresAtuais( String info, Character idUser ) throws RemoteException, NotBoundException
-        {
-            if ( info.trim( ).equalsIgnoreCase( "?" ) ) 
-            {
-                // Obtendo referência do serviço de registro
-                Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
-
-                // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
-                AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
-                
-                JOptionPane.showInputDialog( null, stub.imprimirAutomatoCliente( idUser ) );
-                
-                return false;
-            }   
-            return true;
-        }
-        
         //USUÁRIO VEZ
         static void aguardarVezOutroUsuarioCli( String idCli )
         {
             JOptionPane.showMessageDialog( null, "Cliente "+ idCli +" \nAguarde outro user terminar!\nAguarde 30 segundos e tente novamente!" );
         }
-        
-       
-            
+          
 }
