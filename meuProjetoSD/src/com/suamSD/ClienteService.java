@@ -240,21 +240,20 @@ public class ClienteService
                     	throw new InterruptedException( );
                     }
                 }
-                else
-                { 
-                    if ( "?".equalsIgnoreCase( cjtEstFinal.trim( ) ) ) 
-                    {
-                    	b = false;
-                    	
-                        // Obtendo referência do serviço de registro
-                        Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
+             
+                if ( "?".equalsIgnoreCase( cjtEstFinal.trim( ) ) ) 
+                {
+                	b = true;
+                	
+                    // Obtendo referência do serviço de registro
+                    Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
         
-                        // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
-                        AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
-                        
-                        stub.imprimirAutomatoCliente( '@' );
-                    }
+                    // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
+                    AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
+                    
+                    stub.imprimirAutomatoCliente( '@' );
                 }
+             
         
             } 
             while ( b );
@@ -273,7 +272,7 @@ public class ClienteService
                 // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
                 AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
                 
-                JOptionPane.showInputDialog( null, stub.imprimirAutomatoCliente( idUser ) );
+                JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( idUser ) );
                 
                 return false;
             }   
@@ -316,12 +315,9 @@ public class ClienteService
                     else
                     {
                     	ClienteService.valoresAtuais( "?", 'B' );
-                    		
                     }
-                    //break;
-                    
-                    Util.interrompeThread ( ); 
-                    
+                    //break;                    
+                    //Util.interrompeThread ( ); 
                 }
                 
                 if ( "?".trim( ).equals( palavra ) )
@@ -335,9 +331,7 @@ public class ClienteService
                      AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
                      
                      //Caracter que idenifica entradas globais de ambos os clientes
-                     Character k = '@';
-                     
-                     JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( k ) );
+                      JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( '@' ) );
 				}
                 
             } 

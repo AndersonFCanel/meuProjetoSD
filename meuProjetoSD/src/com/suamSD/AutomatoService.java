@@ -416,7 +416,7 @@ public class AutomatoService implements AutomatoInterface
      * Entrada realizada pelo usuário, realiza verificação para checar se a palavra
      * pode ser formada com os caracteres do conjunto de símbolo (alfabeto).
      */
-    public String checaPalavra( String palavraInserida ) 
+    public String checaAceitacaoPalavra( String palavraInserida ) 
     {
         String palavraS;
         String responseValidaPalavra = "OK";
@@ -721,7 +721,6 @@ public class AutomatoService implements AutomatoInterface
             return  "A palavra \"" + palavra
                             + "\" contém simbolos não pertencentes ao conjunto de simbolos (alfabeto,Σ= "
                             + alfabetoIMPRIME + ")!";
-           
         }
     }
 

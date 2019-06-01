@@ -15,7 +15,7 @@ public interface AutomatoInterface extends Remote
                                                            
     public String setConjuntoEstadosFinais ( String s )    throws RemoteException;
     
-    public String    checaPalavra          ( String s )    throws RemoteException;
+    public String    checaAceitacaoPalavra ( String s )    throws RemoteException;
     
     public String  imprimirAutomatoCliente ( Character c ) throws RemoteException;
     
