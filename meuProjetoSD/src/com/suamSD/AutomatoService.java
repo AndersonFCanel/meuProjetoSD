@@ -135,9 +135,9 @@ public class AutomatoService implements AutomatoInterface
     //private static final Pattern PATTERN_ESTADOS    = Pattern.compile( "(^\\S+,\\S+$)|(^\\S+$)" );
     //private static final Pattern PATTERN_ALFBETO    = Pattern.compile( "(^\\S+,\\S+$)|(^\\S+$)" );
     
-    private static final Pattern PATTERN_DELTA      = Pattern.compile( "^\\S,\\S;\\S$"       );
-    private static final Pattern PATTERN_ESTADOS    = Pattern.compile( "(^\\S,\\S$)*|(^\\S$)" );
-    private static final Pattern PATTERN_ALFBETO    = Pattern.compile( "(^\\S,\\S$)*|(^\\S$)" );
+    private static final Pattern PATTERN_DELTA      = Pattern.compile( "^\\S,\\S;\\S$"                       );
+    private static final Pattern PATTERN_ESTADOS    = Pattern.compile( "(^\\S,\\S$)|(^\\S$)|(^\\S,\\S,\\S$)" );
+    private static final Pattern PATTERN_ALFBETO    = Pattern.compile( "(^\\S,\\S$)|(^\\S$)|(^\\S,\\S,\\S$)" );
     private static final Pattern PATTERN_ESTADO_INI = Pattern.compile( "(^\\S{1}$)" );
     
     private static HashMap<Integer, String> conjuntoDeEstadosMap   = new HashMap<Integer, String>( );
@@ -301,12 +301,12 @@ public class AutomatoService implements AutomatoInterface
 			else
 			{
 				le[ p ] = ( Character ) null;
-			}
-			
-			if( contadorFuncTran == quantidadeDeFuncTransPossiveis )
-				return "OK";	
+			}	
 		}
-        return responseValidaFunc ;
+		if( contadorFuncTran == quantidadeDeFuncTransPossiveis )
+			return "OK";
+    
+		return responseValidaFunc ;
     }
 
     /**
@@ -347,11 +347,19 @@ public class AutomatoService implements AutomatoInterface
         
         conjuntoEstadosTerminais = cjtFin;
 
+        if( "".equals( cjtFin ) )
+        	return "Entrada Vazia, não permitida!";
+        
         if( !PATTERN_ESTADOS.matcher( cjtFin ).matches( ) )
         {
     		if( !"".equals( cjtFin ) )
     			return "ENTRADA INVALIDA\n" + "Formato inválido";
    		}
+        
+        if ( cjtFin.length( ) > 5 )
+        {
+            return "Existe apenas um estado inicial." ;
+        }
         
         String[ ] estFin = splitVirgula( conjuntoEstadosTerminais );
         
@@ -370,6 +378,7 @@ public class AutomatoService implements AutomatoInterface
         	 y                   = 0;
                                  
         //***********Sugestão de código Eclipse
+       /*
         String [ ] conjuntoDeEstados          = conjuntoDeEstadosTerminaisEnaoTerminais.split( "," );
         String [ ] conjuntoDeEstadosTerminais = conjuntoEstadosTerminais.split               ( "," );
        
@@ -384,14 +393,14 @@ public class AutomatoService implements AutomatoInterface
                 }
             }
             y++;  
-        }
+        }*/
         
         imprimirAutomato( alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, 
                           estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME );
         //****************
 
-        /*Meu código
-         * for ( Character ch : conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( ) ) 
+        /*Meu código*/
+        for ( Character ch : conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( ) ) 
         {
             for ( Character ch1 : conjuntoEstadosTerminais.toCharArray( ) )
             {
@@ -407,7 +416,6 @@ public class AutomatoService implements AutomatoInterface
             imprimirAutomato(alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, 
                              estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME);
         }
-         * */
         
         return validaConjuntoEstadosFin;
     }

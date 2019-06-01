@@ -192,7 +192,8 @@ public class ClienteAutomato extends Thread
                                 stub.incrementaContaPasso( );
                             }
                             System.out.println( "PASSO CORRENTE: " + stub.getContaPasso( ) + 
-           			             "\nPosição função corrente: " + stub.getContadorFuncTran( ) );
+           			             "\nPosição função corrente: " + stub.getContadorFuncTran( ) + " de " +
+           			          cont1 );
                           }
                       }
                       while( !"OK".equals( requestIsValid ) );
