@@ -17,7 +17,7 @@ public class CriaArquivo
 	{
 		final String CONTEUDO = text;
 
-		File file = new File(".\\automato.xml");
+		File file = new File(".\\automato.txt");
 
 		FileWriter     arquivo;
 		PrintWriter    Arq;

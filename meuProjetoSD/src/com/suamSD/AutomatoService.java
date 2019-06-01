@@ -356,10 +356,8 @@ public class AutomatoService implements AutomatoInterface
     			return "ENTRADA INVALIDA\n" + "Formato inválido";
    		}
         
-        if ( cjtFin.length( ) > 5 )
-        {
-            return "Existe apenas um estado inicial." ;
-        }
+        if( !( seEntradaVazia( cjtFin ).equals( cjtFin ) ) )
+        	return seEntradaVazia ( cjtFin );
         
         String[ ] estFin = splitVirgula( conjuntoEstadosTerminais );
         
@@ -579,13 +577,9 @@ public class AutomatoService implements AutomatoInterface
     		if( !"".equals( alfabeto ) )
     			return "ENTRADA INVÁLIDA\n" +"Formato inválido";
    	    }
-        
-        // Entrada Vazia
-        if ( " ".equals( alfabeto ) || alfabeto.length( ) < 1 
-        		|| alfabeto.isEmpty( ) || alfabeto.length( ) > 5 || "".equals( alfabeto ) )
-        {
-            return  "ENTRADA INVÁLIDA\n" + "Tamanho do alfabeto fora do range permitido!";
-        }
+      
+        if( !( seEntradaVazia( alfabeto ).equals( alfabeto ) ) )
+        	return seEntradaVazia ( alfabeto );
 
         // Entrada iniciando pela virgula
         if (alfabeto.charAt(0) == ',')
@@ -638,11 +632,9 @@ public class AutomatoService implements AutomatoInterface
     			return "ENTRADA INVALIDA\n" + "Formato inválido";
    		}
         
-        // ESTADO COM TAMANHO INFERIOR AO PERMITIDO, = 0 ou >5.
-        if ( estados.length( ) < 1 || estados.length( ) > 5 || " ".equals( estados ) || estados.isEmpty( ) )
-        {
-            return  "Tamanho do conjunto fora do range permitido!";
-        }
+        if( !( seEntradaVazia( estados ).equals( estados ) ) )
+        	return seEntradaVazia ( estados );
+
 
         // INSERÇÃO DE ESTADOS NÃO PODE COMEÇAR PELA VIRGULA.
         if ( estados.charAt( 0 ) == ',' ) 
@@ -731,6 +723,9 @@ public class AutomatoService implements AutomatoInterface
         }
         else 
         {
+        	listaDePalavrasTestadas.put( palavra, "A palavra \"" + palavra
+                    + "\" contém simbolos não pertencentes ao conjunto de simbolos (alfabeto,Σ= "
+                    + alfabetoIMPRIME + ")!");
             return  "A palavra \"" + palavra
                             + "\" contém simbolos não pertencentes ao conjunto de simbolos (alfabeto,Σ= "
                             + alfabetoIMPRIME + ")!";
@@ -927,6 +922,23 @@ public class AutomatoService implements AutomatoInterface
 	public int getQtdUsuario( ) throws RemoteException 
 	{
 		return AutomatoService.qtdUsers;
+	}
+	
+	public static String seEntradaVazia ( String entrada )
+	{
+		// Entrada Vazia
+		final int TAMANHO_MAX = 5;
+		final int TAMANHO_MIN = 1;
+		
+	   String[] elementos = entrada.split( "," );
+		
+        if ( " ".equals( entrada ) || elementos.length < TAMANHO_MIN 
+        		|| entrada.isEmpty( ) || elementos.length > TAMANHO_MAX 
+        		|| "".equals( entrada ) )
+        {
+            return  "ENTRADA INVÁLIDA\n" + "Tamanho do entrada fora do range permitido!";
+        }
+		return entrada;
 	}
 
 }
