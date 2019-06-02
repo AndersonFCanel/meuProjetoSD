@@ -407,10 +407,11 @@ public class AutomatoService implements AutomatoInterface
                 }
             }
             y++;  
-        }*/
+        }
         
         imprimirAutomato( alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, 
                           estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME );
+                          */
         //****************
 
         /*Meu código*/
@@ -480,6 +481,29 @@ public class AutomatoService implements AutomatoInterface
                         }
                     }
                 }
+                
+                for ( Character d : le ) 
+                {
+                	if( d != null )
+                	{
+					    c: for ( Character c : palavra ) 
+					    {
+					    	if( d == c) 
+					    	{
+					    		continue c;
+					    	}
+					    	else
+					    	{
+					    		listaDePalavrasTestadas.put( palavraS , 
+					    				"PALAVRA CONTENDO CARACTERES NÃO INFORMADOS NA REGRA DE PRODUÇÃO.\n"
+					    				+ "Caracter: " + c + " não informado  no conjunto de regras." );
+					    		
+					    		return "PALAVRA CONTENDO CARACTERES NÃO INFORMADOS NA REGRA DE PRODUÇÃO.\n"
+					    				+ "Caracter: " + c + " não informado  no conjunto de regras.";
+					    	}
+					    }
+                	}
+				}
                 
                 if ( teste == 1 ) 
                 {
@@ -788,9 +812,15 @@ public class AutomatoService implements AutomatoInterface
         + "\n\t\t ==>DADOS INFORMADOS <==\n" + "\tΣ   = " + alf + "\n" + "" 
         + "\tQ   = " + est + "\n"
         + "\tδ   = \n"
-        + "ESTADO PARTIDA:         Q" + Arrays.toString(estP) + "\n"
-        + "CARACTER CONSUMIDO: Σ" + Arrays.toString(le) + "\n" 
-        + "ESTADO DESTINO:          Q"+ Arrays.toString(estD) + "\n" + "" 
+        + "\t\tESTADO PARTIDA:     Q\n"
+        + "\t\tCARACTER CONSUMIDO: Σ\n" 
+        + "\t\tESTADO DESTINO:     Q\n"
+        + "\t\t" + Arrays.toString(estP) 
+        + "\n"
+        + "\t\t" +Arrays.toString(le) 
+        + "\n" 
+        + "\t\t" +Arrays.toString(estD) 
+        + "\n" 
         + "\tq0  = " + estIn + "\n" 
         + "" + "\tF   = "+ conjuntoEstadosFinais + "\n" + ""
         + "**************************************************";
@@ -864,8 +894,19 @@ public class AutomatoService implements AutomatoInterface
             estD[c] = conjuntoDeEstadosMap.get( key );
             c++;
         }
+        
+        
+        String[] listaPalavras = listaDePalavrasTestadas.toString( ).split(",");
+        
+    	sb = new StringBuilder( );
+    	
+    	for (String string : listaPalavras) 
+    	{
+    		sb.append( string +"\n" );
+		}
           
-        if( cliente == 'A') {
+        if( cliente == 'A') 
+        {
              return "**************************************************\n" 
                   + "\tIMPRIMINDO DADOS INSERIDOS PELO CLIENTE A:\n"
                   + "\t\t\t ==>NOTAÇÃO UTILIZADA <== \n" 
@@ -876,27 +917,31 @@ public class AutomatoService implements AutomatoInterface
                   + "\n\t\t ==>DADOS INFORMADOS <==\n" 
                   + "\tΣ   = " + alf + "\n" 
                   + "\tδ   = \n" 
-                  + "ESTADO PARTIDA:         Q"
-                  + Arrays.toString(estP) 
+                  + "\t\tESTADO PARTIDA:     Q\n"
+                  + "\t\tCARACTER CONSUMIDO: Σ\n" 
+                  + "\t\tESTADO DESTINO:     Q\n"
+                  + "\t\t" + Arrays.toString(estP) 
                   + "\n"
-                  + "CARACTER CONSUMIDO: Σ" 
-                  + Arrays.toString(le) 
+                  + "\t\t" +Arrays.toString(le) 
                   + "\n" 
-                  + "ESTADO DESTINO:          Q"
-                  + Arrays.toString(estD) 
+                  + "\t\t" +Arrays.toString(estD) 
                   + "\n"
                   + "\tF   = "
-                  + conjuntoEstadosFinais + "\n" + "" + "**************************************************";
+                  + conjuntoEstadosFinais + "\n" + 
+                  "**************************************************"+
+                  "\n\nPalavras Testadas:\n\n"
+                  +sb;
         }
         
-        if( cliente == 'B') {
+        if( cliente == 'B')
+        {
              return "**************************************************\n" 
                    + "\tIMPRIMINDO DADOS INSERIDOS PELO CLIENTE B: \n"
                    + "\t\t\t ==>NOTAÇÃO UTILIZADA <== \n" 
                    + "\tO conjunto dos estados terminais e não terminais: Q = {S1, S2...}\n"
                    + "\tO  estado Inicial: q0\n"
                    + "\tO conjunto dos estados terminais: F\n"
-                  // + "\tM = (Q, Σ, (δ: Q × Σ → Q), q0, F)\n"
+                   // + "\tM = (Q, Σ, (δ: Q × Σ → Q), q0, F)\n"
                    + "\n\t\t ==>DADOS INFORMADOS <==\n" 
                    + "\tQ   = " 
                    + est 
@@ -904,20 +949,13 @@ public class AutomatoService implements AutomatoInterface
                    + "\tq0  = " 
                    + estIn 
                    + "\n"
-                   + "**************************************************";
+                   + "**************************************************"
+                   +"\n\nPalavras Testadas:\n\n"
+                   +sb;
         }
         
-        if( cliente == 'P') {
-        	 // Apresenta o contéudo do Map       
-        	String[] listaPalavras = listaDePalavrasTestadas.toString( ).split(",");
-           
-        	sb = new StringBuilder( );
-        	
-        	for (String string : listaPalavras) {
-        		sb.append ( string +"\n" );
-			}
-        	
-        	
+        if( cliente == 'P') 
+        {
         	return  "**************************************************\n" 
         	        + "\tIMPRIMINDO DADOS DO AUTOMATO\n"
         	        + "\t\t\t ==>NOTAÇÃO UTILIZADA <== \n" 
@@ -930,9 +968,15 @@ public class AutomatoService implements AutomatoInterface
         	        + "\n\t\t ==>DADOS INFORMADOS <==\n" + "\tΣ   = " + alf + "\n" + "" 
         	        + "\tQ   = " + est + "\n"
         	        + "\tδ   = \n"
-        	        + "ESTADO PARTIDA:         Q" + Arrays.toString(estP) + "\n"
-        	        + "CARACTER CONSUMIDO: Σ" + Arrays.toString(le) + "\n" 
-        	        + "ESTADO DESTINO:          Q"+ Arrays.toString(estD) + "\n" + "" 
+        	        + "\t\tESTADO PARTIDA:     Q\n"
+        	        + "\t\tCARACTER CONSUMIDO: Σ\n" 
+        	        + "\t\tESTADO DESTINO:     Q\n"
+        	        + "\t\t" + Arrays.toString(estP) 
+        	        + "\n"
+        	        + "\t\t" +Arrays.toString(le) 
+        	        + "\n" 
+        	        + "\t\t" +Arrays.toString(estD) 
+                    + "\n"
         	        + "\tq0  = " + estIn + "\n" 
         	        + "" + "\tF   = "+ conjuntoEstadosFinais + "\n" + ""
         	        + "**************************************************"

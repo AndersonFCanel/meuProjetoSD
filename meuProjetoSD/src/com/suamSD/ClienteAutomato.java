@@ -297,7 +297,7 @@ public class ClienteAutomato extends Thread
                     if( stub.getIdentificaUsuario( ) =='A' )
                     {
                         //ClienteService.valoresAtuais( "?", '@' );
-                    	ClienteService.info( stub.imprimirAutomatoCliente( '@' ) ) ;
+                    	ClienteService.info( stub.imprimirAutomatoCliente( 'P' ) ) ;
                     }
                     else
                     {
@@ -461,9 +461,9 @@ public class ClienteAutomato extends Thread
               			{
               				f.criarArq( stub.imprimirAutomatoCliente( 'P' ) );
               			} 
-              			catch ( IOException e )
+              			catch( IOException e )
               			{
-              				e.printStackTrace();
+              				e.printStackTrace( );
               			}
               			
               		   ClienteService.info( stub.imprimirAutomatoCliente( 'B' ) ) ;
