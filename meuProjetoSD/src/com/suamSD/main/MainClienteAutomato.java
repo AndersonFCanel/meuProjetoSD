@@ -1,4 +1,4 @@
-package com.suamSD;
+package com.suamSD.main;
 
 import java.io.IOException;
 import java.rmi.NotBoundException;
@@ -9,13 +9,16 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
+import com.suamSD.AutomatoInterface;
+import com.suamSD.Util;
 import com.suamSD.gravadorArquivo.CriaArquivo;
+import com.suamSD.service.ClienteService;
 
 /**
  * Cliente aplicação Java RMI
  *
  */
-public class ClienteAutomato extends Thread 
+public class MainClienteAutomato extends Thread 
 {
     public static String  ipServer;
     
@@ -336,7 +339,7 @@ public class ClienteAutomato extends Thread
             catch (RemoteException | NotBoundException ex) 
             {
             	JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + ex );
-                Logger.getLogger( ClienteAutomato.class.getName( ) ).log( Level.SEVERE, null, ex );
+                Logger.getLogger( MainClienteAutomato.class.getName( ) ).log( Level.SEVERE, null, ex );
             }
         }
     };
@@ -486,7 +489,7 @@ public class ClienteAutomato extends Thread
             catch (RemoteException | NotBoundException ex) 
             {
             	JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + ex );
-                Logger.getLogger( ClienteAutomato.class.getName( ) ).log( Level.SEVERE, null, ex );
+                Logger.getLogger( MainClienteAutomato.class.getName( ) ).log( Level.SEVERE, null, ex );
             }
        }
     };

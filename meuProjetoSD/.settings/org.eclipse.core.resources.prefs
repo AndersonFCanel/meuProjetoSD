@@ -1,6 +1,6 @@
+=\=\=\=\=\=\=
+<<<<<<<=HEAD
+>>>>>>>=branch 'AFDRMI' of https\://github.com/AndersonFCanel/meuProjetoSD.git
 eclipse.preferences.version=1
-<<<<<<< HEAD
-=======
-encoding//src/com/suamSD/AutomatoService.java=UTF-8
->>>>>>> branch 'AFDRMI' of https://github.com/AndersonFCanel/meuProjetoSD.git
+encoding//src/com/suamSD/service/AutomatoImplementsService.java=UTF-8
 encoding/<project>=UTF-8

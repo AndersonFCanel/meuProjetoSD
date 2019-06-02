@@ -1,0 +1,35 @@
+**************************************************
+	IMPRIMINDO DADOS DO AUTOMATO
+			 ==>NOTAÇÃO UTILIZADA <== 
+	O conjunto de simbolos - alfabeto: ? 
+	O conjunto dos estados terminais e não terminais: Q = {S1, S2...}
+	As transicoes: (?: Q × ? ? Q)
+	O  estado Inicial: q0
+	O conjunto dos estados terminais: F
+	M = (Q, ?, (?: Q × ? ? Q), q0, F)
+
+		 ==>DADOS INFORMADOS <==
+	?   = { a,s }
+	Q   = { 1,2,3 }
+	?   = 
+ESTADO PARTIDA:         Q[null, null, null, null, null, null]
+CARACTER CONSUMIDO: ?[null, null, null, null, null, null]
+ESTADO DESTINO:          Q[null, null, null, null, null, null]
+	q0  = {1}
+	F   = { 2 }
+**************************************************
+
+Palavras Testadas:
+
+{1=A palavra "1" contém simbolos não pertencentes ao conjunto de simbolos (alfabeto
+?= { a
+s })!
+ q=A palavra "q" contém simbolos não pertencentes ao conjunto de simbolos (alfabeto
+?= { a
+s })!
+ a=PALAVRA NÃO ACEITA PELO AUTOMATO
+ s=PALAVRA NÃO ACEITA PELO AUTOMATO
+ xsdas=A palavra "xsdas" contém simbolos não pertencentes ao conjunto de simbolos (alfabeto
+?= { a
+s })!
+ asa=PALAVRA NÃO ACEITA PELO AUTOMATO}

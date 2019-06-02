@@ -1,4 +1,4 @@
-package com.suamSD;
+package com.suamSD.main;
 
 import java.awt.HeadlessException;
 import java.net.InetAddress;
@@ -13,13 +13,17 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
+import com.suamSD.AutomatoInterface;
+import com.suamSD.Util;
+import com.suamSD.service.AutomatoImplementsService;
+
 /**
  * Classe responsável por criar uma instância 
  * do objeto serviceAutomato e registrá-la
  * em um serviço de registro de objetos distribuídos
  *
  */
-public class ServidorAutomato 
+public class MainServidorAutomato 
 {
     public static void main( String args[ ] ) 
     		throws InterruptedException
@@ -48,7 +52,7 @@ public class ServidorAutomato
         try 
         {
             // Criando objeto autômato
-            AutomatoService automatoRemoto = new AutomatoService( );           
+            AutomatoImplementsService automatoRemoto = new AutomatoImplementsService( );           
             System.out.println( "Criada a instancia de automatoRemoto." );      
             
             // Definindo o hostname do servidor
@@ -150,7 +154,7 @@ public class ServidorAutomato
         } 
         catch ( RemoteException e )
         {
-            Logger.getLogger( ServidorAutomato.class.getName( ) ).log( Level.SEVERE, null, e );
+            Logger.getLogger( MainServidorAutomato.class.getName( ) ).log( Level.SEVERE, null, e );
         } 
         catch (NotBoundException e) 
         {

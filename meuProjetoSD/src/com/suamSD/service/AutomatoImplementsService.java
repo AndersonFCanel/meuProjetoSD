@@ -1,11 +1,14 @@
-package com.suamSD;
+package com.suamSD.service;
 
 import java.rmi.RemoteException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
-public class AutomatoService implements AutomatoInterface 
+import com.suamSD.AutomatoInterface;
+import com.suamSD.Util;
+
+public class AutomatoImplementsService implements AutomatoInterface 
 {
 	public static  int           contadorFuncTran  = 0;
 	public static  Character     identificaUsuario = 'A';
@@ -16,14 +19,14 @@ public class AutomatoService implements AutomatoInterface
 	@Override
 	public void setQtdUsuario( int i ) throws RemoteException
 	{
-		 AutomatoService.qtdUsers = i;
+		 AutomatoImplementsService.qtdUsers = i;
 		
 	}
 
 	@Override
 	public int getQtdUsuario( ) throws RemoteException 
 	{
-		return AutomatoService.qtdUsers;
+		return AutomatoImplementsService.qtdUsers;
 	}
 	
 	/**
@@ -32,7 +35,7 @@ public class AutomatoService implements AutomatoInterface
 	 */
 	public void zeraContadorFuncTran( )
     {
-		AutomatoService.contadorFuncTran = 0;
+		AutomatoImplementsService.contadorFuncTran = 0;
 	}
 	
 	/**
@@ -176,7 +179,7 @@ public class AutomatoService implements AutomatoInterface
     public String setAlfabeto( String alf )
     {
         String  alfabeto = alf; 
-        String  responseValidAlf = "OK"; 
+        String  responseValidAlf = Util.OK; 
         
         responseValidAlf = verificaConjuntoCaracteres_Alfabeto( alf );
         
@@ -263,7 +266,8 @@ public class AutomatoService implements AutomatoInterface
     	if( contadorFuncTran == 0 )
     	     inicializaVariaveis( );
     	
-    	String responseValidaFunc = "Entrada Verificada";
+    	
+    	String responseValidaFunc = Util.OK;
     	
     	setContadorFuncTran( );
     
@@ -286,6 +290,18 @@ public class AutomatoService implements AutomatoInterface
 			estadoPartidaS [ i ] = p2[ 0 ];
 			caracConsumidoS[ i ] = p2[ 1 ];
 			estadoDestinoS [ i ] = p1[ 1 ];
+			
+			responseValidaFunc = validaDelta( estadoPartidaS [ i ], caracConsumidoS[ i ], estadoDestinoS [ i ] );
+			if( !Util.OK.equals( responseValidaFunc ) )
+			{
+				  estadoPartidaS [ i ] = null;
+				  caracConsumidoS[ i ] = null;
+				  estadoDestinoS [ i ] = null;
+			
+				  contadorFuncTran =  contadorFuncTran -1;
+				  
+				  return "Dados inconsistentes";
+			}
 		}
 
 		for ( int p = 0; p < quantidadeDeFuncTransPossiveis; p++ )
@@ -320,24 +336,46 @@ public class AutomatoService implements AutomatoInterface
 			}	
 		}
 		if( contadorFuncTran == quantidadeDeFuncTransPossiveis )
-			return "OK";
+			return responseValidaFunc;
     
 		return responseValidaFunc ;
     }
 
-    /**
-     * Trecho responsável por receber o estado inicial, identificar posição
+    private String validaDelta( String partida, String charac, String destino ) 
+    {
+    	String response = Util.OK;
+    	String testChar = "";
+    	
+    	if ( !conjuntoDeEstadosTerminaisEnaoTerminais.contains( partida ) )
+    		return Util.NOK;
+    	
+    	for ( Character c : conjuntodeSimbolos_Alfabeto ) 
+    	{
+    		testChar += c.toString( );
+		}
+    	
+    	if ( !testChar.contains( charac ) )
+    		return Util.NOK;
+    	
+    	if ( !conjuntoDeEstadosTerminaisEnaoTerminais.contains( destino ) )
+    		return Util.NOK;
+    	
+    	return response;
+	}
+
+	/**
+     * Trecho responsável por receber o estado inicial, identiasficar posição
      * correspondente no conjunto de estados (Terminais e não terminais) e armazena
      * o mesmo sem os caracteres desnecessários em uma variável do tipo int com o
      * valor correspondente a sua posição * no conjunto de estados.
      */
     public String setEstInicial( String ei )
     {
-        String responseValidaEstadoI = "OK";
+        String responseValidaEstadoI = Util.OK;
  
         responseValidaEstadoI = verificaEstInicial( ei ) ;
  
-        if( "OK".equals( responseValidaEstadoI ) )
+        if( Util.OK.equals( responseValidaEstadoI ) )
         {
             estadoIni = ei;
             //estadoIni   = removeNulos            ( estadoIni );
@@ -359,7 +397,7 @@ public class AutomatoService implements AutomatoInterface
      */
      public String setConjuntoEstadosFinais( String cjtFin )
      {
-        String validaConjuntoEstadosFin = "OK";
+        String validaConjuntoEstadosFin = Util.OK;
         
         conjuntoEstadosTerminais = cjtFin;
 
@@ -443,7 +481,7 @@ public class AutomatoService implements AutomatoInterface
     public String checaAceitacaoPalavra( String palavraInserida ) 
     {
         String palavraS;
-        String responseValidaPalavra = "OK";
+        String responseValidaPalavra = Util.OK;
         
         do {
             int teste = 0;
@@ -452,7 +490,7 @@ public class AutomatoService implements AutomatoInterface
             // Variável reponsável por receber a validação da palavra informada pelo autmato
             responseValidaPalavra = VerificaPalavra( palavraS, conjuntodeSimbolos_Alfabeto );
 
-            if ( "OK".equals( responseValidaPalavra ) ) 
+            if ( Util.OK.equals( responseValidaPalavra ) ) 
             {
                 char[ ] palavra = palavraS.toCharArray( );
                 int     estadoa = estadoi;
@@ -542,7 +580,7 @@ public class AutomatoService implements AutomatoInterface
      */
     private static String verificaConjuntoCaracteres_Alfabeto( String alfabeto )
     {
-        String validadorAlf = "OK";
+        String validadorAlf = Util.OK;
         
         if( !PATTERN_ALFBETO.matcher( alfabeto ).matches( ) )
         {
@@ -596,7 +634,7 @@ public class AutomatoService implements AutomatoInterface
      */
     private static String verificaEst( String estados )
     {
-        String validador = "OK";
+        String validador = Util.OK;
         
         if( !PATTERN_ESTADOS.matcher( estados ).matches( ) )
         {
@@ -641,7 +679,7 @@ public class AutomatoService implements AutomatoInterface
      */
     private static String verificaEstInicial(  String estIn )
     {        
-        String  estadoInicial = "OK";//= estIn; 
+        String  estadoInicial = Util.OK;//= estIn; 
 
         if( "".equals( estIn ) )
         	return "Entrada Vazia, não permitida!";
@@ -673,7 +711,7 @@ public class AutomatoService implements AutomatoInterface
      */
     private static String VerificaPalavra( String palavra, Character[ ] alf )
     { 
-    	String responseVerificaPal = "OK";
+    	String responseVerificaPal = Util.OK;
         int cont = 0;
         
         for ( int x = 0; x < palavra.length( ); x++ )

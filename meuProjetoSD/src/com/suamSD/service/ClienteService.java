@@ -1,4 +1,4 @@
-package com.suamSD;
+package com.suamSD.service;
 
 import java.awt.Dimension;
 import java.rmi.NotBoundException;
@@ -9,6 +9,10 @@ import java.rmi.registry.Registry;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
+import com.suamSD.AutomatoInterface;
+import com.suamSD.Util;
+import com.suamSD.main.MainClienteAutomato;
 
 public class ClienteService
 {
@@ -89,7 +93,7 @@ public class ClienteService
                 	 b = true;
                 	 
                 	// Obtendo referência do serviço de registro
-                     Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
+                     Registry registro = LocateRegistry.getRegistry( MainClienteAutomato.ipServer, Util.PORTA );
 
                      // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
                      AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
@@ -155,7 +159,7 @@ public class ClienteService
                 	 b = true;
                 	 
                 	// Obtendo referência do serviço de registro
-                     Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
+                     Registry registro = LocateRegistry.getRegistry( MainClienteAutomato.ipServer, Util.PORTA );
 
                      // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
                      AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
@@ -199,7 +203,7 @@ public class ClienteService
                 	 b = true;
                 	 
                 	// Obtendo referência do serviço de registro
-                     Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
+                     Registry registro = LocateRegistry.getRegistry( MainClienteAutomato.ipServer, Util.PORTA );
 
                      // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
                      AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
@@ -249,7 +253,7 @@ public class ClienteService
                 	 b = true;
                 	 
                 	// Obtendo referência do serviço de registro
-                     Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
+                     Registry registro = LocateRegistry.getRegistry( MainClienteAutomato.ipServer, Util.PORTA );
 
                      // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
                      AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
@@ -269,7 +273,7 @@ public class ClienteService
             if ( info.trim( ).equalsIgnoreCase( "?" ) ) 
             {
                 // Obtendo referência do serviço de registro
-                Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
+                Registry registro = LocateRegistry.getRegistry( MainClienteAutomato.ipServer, Util.PORTA );
 
                 // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
                 AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
@@ -302,7 +306,7 @@ public class ClienteService
                     JOptionPane.showMessageDialog( null, "Você saiu!", "WARNING", JOptionPane.WARNING_MESSAGE );
 
                     // Obtendo referência do serviço de registro
-                    Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
+                    Registry registro = LocateRegistry.getRegistry( MainClienteAutomato.ipServer, Util.PORTA );
 
                     // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
                     AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
@@ -318,7 +322,7 @@ public class ClienteService
                 	 b = true;
                 	 
                 	// Obtendo referência do serviço de registro
-                     Registry registro = LocateRegistry.getRegistry( ClienteAutomato.ipServer, Util.PORTA );
+                     Registry registro = LocateRegistry.getRegistry( MainClienteAutomato.ipServer, Util.PORTA );
 
                      // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
                      AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
@@ -335,7 +339,7 @@ public class ClienteService
         }
         
         //USUÁRIO VEZ
-        static void aguardarVezOutroUsuarioCli( String idCli )
+        public static void aguardarVezOutroUsuarioCli( String idCli )
         {
             JOptionPane.showMessageDialog( null, "Cliente "+ idCli +" \nAguarde outro user terminar!\nAguarde 30 segundos e tente novamente!" );
         }
@@ -343,7 +347,7 @@ public class ClienteService
         /**
          * Informações sobre o que é um autômato e suas aplicações.
          */
-        static void info( String texto ) 
+        public static void info( String texto ) 
         {    
         	        	
         	JTextArea textArea = new JTextArea( texto  );
