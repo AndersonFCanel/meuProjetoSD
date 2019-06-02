@@ -344,7 +344,8 @@ public class AutomatoImplementsService implements AutomatoInterface
 			}
 			else
 			{
-				le[ p ] = ( Character ) null;
+				//le[ p ] = ( Character ) null;
+				le[ p ] = '*';
 			}	
 		}
 		if( contadorFuncTran == quantidadeDeFuncTransPossiveis )
