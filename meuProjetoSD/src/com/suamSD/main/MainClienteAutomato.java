@@ -189,8 +189,11 @@ public class MainClienteAutomato extends Thread
                             entrada         = ClienteService.entraFuncaoTransicao(         ); 
                             requestIsValid  = stub.setRegra                      ( entrada );
                                                                                            
-                            if( !"OK".equals( requestIsValid ) )
+                            if( !"OK".equals( requestIsValid ) ) 
+                            {
+                            	cont2 = stub.getContadorFuncTran  ( );
                                 JOptionPane.showMessageDialog( null, requestIsValid );
+                            }
                             else 
                             {
                                 JOptionPane.showMessageDialog( null, "Entrada Verificada" );

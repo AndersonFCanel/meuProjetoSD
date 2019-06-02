@@ -242,10 +242,18 @@ public class AutomatoImplementsService implements AutomatoInterface
 	    estadoPartidaS  = new String[ quantidadeDeFuncTransPossiveis ];
 	    caracConsumidoS = new String[ quantidadeDeFuncTransPossiveis ];
 	    estadoDestinoS  = new String[ quantidadeDeFuncTransPossiveis ];
-	    
+	
 	    estadoPartida = new Integer  [ quantidadeDeFuncTransPossiveis ]; 
 	    le            = new Character[ quantidadeDeFuncTransPossiveis ];
 	    estadoDestino = new Integer  [ quantidadeDeFuncTransPossiveis ];
+	
+	    for ( int i = 0; i < quantidadeDeFuncTransPossiveis; i++ ) 
+	    {
+	    	estadoPartidaS  [ i ] = "*";
+	 	    caracConsumidoS [ i ] = "*";
+	 	    estadoDestinoS  [ i ] = "*";
+	 	                   	  
+		}                     
 	    
 	    conjuntoFuncaoDeTransicaoDeEstados  = new String [ quantidadeDeFuncTransPossiveis ]; 
    }
@@ -276,13 +284,16 @@ public class AutomatoImplementsService implements AutomatoInterface
 		for ( int i = 0; i < quantidadeDeFuncTransPossiveis; i++ ) 
 		{
 			if ( conjuntoFuncaoDeTransicaoDeEstados[ i ] == null )
+			{
 				//break;
 				continue;
+			}
 			
 			if ( conjuntoFuncaoDeTransicaoDeEstados[ i ].isEmpty( ) )
+			{	
 				//break;
 				continue;
-			
+			}
 				
 			String[ ] p1 = conjuntoFuncaoDeTransicaoDeEstados[ i ].split( ";" );
 			String[ ] p2 = p1[0].split                                  ( "," );
@@ -292,6 +303,7 @@ public class AutomatoImplementsService implements AutomatoInterface
 			estadoDestinoS [ i ] = p1[ 1 ];
 			
 			responseValidaFunc = validaDelta( estadoPartidaS [ i ], caracConsumidoS[ i ], estadoDestinoS [ i ] );
+			
 			if( !Util.OK.equals( responseValidaFunc ) )
 			{
 				  estadoPartidaS [ i ] = null;
@@ -300,7 +312,7 @@ public class AutomatoImplementsService implements AutomatoInterface
 			
 				  contadorFuncTran =  contadorFuncTran -1;
 				  
-				  return "Dados inconsistentes";
+				  return "Dados inconsistentes: \nChecar delta: " + func + "\nAtenção ao valor:  " + responseValidaFunc;
 			}
 		}
 
@@ -347,7 +359,7 @@ public class AutomatoImplementsService implements AutomatoInterface
     	String testChar = "";
     	
     	if ( !conjuntoDeEstadosTerminaisEnaoTerminais.contains( partida ) )
-    		return Util.NOK;
+    		return partida;
     	
     	for ( Character c : conjuntodeSimbolos_Alfabeto ) 
     	{
@@ -355,10 +367,10 @@ public class AutomatoImplementsService implements AutomatoInterface
 		}
     	
     	if ( !testChar.contains( charac ) )
-    		return Util.NOK;
+    		return charac;
     	
     	if ( !conjuntoDeEstadosTerminaisEnaoTerminais.contains( destino ) )
-    		return Util.NOK;
+    		return destino;
     	
     	return response;
 	}
@@ -526,7 +538,7 @@ public class AutomatoImplementsService implements AutomatoInterface
                 	{
 					    c: for ( Character c : palavra ) 
 					    {
-					    	if( d == c) 
+					    	if( d == c || d == '*' ) 
 					    	{
 					    		continue c;
 					    	}
@@ -820,22 +832,36 @@ public class AutomatoImplementsService implements AutomatoInterface
         
         String[ ] estP = new String[ estadoPartida.length ];
         
-        
-        
         int b = 0;
         for ( Integer key : estadoPartida ) 
         {
-            estP[ b ] = conjuntoDeEstadosMap.get( key );
-            b++;
+        	if( conjuntoDeEstadosMap.get( key ) !=null ) 
+        	{
+                estP[ b ] = conjuntoDeEstadosMap.get( key );
+                b++;
+        	}
+        	else
+        	{
+        		estP[ b ] = "*";
+        		b++;
+        	}
         }
 
         String[ ] estD = new String[ estadoDestino.length ];
-        ;
+        
         int c = 0;
         for ( Integer key : estadoDestino )
         {
-            estD[c] = conjuntoDeEstadosMap.get( key );
-            c++;
+        	if( conjuntoDeEstadosMap.get( key ) !=null ) 
+        	{
+                estD[c] = conjuntoDeEstadosMap.get( key );
+                c++;
+        	}
+        	else
+        	{
+        		estD[ c ] = "*";
+        		c++;
+        	}
         }
   
         return "**************************************************\n" 
@@ -914,14 +940,20 @@ public class AutomatoImplementsService implements AutomatoInterface
                le = new Character[ 0 ];
         
         String[ ] estP = new String[ estadoPartida.length ];
-        
-        
-        
+       
         int b = 0;
         for ( Integer key : estadoPartida ) 
         {
-            estP[ b ] = conjuntoDeEstadosMap.get( key );
-            b++;
+        	if( conjuntoDeEstadosMap.get( key ) !=null ) 
+        	{
+                estP[ b ] = conjuntoDeEstadosMap.get( key );
+                b++;
+        	}
+        	else
+        	{
+        		estP[ b ] = "*";
+        		b++;
+        	}
         }
 
         String[ ] estD = new String[ estadoDestino.length ];
@@ -929,8 +961,16 @@ public class AutomatoImplementsService implements AutomatoInterface
         int c = 0;
         for ( Integer key : estadoDestino )
         {
-            estD[c] = conjuntoDeEstadosMap.get( key );
-            c++;
+        	if( conjuntoDeEstadosMap.get( key ) !=null ) 
+        	{
+                estD[c] = conjuntoDeEstadosMap.get( key );
+                c++;
+        	}
+        	else
+        	{
+        		estD[ c ] = "*";
+        		c++;
+        	}
         }
         
         

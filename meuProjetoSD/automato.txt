@@ -1,35 +1,30 @@
 **************************************************
 	IMPRIMINDO DADOS DO AUTOMATO
-			 ==>NOTA«√O UTILIZADA <== 
-	O conjunto de simbolos - alfabeto: ? 
-	O conjunto dos estados terminais e n„o terminais: Q = {S1, S2...}
-	As transicoes: (?: Q ◊ ? ? Q)
+			 ==>NOTA√á√ÉO UTILIZADA <== 
+	O conjunto de simbolos - alfabeto: Œ£ 
+	O conjunto dos estados terminais e n√£o terminais: Q = {S1, S2...}
+	As transicoes: (Œ¥: Q √ó Œ£ ‚Üí Q)
 	O  estado Inicial: q0
 	O conjunto dos estados terminais: F
-	M = (Q, ?, (?: Q ◊ ? ? Q), q0, F)
+	M = (Q, Œ£, (Œ¥: Q √ó Œ£ ‚Üí Q), q0, F)
 
 		 ==>DADOS INFORMADOS <==
-	?   = { a,s }
-	Q   = { 1,2,3 }
-	?   = 
-ESTADO PARTIDA:         Q[null, null, null, null, null, null]
-CARACTER CONSUMIDO: ?[null, null, null, null, null, null]
-ESTADO DESTINO:          Q[null, null, null, null, null, null]
+	Œ£   = { a,s }
+	Q   = { 1,2 }
+	Œ¥   = 
+		ESTADO PARTIDA:     Q
+		CARACTER CONSUMIDO: Œ£
+		ESTADO DESTINO:     Q
+		[1, 2, *, *]
+		[a, a, null, *]
+		[2, 1, *, *]
 	q0  = {1}
 	F   = { 2 }
 **************************************************
 
 Palavras Testadas:
 
-{1=A palavra "1" contÈm simbolos n„o pertencentes ao conjunto de simbolos (alfabeto
-?= { a
-s })!
- q=A palavra "q" contÈm simbolos n„o pertencentes ao conjunto de simbolos (alfabeto
-?= { a
-s })!
- a=PALAVRA N√O ACEITA PELO AUTOMATO
- s=PALAVRA N√O ACEITA PELO AUTOMATO
- xsdas=A palavra "xsdas" contÈm simbolos n„o pertencentes ao conjunto de simbolos (alfabeto
-?= { a
-s })!
- asa=PALAVRA N√O ACEITA PELO AUTOMATO}
+{aa=PALAVRA N√ÉO ACEITA PELO AUTOMATO
+ a=PALAVRA ACEITA PELO AUTOMATO
+ asa=PALAVRA CONTENDO CARACTERES N√ÉO INFORMADOS NA REGRA DE PRODU√á√ÉO.
+Caracter: s n√£o informado  no conjunto de regras.}
