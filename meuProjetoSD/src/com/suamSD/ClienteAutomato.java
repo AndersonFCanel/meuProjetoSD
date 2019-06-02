@@ -29,7 +29,7 @@ public class ClienteAutomato extends Thread
             return;
         }
         
-        ClienteService.info( );
+        ClienteService.info( Util.infoAutomato( ) );
         
         try 
         {
@@ -88,17 +88,19 @@ public class ClienteAutomato extends Thread
                 // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
                 AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
                 
-                System.out.println("\n***********************************************************************");
-                System.out.println( "CONTADOR DE EXECUÇÃO: " + stub.getIdentificaUsuario( ) +"\n\n");               
-                System.out.println( "ID: "         + Thread.currentThread( ).getId( )              );
-                System.out.println( "Nome: "       + Thread.currentThread( ).getName( )            );
-                System.out.println( "Prioridade: " + Thread.currentThread( ).getPriority( )        );
-                System.out.println( "Estado: "     + Thread.currentThread( ).getState( )           );
-                System.out.println("***********************************************************************\n");
+                System.out.println("\n*****************************************************");
+                System.out.println( "USUÁRIO: "    + stub.getIdentificaUsuario( )           );               
+                System.out.println( "ID: "         + Thread.currentThread( ).getId( )       );
+                System.out.println( "Nome: "       + Thread.currentThread( ).getName( )     );
+                System.out.println( "Prioridade: " + Thread.currentThread( ).getPriority( ) );
+                System.out.println( "Estado: "     + Thread.currentThread( ).getState( )    );
+                System.out.println("*****************************************************\n");
 
                 try 
                 {
-                    //Variáveis para armazenar valores devolvidos do servidor.
+                    /**
+                     * Variáveis para armazenar valores devolvidos( RESPONSE ) do servidor.
+                     */
                     String  entrada ;
                     String  requestIsValid;
                     stub.zeraContaPasso( );
@@ -294,11 +296,13 @@ public class ClienteAutomato extends Thread
                     
                     if( stub.getIdentificaUsuario( ) =='A' )
                     {
-                        ClienteService.valoresAtuais( "?", '@' );
+                        //ClienteService.valoresAtuais( "?", '@' );
+                    	ClienteService.info( stub.imprimirAutomatoCliente( '@' ) ) ;
                     }
                     else
                     {
-                    	 ClienteService.valoresAtuais( "?", 'A' );
+                    	ClienteService.info( stub.imprimirAutomatoCliente( 'A' ) ) ;
+                    	 //ClienteService.valoresAtuais( "?", 'A' );
                     }
                     
                     System.out.println( "\nENTRADAS::\n\n" + stub.imprimirAutomatoCliente( 'P' ) );
@@ -351,13 +355,13 @@ public class ClienteAutomato extends Thread
                 // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
                 AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
 
-                System.out.println("\n***********************************************************************");
-                System.out.println( "CONTADOR DE EXECUÇÃO: " + stub.getIdentificaUsuario( ) +"\n\n");               
+                System.out.println("\n*****************************************************");
+                System.out.println( "USUÁRIO: "    + stub.getIdentificaUsuario( )           );               
                 System.out.println( "ID: "         + Thread.currentThread( ).getId( )       );
                 System.out.println( "Nome: "       + Thread.currentThread( ).getName( )     );
                 System.out.println( "Prioridade: " + Thread.currentThread( ).getPriority( ) );
                 System.out.println( "Estado: "     + Thread.currentThread( ).getState( )    );
-                System.out.println("***********************************************************************\n");
+                System.out.println("*****************************************************\n");
                         
                 try 
                 {
@@ -462,7 +466,7 @@ public class ClienteAutomato extends Thread
               				e.printStackTrace();
               			}
               			
-                       ClienteService.valoresAtuais( "?", 'B' );
+              		   ClienteService.info( stub.imprimirAutomatoCliente( 'B' ) ) ;
                } 
                 catch ( RemoteException e ) 
                 {

@@ -7,12 +7,28 @@ import java.util.regex.Pattern;
 
 public class AutomatoService implements AutomatoInterface 
 {
-	public static  int       contadorFuncTran  = 0;
-	public static  Character identificaUsuario = 'A';
-	static         Integer   contaPasso        = 1;
+	public static  int           contadorFuncTran  = 0;
+	public static  Character     identificaUsuario = 'A';
+	static         Integer       contaPasso        = 1;
+	public  static int           qtdUsers;
+	private static StringBuilder sb;
+    
+	@Override
+	public void setQtdUsuario( int i ) throws RemoteException
+	{
+		 AutomatoService.qtdUsers = i;
+		
+	}
 
+	@Override
+	public int getQtdUsuario( ) throws RemoteException 
+	{
+		return AutomatoService.qtdUsers;
+	}
+	
 	/**
 	 * Zera o valor da posição de inserção no conjuno de regras de transição.
+	 * Útil no caso de reset da aplicação.
 	 */
 	public void zeraContadorFuncTran( )
     {
@@ -37,7 +53,7 @@ public class AutomatoService implements AutomatoInterface
 	}
 	   
 	/**
-	 * Retorna para o cliente sobre a quantidade de usuários correntes.
+	 * Retorna para o cliente a identificação de usuários correntes.
 	 */
     public Character getIdentificaUsuario( ) 
     {
@@ -53,7 +69,7 @@ public class AutomatoService implements AutomatoInterface
     }
     
     /**
-	 * Retorna para o cliente sobre o passo em que se encontra o programa.
+	 * Retorna para o cliente sobre o passo( Métodos em ordem sequencial ) em que se encontra o programa.
 	 */
     public Integer getContaPasso( ) throws RemoteException 
     {
@@ -61,7 +77,7 @@ public class AutomatoService implements AutomatoInterface
     }
 
    /**
-    * A cada passo dado pelo cliente é incrementado, partindo assim para um próximo passo.
+    * A cada passo dado pelo cliente é incrementado, partindo assim para um próximo passo ( Próximo método em ordem sequencial ).
     * @return
     */
     public void incrementaContaPasso( ) throws RemoteException
@@ -72,6 +88,7 @@ public class AutomatoService implements AutomatoInterface
     
     /**
      * Zera contador para uma nova execução.
+     * * Útil no caso de reset da aplicação.
      * @return
      */
      public void zeraContaPasso( ) throws RemoteException
@@ -122,7 +139,6 @@ public class AutomatoService implements AutomatoInterface
      * ---------
      */
    
-    
     //Variáveis para conversão ( para manipulação ) 
     //de cada elemento do conjunto de estados Finais
     //e estado inicial.
@@ -356,8 +372,8 @@ public class AutomatoService implements AutomatoInterface
     			return "ENTRADA INVALIDA\n" + "Formato inválido";
    		}
         
-        if( !( seEntradaVazia( cjtFin ).equals( cjtFin ) ) )
-        	return seEntradaVazia ( cjtFin );
+        if( !( seEntradaVaziaOuMaiorquePermitido( cjtFin ).equals( cjtFin ) ) )
+        	return seEntradaVaziaOuMaiorquePermitido ( cjtFin );
         
         String[ ] estFin = splitVirgula( conjuntoEstadosTerminais );
         
@@ -488,75 +504,7 @@ public class AutomatoService implements AutomatoInterface
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     // %---------------METODOS UTILIZADOS NO CÓDIGO------------%
     // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-    /*
-     ****************************************************************
-     * METODOS DE IMPRESSÃO DE INFORMAÇOES
-     ****************************************************************
-     */
-    /**
-     * 
-     * @param alf
-     * @param est
-     * @param estadoPartida
-     * @param estadoDestino
-     * @param le
-     * @param estIn
-     * @param conjuntoEstadosFinais
-     */
-    private static String imprimirAutomato( String alf, String est, Integer[ ] estadoPartida, Integer[ ] estadoDestino, Character[ ] le,
-            String estIn, String conjuntoEstadosFinais ) 
-    {
-        
-        if ( !( estadoPartida != null ) )
-            estadoPartida = new Integer[ 0 ];
-        
-        if ( !( estadoDestino != null ) )
-           estadoDestino = new Integer[ 0 ];
-        
-        if ( !( le != null ) )
-               le = new Character[ 0 ];
-        
-        String[ ] estP = new String[ estadoPartida.length ];
-        
-        
-        
-        int b = 0;
-        for ( Integer key : estadoPartida ) 
-        {
-            estP[ b ] = conjuntoDeEstadosMap.get( key );
-            b++;
-        }
-
-        String[ ] estD = new String[ estadoDestino.length ];
-        ;
-        int c = 0;
-        for ( Integer key : estadoDestino )
-        {
-            estD[c] = conjuntoDeEstadosMap.get( key );
-            c++;
-        }
-  
-        return "**************************************************\n" 
-        + "\tIMPRIMINDO DADOS DO AUTOMATO\n"
-        + "\t\t\t ==>NOTAÇÃO UTILIZADA <== \n" 
-        + "\tO conjunto de simbolos - alfabeto: Σ \n"
-        + "\tO conjunto dos estados terminais e não terminais: Q = {S1, S2...}\n"
-        + "\tAs transicoes: (δ: Q × Σ → Q)\n" 
-        + "\tO  estado Inicial: q0\n"
-        + "\tO conjunto dos estados terminais: F\n" 
-        + "\tM = (Q, Σ, (δ: Q × Σ → Q), q0, F)\n"
-        + "\n\t\t ==>DADOS INFORMADOS <==\n" + "\tΣ   = " + alf + "\n" + "" 
-        + "\tQ   = " + est + "\n"
-        + "\tδ   = \n"
-        + "ESTADO PARTIDA:         Q" + Arrays.toString(estP) + "\n"
-        + "CARACTER CONSUMIDO: Σ" + Arrays.toString(le) + "\n" 
-        + "ESTADO DESTINO:          Q"+ Arrays.toString(estD) + "\n" + "" 
-        + "\tq0  = " + estIn + "\n" 
-        + "" + "\tF   = "+ conjuntoEstadosFinais + "\n" + ""
-        + "**************************************************";
-    }
-
+    
     /*
      * *********************************************
      * ****************** MÉTODOS VALIDADORES ******
@@ -578,8 +526,8 @@ public class AutomatoService implements AutomatoInterface
     			return "ENTRADA INVÁLIDA\n" +"Formato inválido";
    	    }
       
-        if( !( seEntradaVazia( alfabeto ).equals( alfabeto ) ) )
-        	return seEntradaVazia ( alfabeto );
+        if( !( seEntradaVaziaOuMaiorquePermitido( alfabeto ).equals( alfabeto ) ) )
+        	return seEntradaVaziaOuMaiorquePermitido ( alfabeto );
 
         // Entrada iniciando pela virgula
         if (alfabeto.charAt(0) == ',')
@@ -632,8 +580,8 @@ public class AutomatoService implements AutomatoInterface
     			return "ENTRADA INVALIDA\n" + "Formato inválido";
    		}
         
-        if( !( seEntradaVazia( estados ).equals( estados ) ) )
-        	return seEntradaVazia ( estados );
+        if( !( seEntradaVaziaOuMaiorquePermitido( estados ).equals( estados ) ) )
+        	return seEntradaVaziaOuMaiorquePermitido ( estados );
 
 
         // INSERÇÃO DE ESTADOS NÃO PODE COMEÇAR PELA VIRGULA.
@@ -732,12 +680,35 @@ public class AutomatoService implements AutomatoInterface
         }
     }
 
+    public static String seEntradaVaziaOuMaiorquePermitido ( String entrada )
+	{
+		// Entrada Vazia
+		final int TAMANHO_MAX = 3;
+		final int TAMANHO_MIN = 1;
+		
+	   String[] elementos = entrada.split( "," );
+		
+        if ( " ".equals( entrada ) || elementos.length < TAMANHO_MIN 
+        		|| entrada.isEmpty( ) || elementos.length > TAMANHO_MAX 
+        		|| "".equals( entrada ) )
+        {
+            return  "ENTRADA INVÁLIDA\n" + "Tamanho do entrada fora do range permitido!";
+        }
+		return entrada;
+	}
+
     /*
      ****************************************************************
      * MÉTODOS UTIL'S
      ****************************************************************
      */
 
+    // SPLIT PARA SEPARAR ENTRADAS QUE CONTEM VIRGULA
+    private static String[ ] splitVirgula( String valor )
+    {
+        return valor.split(",");// Divide a String quando ocorrer ","
+    }
+    
     /**
      * REMOVE CARACTERES DE FORMATAÇÃO DO CONJUNTO, EX: {,}
      * 
@@ -754,13 +725,76 @@ public class AutomatoService implements AutomatoInterface
         return conjunto;
 
     }
-
-    // SPLIT PARA SEPARAR ENTRADAS QUE CONTEM VIRGULA
-    private static String[ ] splitVirgula( String valor )
+    
+    
+    /*
+     ****************************************************************
+     * METODOS DE IMPRESSÃO DE INFORMAÇOES
+     ****************************************************************
+     */
+    
+    /**
+     * Imprime informações correntes do objto autômato 
+     * @param alf
+     * @param est
+     * @param estadoPartida
+     * @param estadoDestino
+     * @param le
+     * @param estIn
+     * @param conjuntoEstadosFinais
+     */
+    private static String imprimirAutomato( String alf, String est, Integer[ ] estadoPartida, Integer[ ] estadoDestino, Character[ ] le,
+            String estIn, String conjuntoEstadosFinais ) 
     {
-        return valor.split(",");// Divide a String quando ocorrer ","
-    }
+        
+        if ( !( estadoPartida != null ) )
+            estadoPartida = new Integer[ 0 ];
+        
+        if ( !( estadoDestino != null ) )
+           estadoDestino = new Integer[ 0 ];
+        
+        if ( !( le != null ) )
+               le = new Character[ 0 ];
+        
+        String[ ] estP = new String[ estadoPartida.length ];
+        
+        
+        
+        int b = 0;
+        for ( Integer key : estadoPartida ) 
+        {
+            estP[ b ] = conjuntoDeEstadosMap.get( key );
+            b++;
+        }
 
+        String[ ] estD = new String[ estadoDestino.length ];
+        ;
+        int c = 0;
+        for ( Integer key : estadoDestino )
+        {
+            estD[c] = conjuntoDeEstadosMap.get( key );
+            c++;
+        }
+  
+        return "**************************************************\n" 
+        + "\tIMPRIMINDO DADOS DO AUTOMATO\n"
+        + "\t\t\t ==>NOTAÇÃO UTILIZADA <== \n" 
+        + "\tO conjunto de simbolos - alfabeto: Σ \n"
+        + "\tO conjunto dos estados terminais e não terminais: Q = {S1, S2...}\n"
+        + "\tAs transicoes: (δ: Q × Σ → Q)\n" 
+        + "\tO  estado Inicial: q0\n"
+        + "\tO conjunto dos estados terminais: F\n" 
+        + "\tM = (Q, Σ, (δ: Q × Σ → Q), q0, F)\n"
+        + "\n\t\t ==>DADOS INFORMADOS <==\n" + "\tΣ   = " + alf + "\n" + "" 
+        + "\tQ   = " + est + "\n"
+        + "\tδ   = \n"
+        + "ESTADO PARTIDA:         Q" + Arrays.toString(estP) + "\n"
+        + "CARACTER CONSUMIDO: Σ" + Arrays.toString(le) + "\n" 
+        + "ESTADO DESTINO:          Q"+ Arrays.toString(estD) + "\n" + "" 
+        + "\tq0  = " + estIn + "\n" 
+        + "" + "\tF   = "+ conjuntoEstadosFinais + "\n" + ""
+        + "**************************************************";
+    }
 
     //METODOS ESPECIFICOS PARA IMPRESSÃO DE DADOS DE 2 USUÁRIOS ALTERNADOS
     /*
@@ -907,38 +941,4 @@ public class AutomatoService implements AutomatoInterface
        }
 		return null;
     }
-
-    public static int qtdUsers;
-	private static StringBuilder sb;
-    
-	@Override
-	public void setQtdUsuario( int i ) throws RemoteException
-	{
-		 AutomatoService.qtdUsers = i;
-		
-	}
-
-	@Override
-	public int getQtdUsuario( ) throws RemoteException 
-	{
-		return AutomatoService.qtdUsers;
-	}
-	
-	public static String seEntradaVazia ( String entrada )
-	{
-		// Entrada Vazia
-		final int TAMANHO_MAX = 5;
-		final int TAMANHO_MIN = 1;
-		
-	   String[] elementos = entrada.split( "," );
-		
-        if ( " ".equals( entrada ) || elementos.length < TAMANHO_MIN 
-        		|| entrada.isEmpty( ) || elementos.length > TAMANHO_MAX 
-        		|| "".equals( entrada ) )
-        {
-            return  "ENTRADA INVÁLIDA\n" + "Tamanho do entrada fora do range permitido!";
-        }
-		return entrada;
-	}
-
 }
