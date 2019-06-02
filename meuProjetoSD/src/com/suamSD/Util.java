@@ -17,7 +17,8 @@ public class Util {
     public static final String NOMEOBJDIST = "MeuAutomato";
     
     public static final String NOK         = "NOK";
-    public static final String  OK         = "OK";
+    public static final String OK          = "OK";
+    public static final String NULL        = "*";
     
     private static final Pattern PATTERN_IP = Pattern.compile(
             "^(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");

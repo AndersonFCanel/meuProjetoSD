@@ -249,9 +249,9 @@ public class AutomatoImplementsService implements AutomatoInterface
 	
 	    for ( int i = 0; i < quantidadeDeFuncTransPossiveis; i++ ) 
 	    {
-	    	estadoPartidaS  [ i ] = "*";
-	 	    caracConsumidoS [ i ] = "*";
-	 	    estadoDestinoS  [ i ] = "*";
+	    	estadoPartidaS  [ i ] = Util.NULL;
+	 	    caracConsumidoS [ i ] = Util.NULL;
+	 	    estadoDestinoS  [ i ] = Util.NULL;
 	 	                   	  
 		}                     
 	    
@@ -533,27 +533,24 @@ public class AutomatoImplementsService implements AutomatoInterface
                     }
                 }
                 
-                for ( Character d : le ) 
+                
+                String elementoDelta = "" ;
+                
+                for ( Character c : le )
                 {
-                	if( d != null )
-                	{
-					    c: for ( Character c : palavra ) 
-					    {
-					    	if( d == c || d == '*' ) 
-					    	{
-					    		continue c;
-					    	}
-					    	else
-					    	{
-					    		listaDePalavrasTestadas.put( palavraS , 
-					    				"PALAVRA CONTENDO CARACTERES NÃO INFORMADOS NA REGRA DE PRODUÇÃO.\n"
-					    				+ "Caracter: " + c + " não informado  no conjunto de regras." );
-					    		
-					    		return "PALAVRA CONTENDO CARACTERES NÃO INFORMADOS NA REGRA DE PRODUÇÃO.\n"
-					    				+ "Caracter: " + c + " não informado  no conjunto de regras.";
-					    	}
-					    }
-                	}
+                	if ( !"*".equals( c.toString ( ) ) )
+                	elementoDelta += c;	
+				}
+                
+                for ( Character d : palavraInserida.toCharArray( ) ) 
+                {
+                    if ( ! ( elementoDelta.contains( d.toString( ) ) ) ) 
+                    {
+                    	listaDePalavrasTestadas.put( palavraS , 
+				       			"PALAVRA CONTENDO CARACTERES NÃO INFORMADOS NA REGRA DE PRODUÇÃO.\n");
+				       	
+				       	return "PALAVRA CONTENDO CARACTERES NÃO INFORMADOS NA REGRA DE PRODUÇÃO.\n";	
+                    }
 				}
                 
                 if ( teste == 1 ) 
@@ -843,7 +840,7 @@ public class AutomatoImplementsService implements AutomatoInterface
         	}
         	else
         	{
-        		estP[ b ] = "*";
+        		estP[ b ] = Util.NULL;
         		b++;
         	}
         }
@@ -860,34 +857,34 @@ public class AutomatoImplementsService implements AutomatoInterface
         	}
         	else
         	{
-        		estD[ c ] = "*";
+        		estD[ c ] = Util.NULL;
         		c++;
         	}
         }
   
         return "**************************************************\n" 
-        + "\tIMPRIMINDO DADOS DO AUTOMATO\n"
-        + "\t\t\t ==>NOTAÇÃO UTILIZADA <== \n" 
-        + "\tO conjunto de simbolos - alfabeto: Σ \n"
-        + "\tO conjunto dos estados terminais e não terminais: Q = {S1, S2...}\n"
-        + "\tAs transicoes: (δ: Q × Σ → Q)\n" 
-        + "\tO  estado Inicial: q0\n"
-        + "\tO conjunto dos estados terminais: F\n" 
-        + "\tM = (Q, Σ, (δ: Q × Σ → Q), q0, F)\n"
-        + "\n\t\t ==>DADOS INFORMADOS <==\n" + "\tΣ   = " + alf + "\n" + "" 
-        + "\tQ   = " + est + "\n"
-        + "\tδ   = \n"
-        + "\t\tESTADO PARTIDA:     Q\n"
-        + "\t\tCARACTER CONSUMIDO: Σ\n" 
-        + "\t\tESTADO DESTINO:     Q\n"
-        + "\t\t" + Arrays.toString(estP) 
+        + "IMPRIMINDO DADOS DO AUTOMATO\n"
+        + " ==>NOTAÇÃO UTILIZADA <== \n" 
+        + "O conjunto de simbolos - alfabeto: Σ \n"
+        + "O conjunto dos estados terminais e não terminais: Q = {S1, S2...}\n"
+        + "As transicoes: (δ: Q × Σ → Q)\n" 
+        + "O  estado Inicial: q0\n"
+        + "O conjunto dos estados terminais: F\n" 
+        + "M = (Q, Σ, (δ: Q × Σ → Q), q0, F)\n"
+        + "\n ==>DADOS INFORMADOS <==\n" + "Σ   = " + alf + "\n" + "" 
+        + "Q   = " + est + "\n"
+        + "δ   = \n"
+        + "ESTADO PARTIDA:     Q\n"
+        + "CARACTER CONSUMIDO: Σ\n" 
+        + "ESTADO DESTINO:     Q\n"
+        + "\t" + Arrays.toString(estP) 
         + "\n"
-        + "\t\t" +Arrays.toString(le) 
+        + "\t" +Arrays.toString(le) 
         + "\n" 
-        + "\t\t" +Arrays.toString(estD) 
+        + "\t" +Arrays.toString(estD) 
         + "\n" 
-        + "\tq0  = " + estIn + "\n" 
-        + "" + "\tF   = "+ conjuntoEstadosFinais + "\n" + ""
+        + "q0  = " + estIn + "\n" 
+        + "" + "F   = "+ conjuntoEstadosFinais + "\n" + ""
         + "**************************************************";
     }
 
@@ -952,7 +949,7 @@ public class AutomatoImplementsService implements AutomatoInterface
         	}
         	else
         	{
-        		estP[ b ] = "*";
+        		estP[ b ] = Util.NULL;
         		b++;
         	}
         }
@@ -969,7 +966,7 @@ public class AutomatoImplementsService implements AutomatoInterface
         	}
         	else
         	{
-        		estD[ c ] = "*";
+        		estD[ c ] = Util.NULL;
         		c++;
         	}
         }
@@ -984,28 +981,28 @@ public class AutomatoImplementsService implements AutomatoInterface
     		sb.append( string +"\n" );
 		}
           
-        if( cliente == 'A') 
+        if( cliente == 'A' ) 
         {
              return "**************************************************\n" 
-                  + "\tIMPRIMINDO DADOS INSERIDOS PELO CLIENTE A:\n"
-                  + "\t\t\t ==>NOTAÇÃO UTILIZADA <== \n" 
-                  + "\tO conjunto de simbolos - alfabeto: Σ \n" 
-                  + "\tAs transicoes: (δ: Q × Σ → Q)\n" 
-                  + "\tO conjunto dos estados terminais: F\n"
-                  //+ "\tM = (Q, Σ, (δ: Q × Σ → Q), q0, F)\n"
-                  + "\n\t\t ==>DADOS INFORMADOS <==\n" 
-                  + "\tΣ   = " + alf + "\n" 
-                  + "\tδ   = \n" 
-                  + "\t\tESTADO PARTIDA:     Q\n"
-                  + "\t\tCARACTER CONSUMIDO: Σ\n" 
-                  + "\t\tESTADO DESTINO:     Q\n"
-                  + "\t\t" + Arrays.toString(estP) 
+                  + "IMPRIMINDO DADOS INSERIDOS PELO CLIENTE A:\n"
+                  + " ==>NOTAÇÃO UTILIZADA <== \n" 
+                  + "O conjunto de simbolos - alfabeto: Σ \n" 
+                  + "As transicoes: (δ: Q × Σ → Q)\n" 
+                  + "O conjunto dos estados terminais: F\n"
+                  //+ "M = (Q, Σ, (δ: Q × Σ → Q), q0, F)\n"
+                  + "\n ==>DADOS INFORMADOS <==\n" 
+                  + "Σ   = " + alf + "\n" 
+                  + "δ   = \n" 
+                  + "ESTADO PARTIDA:     Q\n"
+                  + "CARACTER CONSUMIDO: Σ\n" 
+                  + "ESTADO DESTINO:     Q\n"
+                  + "\t" + Arrays.toString(estP) 
                   + "\n"
-                  + "\t\t" +Arrays.toString(le) 
+                  + "\t" +Arrays.toString(le) 
                   + "\n" 
-                  + "\t\t" +Arrays.toString(estD) 
+                  + "\t" +Arrays.toString(estD) 
                   + "\n"
-                  + "\tF   = "
+                  + "F   = "
                   + conjuntoEstadosFinais + "\n" + 
                   "**************************************************"+
                   "\n\nPalavras Testadas:\n\n"
@@ -1015,17 +1012,17 @@ public class AutomatoImplementsService implements AutomatoInterface
         if( cliente == 'B')
         {
              return "**************************************************\n" 
-                   + "\tIMPRIMINDO DADOS INSERIDOS PELO CLIENTE B: \n"
-                   + "\t\t\t ==>NOTAÇÃO UTILIZADA <== \n" 
-                   + "\tO conjunto dos estados terminais e não terminais: Q = {S1, S2...}\n"
-                   + "\tO  estado Inicial: q0\n"
-                   + "\tO conjunto dos estados terminais: F\n"
-                   // + "\tM = (Q, Σ, (δ: Q × Σ → Q), q0, F)\n"
-                   + "\n\t\t ==>DADOS INFORMADOS <==\n" 
-                   + "\tQ   = " 
+                   + "IMPRIMINDO DADOS INSERIDOS PELO CLIENTE B: \n"
+                   + " ==>NOTAÇÃO UTILIZADA <== \n" 
+                   + "O conjunto dos estados terminais e não terminais: Q = {S1, S2...}\n"
+                   + "O  estado Inicial: q0\n"
+                   + "O conjunto dos estados terminais: F\n"
+                   // + "M = (Q, Σ, (δ: Q × Σ → Q), q0, F)\n"
+                   + "\n ==>DADOS INFORMADOS <==\n" 
+                   + "Q   = " 
                    + est 
                    + "\n"
-                   + "\tq0  = " 
+                   + "q0  = " 
                    + estIn 
                    + "\n"
                    + "**************************************************"
@@ -1036,28 +1033,28 @@ public class AutomatoImplementsService implements AutomatoInterface
         if( cliente == 'P') 
         {
         	return  "**************************************************\n" 
-        	        + "\tIMPRIMINDO DADOS DO AUTOMATO\n"
-        	        + "\t\t\t ==>NOTAÇÃO UTILIZADA <== \n" 
-        	        + "\tO conjunto de simbolos - alfabeto: Σ \n"
-        	        + "\tO conjunto dos estados terminais e não terminais: Q = {S1, S2...}\n"
-        	        + "\tAs transicoes: (δ: Q × Σ → Q)\n" 
-        	        + "\tO  estado Inicial: q0\n"
-        	        + "\tO conjunto dos estados terminais: F\n" 
-        	        + "\tM = (Q, Σ, (δ: Q × Σ → Q), q0, F)\n"
-        	        + "\n\t\t ==>DADOS INFORMADOS <==\n" + "\tΣ   = " + alf + "\n" + "" 
-        	        + "\tQ   = " + est + "\n"
-        	        + "\tδ   = \n"
-        	        + "\t\tESTADO PARTIDA:     Q\n"
-        	        + "\t\tCARACTER CONSUMIDO: Σ\n" 
-        	        + "\t\tESTADO DESTINO:     Q\n"
-        	        + "\t\t" + Arrays.toString(estP) 
+        	        + "IMPRIMINDO DADOS DO AUTOMATO\n"
+        	        + " ==>NOTAÇÃO UTILIZADA <== \n" 
+        	        + "O conjunto de simbolos - alfabeto: Σ \n"
+        	        + "O conjunto dos estados terminais e não terminais: Q = {S1, S2...}\n"
+        	        + "As transicoes: (δ: Q × Σ → Q)\n" 
+        	        + "O  estado Inicial: q0\n"
+        	        + "O conjunto dos estados terminais: F\n" 
+        	        + "M = (Q, Σ, (δ: Q × Σ → Q), q0, F)\n"
+        	        + "\n ==>DADOS INFORMADOS <==\n" + "Σ   = " + alf + "\n" + "" 
+        	        + "Q   = " + est + "\n"
+        	        + "δ   = \n"
+        	        + "ESTADO PARTIDA:     Q\n"
+        	        + "CARACTER CONSUMIDO: Σ\n" 
+        	        + "ESTADO DESTINO:     Q\n"
+        	        + "\t" + Arrays.toString(estP) 
         	        + "\n"
-        	        + "\t\t" +Arrays.toString(le) 
+        	        + "\t" +Arrays.toString(le) 
         	        + "\n" 
-        	        + "\t\t" +Arrays.toString(estD) 
+        	        + "\t" +Arrays.toString(estD) 
                     + "\n"
-        	        + "\tq0  = " + estIn + "\n" 
-        	        + "" + "\tF   = "+ conjuntoEstadosFinais + "\n" + ""
+        	        + "q0  = " + estIn + "\n" 
+        	        + "" + "F   = "+ conjuntoEstadosFinais + "\n" + ""
         	        + "**************************************************"
         	        +"\n\nPalavras Testadas:\n\n"
                     +sb;

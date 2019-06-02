@@ -196,13 +196,13 @@ public class MainClienteAutomato extends Thread
                             }
                             else 
                             {
-                                JOptionPane.showMessageDialog( null, "Entrada Verificada" );
-                                stub.incrementaContaPasso( );
+                                JOptionPane.showMessageDialog( null, "Entrada Verificada" );                               
                             }
-                            System.out.println( "PASSO CORRENTE: " + stub.getContaPasso( ) + 
+                            System.out.println( "PASSO CORRENTE: " + (stub.getContaPasso( ) + 1) + 
            			             "\nPosição função corrente: " + stub.getContadorFuncTran( ) + " de " +
            			          cont1 );
                           }
+                    	  stub.incrementaContaPasso( );
                       }
                       while( !"OK".equals( requestIsValid ) );
                     //Fim passo - 3
@@ -294,7 +294,8 @@ public class MainClienteAutomato extends Thread
                                  JOptionPane.showMessageDialog( null, "Entrada Verificada" );
                                  stub.incrementaContaPasso( );
                              }
-                             System.out.println( "PASSO CORRENTE: " + stub.getContaPasso( ) );
+                             System.out.println( "PASSO CORRENTE: " + stub.getContaPasso( ) + "\n"
+                             		+ "Palavra: " + entrada + " : =>>  " + requestIsValid);
                              
                         }
                         while( !"OK".equals( requestIsValid ) );
@@ -457,7 +458,8 @@ public class MainClienteAutomato extends Thread
                                JOptionPane.showMessageDialog( null, "Entrada Verificada" );
                                stub.incrementaContaPasso( );                     
                            }
-                           System.out.println( "PASSO CORRENTE: " + stub.getContaPasso( ) );
+                           System.out.println( "PASSO CORRENTE: " + stub.getContaPasso( ) + "\n"
+                            		+ "Palavra: " + entrada + " : =>>  " + requestIsValid);
                        }
                        while( !"OK".equals( requestIsValid ) );
                                      

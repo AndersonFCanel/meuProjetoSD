@@ -1,30 +1,32 @@
 **************************************************
-	IMPRIMINDO DADOS DO AUTOMATO
-			 ==>NOTAÇÃO UTILIZADA <== 
-	O conjunto de simbolos - alfabeto: Σ 
-	O conjunto dos estados terminais e não terminais: Q = {S1, S2...}
-	As transicoes: (δ: Q × Σ → Q)
-	O  estado Inicial: q0
-	O conjunto dos estados terminais: F
-	M = (Q, Σ, (δ: Q × Σ → Q), q0, F)
+IMPRIMINDO DADOS DO AUTOMATO
+ ==>NOTAÇÃO UTILIZADA <== 
+O conjunto de simbolos - alfabeto: Σ 
+O conjunto dos estados terminais e não terminais: Q = {S1, S2...}
+As transicoes: (δ: Q × Σ → Q)
+O  estado Inicial: q0
+O conjunto dos estados terminais: F
+M = (Q, Σ, (δ: Q × Σ → Q), q0, F)
 
-		 ==>DADOS INFORMADOS <==
-	Σ   = { a,s }
-	Q   = { 1,2 }
-	δ   = 
-		ESTADO PARTIDA:     Q
-		CARACTER CONSUMIDO: Σ
-		ESTADO DESTINO:     Q
-		[1, 2, *, *]
-		[a, a, null, *]
-		[2, 1, *, *]
-	q0  = {1}
-	F   = { 2 }
+ ==>DADOS INFORMADOS <==
+Σ   = { a,s,d }
+Q   = { 1,2,3 }
+δ   = 
+ESTADO PARTIDA:     Q
+CARACTER CONSUMIDO: Σ
+ESTADO DESTINO:     Q
+	[1, 2, 3, *, *, 1, *, *, *]
+	[a, a, a, *, *, s, *, *, *]
+	[2, 3, 1, *, *, 3, *, *, *]
+q0  = {1}
+F   = { 3 }
 **************************************************
 
 Palavras Testadas:
 
-{aa=PALAVRA NÃO ACEITA PELO AUTOMATO
- a=PALAVRA ACEITA PELO AUTOMATO
- asa=PALAVRA CONTENDO CARACTERES NÃO INFORMADOS NA REGRA DE PRODUÇÃO.
-Caracter: s não informado  no conjunto de regras.}
+{as=PALAVRA NÃO ACEITA PELO AUTOMATO
+ s=PALAVRA ACEITA PELO AUTOMATO
+ ad=PALAVRA CONTENDO CARACTERES NÃO INFORMADOS NA REGRA DE PRODUÇÃO.
+
+ aassa=PALAVRA NÃO ACEITA PELO AUTOMATO
+ aaas=PALAVRA ACEITA PELO AUTOMATO}
