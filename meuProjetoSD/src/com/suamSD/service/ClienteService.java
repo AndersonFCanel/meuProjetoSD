@@ -72,7 +72,7 @@ public class ClienteService
                 estados  = JOptionPane.showInputDialog( null,
                 		 "Entre com o conjunto de estados terminais e não terminias:  Q:\n\n"
                 				 + "ATENÇÃO AS INSTRUÇÕES: \n"
-                                 + "Cada ESTADO deve ser separado por virgula.\n "
+                                 + "Cada ESTADO deve ser separado por virgula.\n"
                                  + "Não é permitida a utilização de espaço.\n"
                                  + "EX: A,B,C ... e1,e2,e3...\n"
                                  + "Lembre-se, tratando de conjunto(Teoria dos conjuntos) \n"
@@ -186,8 +186,8 @@ public class ClienteService
                 		"Entre com o estado inicial q0: \n\n"
                 		+ "ATENÇÃO AS INSTRUÇÕES:\n"
                 		+ "O estado inicial deve ser inserido na forma 'estado',\n"
-                		+ " sem vírgulas ou qualquer outro adereço,\n"
-                		+ "o estado inicial é único.\n "
+                		+ "sem vírgulas ou qualquer outro adereço,\n"
+                		+ "o estado inicial é único.\n"
                         + "Para checar dados do autômato  digite '?'.\n\n");
 
 

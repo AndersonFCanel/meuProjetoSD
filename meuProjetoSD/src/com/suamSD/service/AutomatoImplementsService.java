@@ -512,7 +512,7 @@ public class AutomatoImplementsService implements AutomatoInterface
                 {
                     for ( int k = 0; k < conjuntoFuncaoDeTransicaoDeEstados.length; k++ ) 
                     {
-                        if( le[ k ] == null )
+                        if( le[ k ] == '*' )
                             continue;
                             
                         if ( ( palavra[ p ] == le[ k ]) && ( estadoPartida[ k ] == estadoa ) )
@@ -527,7 +527,9 @@ public class AutomatoImplementsService implements AutomatoInterface
                         if ( estadoa == estadosf[ k ] )
                         {
                             teste = 1;
-                        } else {
+                        }
+                        else
+                        {
                             teste = 0;
                         }
                     }

@@ -78,8 +78,9 @@ public class MainServidorAutomato
             {
             	//Definindo a quantidade de usuários que irão utilizar o sistema.
                 resposta = JOptionPane.showInputDialog( null,
-                        "Para utilizar o programa com UM cliente ENTRE 1 ou (||)  pressione OK,\n"
-                        + "para DOIS, ENTRE 2 e (&&) pressione OK." );
+                        "\nDeseja usar a aplicação com 1 ou dois clientes?\n"
+                        + "   UM cliente, digite 1 ou somente pressione OK,\n"
+                        + "   DOIS clientes, digite 2 e pressione OK.\n" );
             	
                 if( resposta != null )
             		resposta = resposta.trim( );

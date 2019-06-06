@@ -9,24 +9,28 @@ O conjunto dos estados terminais: F
 M = (Q, Σ, (δ: Q × Σ → Q), q0, F)
 
  ==>DADOS INFORMADOS <==
-Σ   = { a,s,d }
+Σ   = { a,b,c }
 Q   = { 1,2,3 }
 δ   = 
 ESTADO PARTIDA:     Q
 CARACTER CONSUMIDO: Σ
 ESTADO DESTINO:     Q
-	[1, 2, 3, *, *, 1, *, *, *]
-	[a, a, a, *, *, s, *, *, *]
-	[2, 3, 1, *, *, 3, *, *, *]
+	[1, 2, 3, 1, 2, 3, *, *, *]
+	[a, b, c, c, b, a, *, *, *]
+	[2, 3, 1, 2, 3, 1, *, *, *]
 q0  = {1}
-F   = { 3 }
+F   = { 1,2 }
 **************************************************
 
 Palavras Testadas:
 
-{as=PALAVRA NÃO ACEITA PELO AUTOMATO
- s=PALAVRA ACEITA PELO AUTOMATO
- ad=PALAVRA CONTENDO CARACTERES NÃO INFORMADOS NA REGRA DE PRODUÇÃO.
-
- aassa=PALAVRA NÃO ACEITA PELO AUTOMATO
- aaas=PALAVRA ACEITA PELO AUTOMATO}
+{=PALAVRA NÃO ACEITA PELO AUTOMATO
+ ab=PALAVRA NÃO ACEITA PELO AUTOMATO
+ a=PALAVRA ACEITA PELO AUTOMATO
+ abca=PALAVRA ACEITA PELO AUTOMATO
+ c=PALAVRA ACEITA PELO AUTOMATO
+ abc=PALAVRA NÃO ACEITA PELO AUTOMATO
+ cba=PALAVRA NÃO ACEITA PELO AUTOMATO
+ abcccc=PALAVRA ACEITA PELO AUTOMATO
+ abccba=PALAVRA NÃO ACEITA PELO AUTOMATO
+ abcc=PALAVRA ACEITA PELO AUTOMATO}
