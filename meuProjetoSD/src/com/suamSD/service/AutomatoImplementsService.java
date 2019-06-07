@@ -178,8 +178,6 @@ public class AutomatoImplementsService implements AutomatoInterface
      */
     public String setAlfabeto( String alf )
     {
-    	setMetetodoCorrente( 1 );
-    	
         String  alfabeto = alf; 
         String  responseValidAlf = Util.OK; 
         
@@ -200,6 +198,11 @@ public class AutomatoImplementsService implements AutomatoInterface
         }
         
         //conjuntodeSimbolos_Alfabeto = alfabeto.chars( ).mapToObj( c -> ( char ) c ).toArray( Character[ ]::new ); 
+     
+        if(  Util.OK.equals( responseValidAlf ) )
+        {
+        	setMetetodoCorrente( 1 );
+        }
         
         return responseValidAlf;
     }
@@ -214,8 +217,6 @@ public class AutomatoImplementsService implements AutomatoInterface
      */
     public String setEstados( String est ) 
     {
-    	setMetetodoCorrente ( 2 );
-    	
         String responseValidEst;
 
         String [ ] conjuntoDeEstados =  est.split( "," );
@@ -235,7 +236,12 @@ public class AutomatoImplementsService implements AutomatoInterface
             a++;
         }
         
-         return responseValidEst;
+        if(  Util.OK.equals( responseValidEst ) ) 
+        {
+        	setMetetodoCorrente ( 2 );
+        }
+        
+        return responseValidEst;
     }
     
    void inicializaVariaveis( ) 
@@ -391,7 +397,7 @@ public class AutomatoImplementsService implements AutomatoInterface
      */
     public String setEstInicial( String ei )
     {
-    	setMetetodoCorrente ( 4 );
+    	
     			
         String responseValidaEstadoI = Util.OK;
  
@@ -403,6 +409,11 @@ public class AutomatoImplementsService implements AutomatoInterface
             //estadoIni   = removeNulos            ( estadoIni );
             estIniIMPRIME = "{" + estadoIni + "}";
             estadoi = conjuntoDeEstadosTerminaisEnaoTerminais.indexOf( ei.trim( ) );
+        }
+        
+        if(  Util.OK.equals( responseValidaEstadoI ) ) 
+        {
+        	setMetetodoCorrente ( 4 );
         }
         
         return responseValidaEstadoI;
@@ -419,9 +430,7 @@ public class AutomatoImplementsService implements AutomatoInterface
      */
      public String setConjuntoEstadosFinais( String cjtFin )
      {
-    	 setMetetodoCorrente ( 5 );
-    	 
-        String validaConjuntoEstadosFin = Util.OK;
+    	String validaConjuntoEstadosFin = Util.OK;
         
         conjuntoEstadosTerminais = cjtFin;
 
@@ -494,6 +503,10 @@ public class AutomatoImplementsService implements AutomatoInterface
                              estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME);
         }
         
+        if(  Util.OK.equals( validaConjuntoEstadosFin ) )
+        {
+        	 setMetetodoCorrente ( 5 );
+        }
         return validaConjuntoEstadosFin;
     }
 
