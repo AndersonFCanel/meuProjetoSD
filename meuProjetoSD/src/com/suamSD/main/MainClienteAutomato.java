@@ -48,6 +48,7 @@ public class MainClienteAutomato extends Thread
             {
             case 'A':
                 new Thread(t1).start( );
+                new Thread(t2).start();
                 break;
 
             case 'B':
@@ -118,6 +119,7 @@ public class MainClienteAutomato extends Thread
                     {
                     	stub.setIdentificaUsuario( 'B' );
 					}
+                    
                                   
                     /**
                      * Execução do primeiro método  - Passo 1
@@ -132,45 +134,21 @@ public class MainClienteAutomato extends Thread
                         else 
                         {
                             JOptionPane.showMessageDialog( null, "Entrada Verificada" );
-                            stub.incrementaContaPasso( );
+                            
                         }
-                        System.out.println( "PASSO CORRENTE: " + stub.getContaPasso( ) );
+                        System.out.println( "PASSO CORRENTE: " + stub.getMetetodoCorrente( ) );
                     }
                     while( !"OK".equals( requestIsValid ) );
                     //Fim - passo 3 
                     
-                    if( !( stub.getIdentificaUsuario( ) =='A' ) )
-                    {
-                        do 
-                        {
-                            ClienteService.aguardarVezOutroUsuarioCli( "A" );
-                        } 
-                        while ( stub.getContaPasso( ) <= 2  );
-                    }
                     
-                    //CASO A EXECUÇÃO SEJA APENAS DE UM CLIENTE
-                    /**
-                     * Execução do Segundo método  - Passo 2
-                     */
-                    if( stub.getIdentificaUsuario( ) =='A' )
+                    System.out.println("Aguarde");
+                    do 
                     {
-                        do
-                        {
-                            entrada         = ClienteService.entraConjuntoEstado(        );
-                            requestIsValid = stub.setEstados( entrada                   );
-                            
-                            if( !"OK".equals( requestIsValid ) )
-                                JOptionPane.showMessageDialog( null, requestIsValid );
-                            else 
-                            {
-                                JOptionPane.showMessageDialog( null, "Entrada Verificada" );
-                                stub.incrementaContaPasso( );
-                            }
-                            System.out.println( "PASSO CORRENTE: " + stub.getContaPasso( ) );
-                        }
-                        while( !"OK".equals( requestIsValid ) );
-                    }
-                   //Fim - passo 2
+                    	System.out.print(".");
+                    } 
+                    while ( stub.getMetetodoCorrente( ) <= 1 );
+                   
                     
                     /**
                      * Execução do terceiro método  - Passo 3
@@ -198,48 +176,21 @@ public class MainClienteAutomato extends Thread
                             {
                                 JOptionPane.showMessageDialog( null, "Entrada Verificada" );                               
                             }
-                            System.out.println( "PASSO CORRENTE: " + (stub.getContaPasso( ) + 1) + 
+                            System.out.println( "PASSO CORRENTE: " + (stub.getMetetodoCorrente( ) ) + 
            			             "\nPosição função corrente: " + stub.getContadorFuncTran( ) + " de " +
            			          cont1 );
                           }
-                    	  stub.incrementaContaPasso( );
+                    	  //stub.incrementaContaPasso( );
                       }
                       while( !"OK".equals( requestIsValid ) );
                     //Fim passo - 3
                     
-                     
-                    if( !( stub.getIdentificaUsuario( ) =='A' ) )
-                    {
-                        do 
-                        {
-                            ClienteService.aguardarVezOutroUsuarioCli( "A" );
-                        } 
-                        while ( stub.getContaPasso( ) <= 4  );
-                    }
+                    System.out.println("Aguarde");
                     
-                    //CASO A EXECUÇÃO SEJA APENAS DE UM CLIENTE
-                    /**
-                     * Execução do Quarto método  - Passo 4
-                     */
-                    if( stub.getIdentificaUsuario( ) =='A' )
-                    {                     
-                        do
-                        {                    
-                            entrada         = ClienteService.entraEstIN(         );
-                            requestIsValid  = stub.setEstInicial       ( entrada );
-                            
-                            if( !"OK".equals( requestIsValid ) )
-                                JOptionPane.showMessageDialog( null, requestIsValid );
-                            else 
-                            {
-                                JOptionPane.showMessageDialog( null, "Entrada Verificada" );
-                                stub.incrementaContaPasso( );
-                            }
-                            System.out.println( "PASSO CORRENTE: " + stub.getContaPasso( ) );
-                        }
-                        while( !"OK".equals( requestIsValid ) );
-                    }
-                    //Fim - passo 4
+                    do 
+                    {
+                    } 
+                    while ( stub.getMetetodoCorrente( ) <=3  );
                     
                     /**
                      * Execução do quinto método  - Passo 5
@@ -254,52 +205,20 @@ public class MainClienteAutomato extends Thread
                         else 
                         {
                             JOptionPane.showMessageDialog( null, "Entrada Verificada" );
-                            stub.incrementaContaPasso( );
+                           // stub.incrementaContaPasso( );
                         }
-                        System.out.println( "PASSO CORRENTE: " + stub.getContaPasso( ) );
+                        System.out.println( "PASSO CORRENTE: " + stub.getMetetodoCorrente( ) );
                     }
                     while( !"OK".equals( requestIsValid ) );
                     
-                    
-                    if( !( stub.getIdentificaUsuario( ) =='A' ) )
+                    System.out.println("Aguarde");
+                    do 
                     {
-                        do 
-                        {
-                            ClienteService.aguardarVezOutroUsuarioCli( "A" );
-                        } 
-                        while (  stub.getContaPasso( ) <= 6  );
-                    }
+                    	System.out.print("...");
+                        //ClienteService.aguardarVezOutroUsuarioCli( "A" );
+                    } 
+                    while (  stub.getMetetodoCorrente( ) <=5  );
                     
-                    //CASO A EXECUÇÃO SEJA APENAS DE UM CLIENTE
-                    /**
-                     * Execução do Quarto método  - Passo 6
-                     */
-                    if( stub.getIdentificaUsuario( ) =='A' )
-                    {                    
-                        do
-                        {
-                              entrada = ClienteService.entraPalavra (  );
-                              
-                              if ( entrada == null)
-                              {
-                            	  System.out.println( "Cliente encerrado!" );
-                            	  break;
-                              }
-                            	  requestIsValid = stub.checaAceitacaoPalavra( entrada );
-                              
-                             if( !"OK".equals( requestIsValid ) )
-                                  JOptionPane.showMessageDialog( null, requestIsValid );
-                             else 
-                             {
-                                 JOptionPane.showMessageDialog( null, "Entrada Verificada" );
-                                 stub.incrementaContaPasso( );
-                             }
-                             System.out.println( "PASSO CORRENTE: " + stub.getContaPasso( ) + "\n"
-                             		+ "Palavra: " + entrada + " : =>>  " + requestIsValid);
-                             
-                        }
-                        while( !"OK".equals( requestIsValid ) );
-                    }
                     
                     if( stub.getIdentificaUsuario( ) =='A' )
                     {
@@ -382,11 +301,14 @@ public class MainClienteAutomato extends Thread
                         //Método executado pelo Cliente A 
                         // stub.setAlfabeto ( );  - Passo 1
                        
-                         do 
-                         {
-                             ClienteService.aguardarVezOutroUsuarioCli( "B" );
+                      
+                        System.out.println("Aguarde");
+                        do 
+                        {
+                        	System.out.print("...");
+                            //ClienteService.aguardarVezOutroUsuarioCli( "B" );
                          } 
-                         while ( stub.getContaPasso( ) <= 1);
+                         while (  stub.getMetetodoCorrente( ) < 1  );
                    
                         //Executando segundo método   - Passo 2
                         do
@@ -399,9 +321,9 @@ public class MainClienteAutomato extends Thread
                             else 
                             {
                                 JOptionPane.showMessageDialog( null, "Entrada Verificada" );
-                                stub.incrementaContaPasso( );
+                               // stub.incrementaContaPasso( );
                             }
-                            System.out.println( "PASSO CORRENTE: " + stub.getContaPasso( ) );
+                            System.out.println( "PASSO CORRENTE: " + stub.getMetetodoCorrente( ) );
                         }
                         while( !"OK".equals( requestIsValid ) );
                         
@@ -410,9 +332,10 @@ public class MainClienteAutomato extends Thread
                      
                         do 
                         {
-                            ClienteService.aguardarVezOutroUsuarioCli( "B" );
+                        	System.out.print("...");
+                            //ClienteService.aguardarVezOutroUsuarioCli( "B" );
                         } 
-                        while ( stub.getContaPasso( ) <= 3  );
+                        while (  stub.getMetetodoCorrente( ) <= 2  );
                            
                         //Executando Quarto Método  - Passo 4
                         do
@@ -425,9 +348,9 @@ public class MainClienteAutomato extends Thread
                             else 
                             {
                                 JOptionPane.showMessageDialog( null, "Entrada Verificada" );
-                                stub.incrementaContaPasso( );
+                                //stub.incrementaContaPasso( );
                             }
-                            System.out.println( "PASSO CORRENTE: " + stub.getContaPasso( ) );
+                            System.out.println( "PASSO CORRENTE: " + stub.getMetetodoCorrente( ) );
                         }
                         while( !"OK".equals( requestIsValid ) );
                         
@@ -437,9 +360,10 @@ public class MainClienteAutomato extends Thread
                        //Executando Sexto Método  - Passo 6
                         do 
                         {
-                            ClienteService.aguardarVezOutroUsuarioCli( "B" );
+                        	System.out.print("...");
+                            //ClienteService.aguardarVezOutroUsuarioCli( "B" );
                         } 
-                        while ( stub.getContaPasso( ) <= 5  );
+                        while (  stub.getMetetodoCorrente( ) <= 4  );
                                            
                        do
                        {
@@ -456,9 +380,9 @@ public class MainClienteAutomato extends Thread
                            else // implementar entrada igual a 0
                            {
                                JOptionPane.showMessageDialog( null, "Entrada Verificada" );
-                               stub.incrementaContaPasso( );                     
+                               //stub.incrementaContaPasso( );                     
                            }
-                           System.out.println( "PASSO CORRENTE: " + stub.getContaPasso( ) + "\n"
+                           System.out.println( "PASSO CORRENTE: " + stub.getMetetodoCorrente( ) + "\n"
                             		+ "Palavra: " + entrada + " : =>>  " + requestIsValid);
                        }
                        while( !"OK".equals( requestIsValid ) );

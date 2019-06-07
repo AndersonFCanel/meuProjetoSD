@@ -28,7 +28,9 @@ public class MainServidorAutomato
     public static void main( String args[ ] ) 
     		throws InterruptedException
     {
-    	try {
+    	/*
+    	 try 
+    	{
 			JOptionPane.showMessageDialog( null,  "O ip local é: " + InetAddress.getLocalHost( ).getHostAddress( ) + "\n"
 			                		+ "Para atribui-lo basta digitar no input a seguir." );
 		}
@@ -36,6 +38,7 @@ public class MainServidorAutomato
     	{
 			e1.printStackTrace();
 		}
+		*/
     	
         String ipServer = Util.defineIP( );
         
@@ -72,9 +75,9 @@ public class MainServidorAutomato
             System.out.println("registro.bind: "+ Util.NOMEOBJDIST + " stubAutomato" );
    
             
-            String resposta;
-            boolean b = true;
-            do 
+            //String resposta;
+           // boolean b = true;
+            /*do 
             {
             	//Definindo a quantidade de usuários que irão utilizar o sistema.
                 resposta = JOptionPane.showInputDialog( null,
@@ -114,7 +117,11 @@ public class MainServidorAutomato
                 	System.out.println( "\nOperando com 2 clientes.\n" );
                 }
                 
-			} while ( b );
+			} while ( b );*/
+            
+            // Setando dois usuarios estaticamente
+            stubAutomato.setIdentificaUsuario( 'A' );
+            stubAutomato.setQtdUsuario( 2 );
             
             
             int input ;

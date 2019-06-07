@@ -45,7 +45,7 @@ public class ClienteService
                         + "não são permitidos elementos duplicados.\n\n"
                         + "Tamanho permitido (Número de elementos possíveis):\n" 
                         + "       Mínimo = 1(um)   elemento. \n"
-                        + "       Máximo = 3(três) elementos.\n\n" );
+                        + "       Máximo = 3(três) elementos.\n\n" , "a,b,c");
                 
                 if ( alfabeto == null)
                 {
@@ -79,7 +79,7 @@ public class ClienteService
                                  + "não são permitidos elementos duplicados.\n\n"
                                  + "Tamanho permitido (Número de elementos possíveis):\n" 
                                  + "       Mínimo = 1(um)   elemento. \n"
-                                 + "       Máximo = 3(três) elementos.\n\n" );
+                                 + "       Máximo = 3(três) elementos.\n\n", "1,2");
                 
                 if ( estados == null)
                 {
@@ -99,7 +99,7 @@ public class ClienteService
                      AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
                      
                      //Caracter que idenifica entradas globais de ambos os clientes
-                     JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( '@' ) );
+                     JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( 'A' ) );
 				}
                 
             } 
@@ -164,7 +164,7 @@ public class ClienteService
                      // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
                      AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
                      
-                     JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( '@' ) );
+                     JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( 'A' ) );
 				}
             } 
             while ( b );
@@ -188,7 +188,7 @@ public class ClienteService
                 		+ "O estado inicial deve ser inserido na forma 'estado',\n"
                 		+ "sem vírgulas ou qualquer outro adereço,\n"
                 		+ "o estado inicial é único.\n"
-                        + "Para checar dados do autômato  digite '?'.\n\n");
+                        + "Para checar dados do autômato  digite '?'.\n\n" , "1");
 
 
                 if ( estadoInicial == null )
@@ -209,7 +209,7 @@ public class ClienteService
                      AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
                      
                      //Caracter que idenifica entradas globais de ambos os clientes
-                     JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( '@' ) );
+                     JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( 'B' ) );
 				}
                  
             } 
@@ -239,7 +239,7 @@ public class ClienteService
                                   + "não são permitidos elementos duplicados.\n\n"
                                   + "Tamanho permitido (Número de elementos possíveis):\n" 
                                   + "       Mínimo = 1(um)   elemento. \n"
-                                  + "       Máximo = 3(três) elementos.\n\n" );  
+                                  + "       Máximo = 3(três) elementos.\n\n" ,"1,2");  
                  
                 if ( cjtEstFinal == null )
                 {
@@ -259,7 +259,7 @@ public class ClienteService
                      AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
                      
                      //Caracter que idenifica entradas globais de ambos os clientes
-                     JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( '@' ) );
+                     JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( 'A' ) );
 				}
             } 
             while ( b );
@@ -311,7 +311,7 @@ public class ClienteService
                     // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
                     AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
                  
-                    stub.incrementaContaPasso( ); 
+                    stub.setMetetodoCorrente( 0 );; 
 
                     //break;                    
                     //Util.interrompeThread ( ); 
@@ -328,7 +328,7 @@ public class ClienteService
                      AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
                      
                      //Caracter que idenifica entradas globais de ambos os clientes
-                      JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( '@' ) );
+                      JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( 'B' ) );
 
 				}
                 

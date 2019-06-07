@@ -42,14 +42,14 @@ public interface AutomatoInterface extends Remote
      * @return
      * @throws RemoteException
      */
-    public Integer   getContaPasso         ( )throws RemoteException; 
+    public int   getMetetodoCorrente      ( )throws RemoteException; 
             
     /**
      * Identificação da evolução da execução do programa, a cada método executado deve ocorrer um incremento no controle.
      * @return
      * @throws RemoteException
      */
-    public void      incrementaContaPasso  ( )throws RemoteException;
+    public void  setMetetodoCorrente      ( int metodo )throws RemoteException;
     
     /**
 	 * Zera contador para uma nova execução

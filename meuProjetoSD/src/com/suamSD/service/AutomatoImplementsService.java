@@ -12,11 +12,11 @@ public class AutomatoImplementsService implements AutomatoInterface
 {
 	public static  int           contadorFuncTran  = 0;
 	public static  Character     identificaUsuario = 'A';
-	static         Integer       contaPasso        = 1;
 	public  static int           qtdUsers;
 	private static StringBuilder sb;
+	
+	public static int identificaMetodoCorrente = 0;
     
-	@Override
 	public void setQtdUsuario( int i ) throws RemoteException
 	{
 		 AutomatoImplementsService.qtdUsers = i;
@@ -74,18 +74,18 @@ public class AutomatoImplementsService implements AutomatoInterface
     /**
 	 * Retorna para o cliente sobre o passo( Métodos em ordem sequencial ) em que se encontra o programa.
 	 */
-    public Integer getContaPasso( ) throws RemoteException 
+    public int getMetetodoCorrente( )
     {
-         return contaPasso;
+         return identificaMetodoCorrente;
     }
 
    /**
     * A cada passo dado pelo cliente é incrementado, partindo assim para um próximo passo ( Próximo método em ordem sequencial ).
     * @return
     */
-    public void incrementaContaPasso( ) throws RemoteException
+    public void setMetetodoCorrente ( int idMetodo )
     {
-        contaPasso++;
+        AutomatoImplementsService.identificaMetodoCorrente = idMetodo;
         
     }
     
@@ -96,7 +96,7 @@ public class AutomatoImplementsService implements AutomatoInterface
      */
      public void zeraContaPasso( ) throws RemoteException
      {
-         contaPasso = 1;
+    	 identificaMetodoCorrente = 0;
          
      }
 
@@ -178,6 +178,8 @@ public class AutomatoImplementsService implements AutomatoInterface
      */
     public String setAlfabeto( String alf )
     {
+    	setMetetodoCorrente( 1 );
+    	
         String  alfabeto = alf; 
         String  responseValidAlf = Util.OK; 
         
@@ -212,6 +214,8 @@ public class AutomatoImplementsService implements AutomatoInterface
      */
     public String setEstados( String est ) 
     {
+    	setMetetodoCorrente ( 2 );
+    	
         String responseValidEst;
 
         String [ ] conjuntoDeEstados =  est.split( "," );
@@ -264,7 +268,8 @@ public class AutomatoImplementsService implements AutomatoInterface
      *  # ESTADO (LADO ESQUERDO), CONSOME (CENTRO); VAI PARA ESTADO (LADO DIREITO)#
      */
     public String setRegra( String func ) 
-    {   	
+    {   
+
     	if( !PATTERN_DELTA.matcher( func ).matches( ) )
         {
     		if( !"".equals( func ) )
@@ -349,8 +354,10 @@ public class AutomatoImplementsService implements AutomatoInterface
 			}	
 		}
 		if( contadorFuncTran == quantidadeDeFuncTransPossiveis )
+		{	
+			setMetetodoCorrente ( 3 );
 			return responseValidaFunc;
-    
+		}
 		return responseValidaFunc ;
     }
 
@@ -384,6 +391,8 @@ public class AutomatoImplementsService implements AutomatoInterface
      */
     public String setEstInicial( String ei )
     {
+    	setMetetodoCorrente ( 4 );
+    			
         String responseValidaEstadoI = Util.OK;
  
         responseValidaEstadoI = verificaEstInicial( ei ) ;
@@ -410,6 +419,8 @@ public class AutomatoImplementsService implements AutomatoInterface
      */
      public String setConjuntoEstadosFinais( String cjtFin )
      {
+    	 setMetetodoCorrente ( 5 );
+    	 
         String validaConjuntoEstadosFin = Util.OK;
         
         conjuntoEstadosTerminais = cjtFin;
@@ -493,6 +504,8 @@ public class AutomatoImplementsService implements AutomatoInterface
      */
     public String checaAceitacaoPalavra( String palavraInserida ) 
     {
+    	setMetetodoCorrente ( 6 );
+    	
         String palavraS;
         String responseValidaPalavra = Util.OK;
         
@@ -513,7 +526,7 @@ public class AutomatoImplementsService implements AutomatoInterface
                     for ( int k = 0; k < conjuntoFuncaoDeTransicaoDeEstados.length; k++ ) 
                     {
                         if( le[ k ] == '*' )
-                            continue;
+                        	continue;
                             
                         if ( ( palavra[ p ] == le[ k ]) && ( estadoPartida[ k ] == estadoa ) )
                         {
@@ -527,6 +540,7 @@ public class AutomatoImplementsService implements AutomatoInterface
                         if ( estadoa == estadosf[ k ] )
                         {
                             teste = 1;
+                            break;
                         }
                         else
                         {

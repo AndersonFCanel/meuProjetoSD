@@ -20,15 +20,16 @@ public class Util {
     public static final String OK          = "OK";
     public static final String NULL        = "*";
     
-    private static final Pattern PATTERN_IP = Pattern.compile(
+    /*private static final Pattern PATTERN_IP = Pattern.compile(
             "^(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");
+    */
     
     public static String defineIP( ) 
     {      
     	String ip = "";
     	boolean b = false;
     	
-    	do
+    	/*do
     	{
     		b = false;
     		try 
@@ -38,8 +39,40 @@ public class Util {
                 ip = JOptionPane.showInputDialog( null,
                         "Entre com o IP do servidor:\n "
                         + "Para 127.0.0.1 'localhost', apenas clique OK!\n");
+                */
                 
-                if( !PATTERN_IP.matcher( ip ).matches( ) && !( "".equals( ip ) ) )
+                String[ ] options = new String[ ] {"127.0.0.1", "10.0.200.16", "Cancel" };
+                
+                Integer response = JOptionPane.showOptionDialog( null, "Selecione a localização do servidor:", "Configurando IP",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                        null, options, options[ 0  ] );
+                // response == 0 para "10.0.200.45";  1 para "10.0.200.16"; 2 para Escape/Cancel.
+                
+
+                if ( response == 2 ) 
+                {
+                	try 
+                	{
+						interrompeThread( );
+					} 
+                	catch ( InterruptedException e ) 
+                	{
+						e.printStackTrace();
+					}
+                }
+            
+                if ( response == 0 ) 
+                {
+                	  //ip = "10.0.200.45";
+                	ip = "127.0.0.1";
+                }
+                
+                if ( response == 1 ) 
+            	{
+            	     ip = "10.0.200.8";
+            	}
+                
+                /*if( !PATTERN_IP.matcher( ip ).matches( ) && !( "".equals( ip ) ) )
                 {
                 	 JOptionPane.showMessageDialog( null, "Formato inválido" );
                 	 b = true;
@@ -64,6 +97,8 @@ public class Util {
                 break;
             }
         }
+        */
+        
         JOptionPane.showMessageDialog( null, "O IP do servidorAutomato é: " + ip );
         System.out.println( "O IP do servidorAutomato é: "+ ip );
         
@@ -117,8 +152,6 @@ public class Util {
 	    		        "Diz-se que qn é o estado final da execução."                                    +
 	    		        "\n\n";                                                                       
 	
-   return  texto + texto2 + texto3 + texto4;
-	
+        return  texto + texto2 + texto3 + texto4;	
 	}
-	
 }
