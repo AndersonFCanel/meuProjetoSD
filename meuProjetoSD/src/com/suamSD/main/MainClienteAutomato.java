@@ -33,7 +33,7 @@ public class MainClienteAutomato extends Thread
             return;
         }
         
-        ClienteService.info( Util.infoAutomato( ) );
+        //ClienteService.info( Util.infoAutomato( ) );
         
         try 
         {
@@ -162,10 +162,30 @@ public class MainClienteAutomato extends Thread
                         while ( cont2 < cont1 )
                         {
                    	       cont2 = stub.getContadorFuncTran  ( ) + 1;
-                   	    		 
-                           entrada         = ClienteService.entraFuncaoTransicao(         ); 
-                           requestIsValid  = stub.setRegra                      ( entrada );
-                                                                                          
+                   	    
+                   	       entrada = ClienteService.entraFuncaoTransicao( );
+                    	   
+                           //Entrada defaut para demonstração
+                           if( "d".equals( entrada ) )
+                           {
+                        	   stub.zeraContadorFuncTran( );
+                        	   String[ ] deltaTeste = new String[ ] {"1,a;2", "2,b;3", "3,c;1", "", "1,b;3", "","","","" };
+                               for ( String string : deltaTeste ) 
+                               {
+                            	   requestIsValid  = stub.setRegra (string );
+                            	   System.out.println( "PASSO CORRENTE: " + ( stub.getMetetodoCorrente( ) ) + 
+                      			            "\nPosição função corrente: " + stub.getContadorFuncTran( ) + " de " +
+                      			         cont1 );
+						       }
+                               if ( stub.getContadorFuncTran( ) == 9 ) 
+                        	   {
+                        		   requestIsValid = "OK";
+                        		   break;
+                        	   }
+                           }
+                          
+                           requestIsValid  = stub.setRegra ( entrada );
+                                                                                        
                            if( !"OK".equals( requestIsValid ) ) 
                            {
                            	cont2 = stub.getContadorFuncTran  ( );

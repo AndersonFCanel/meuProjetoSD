@@ -10,26 +10,25 @@ M = (Q, Σ, (δ: Q × Σ → Q), q0, F)
 
  ==>DADOS INFORMADOS <==
 Σ   = { a,b,c }
-Q   = { 1,2 }
+Q   = { 1,2,3 }
 δ   = 
 ESTADO PARTIDA:     Q
 CARACTER CONSUMIDO: Σ
 ESTADO DESTINO:     Q
-	[*, *, *, *, *, *]
-	[*, *, *, *, *, *]
-	[*, *, *, *, *, *]
+	[1, 2, 3, *, 1, *, *, *, *]
+	[a, b, c, *, b, *, *, *, *]
+	[2, 3, 1, *, 3, *, *, *, *]
 q0  = {1}
 F   = { 1,2 }
 **************************************************
 
 Palavras Testadas:
 
-{=PALAVRA NÃO ACEITA PELO AUTOMATO
- aa=PALAVRA CONTENDO CARACTERES NÃO INFORMADOS NA REGRA DE PRODUÇÃO.
-
- a=PALAVRA CONTENDO CARACTERES NÃO INFORMADOS NA REGRA DE PRODUÇÃO.
-
- s=A palavra "s" contém simbolos não pertencentes ao conjunto de simbolos (alfabeto
+{e232e2e=A palavra "e232e2e" contém simbolos não pertencentes ao conjunto de simbolos (alfabeto
+Σ= { a
+b
+c })!
+ wqwqwq=A palavra "wqwqwq" contém simbolos não pertencentes ao conjunto de simbolos (alfabeto
 Σ= { a
 b
 c })!}

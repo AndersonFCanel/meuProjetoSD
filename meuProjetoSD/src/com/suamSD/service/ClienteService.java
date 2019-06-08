@@ -92,7 +92,7 @@ public class ClienteService
                                  + "não são permitidos elementos duplicados.\n\n"
                                  + "Tamanho permitido (Número de elementos possíveis):\n" 
                                  + "       Mínimo = 1(um)   elemento. \n"
-                                 + "       Máximo = 3(três) elementos.\n\n", "1,2");
+                                 + "       Máximo = 3(três) elementos.\n\n", "1,2,3");
                 
                 if ( estados == null)
                 {
@@ -152,7 +152,8 @@ public class ClienteService
                 delta = JOptionPane.showInputDialog( null,
                 							"Entre com as transiçãos de estado (δ: Q × Σ → Q):\n" +
                                             "Para ver o tutorial  novamente : 'i'\n"              +
-                                            "Para sair : 's'\n"                                   + 
+                                            "Para sair : 's'\n"                                   +
+                                            "Para entradas defaut: 'd'\n"                         + 
                                             "Para checar dados do autômato  digite '?'.\n\n" );
                 
                 if ( delta == null)
@@ -288,6 +289,7 @@ public class ClienteService
                 palavra  = JOptionPane.showInputDialog( null,
                                   "Entre com a palavra a ser verificada: \n"
                                 + "Para conferir os valores dos conjuntos e regras de produção digite '?'\n"
+                                + "Para conferir suas entradas '??'\n"
                                 + "Para sair entre cancelar." ); 
               	
                 if ( palavra == null)
@@ -306,8 +308,15 @@ public class ClienteService
                 	 b = true;
                 	 
                      //Caracter que idenifica entradas globais de ambos os clientes
+                     JOptionPane.showMessageDialog( null, retornaStub( ).imprimirAutomatoCliente( '@' ) );
+				}
+                
+                if ( "??".trim( ).equals( palavra ) )
+                {
+                	 b = true;
+                	 
+                     //Caracter que idenifica entradas globais de ambos os clientes
                      JOptionPane.showMessageDialog( null, retornaStub( ).imprimirAutomatoCliente( 'B' ) );
-
 				}
                 
             } 

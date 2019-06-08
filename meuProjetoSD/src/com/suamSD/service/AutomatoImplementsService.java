@@ -1033,9 +1033,9 @@ public class AutomatoImplementsService implements AutomatoInterface
                   + "\n"
                   + "F   = "
                   + conjuntoEstadosFinais + "\n" + 
-                  "**************************************************"+
-                  "\n\nPalavras Testadas:\n\n"
-                  +sb;
+                  "**************************************************";//+
+                  //"\n\nPalavras Testadas:\n\n"
+                  //+sb;
         }
         
         if( cliente == 'B')
