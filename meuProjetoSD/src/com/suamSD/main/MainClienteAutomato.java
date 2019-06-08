@@ -168,6 +168,8 @@ public class MainClienteAutomato extends Thread
                            //Entrada defaut para demonstração
                            if( "d".equals( entrada ) )
                            {
+                        	   stub.setAlfabeto( "a,b,c" );
+                        	   stub.setConjuntoEstadosFinais( "1,2,3" );
                         	   stub.zeraContadorFuncTran( );
                         	   String[ ] deltaTeste = new String[ ] {"1,a;2", "2,b;3", "3,c;1", "", "1,b;3", "","","","" };
                                for ( String string : deltaTeste ) 
