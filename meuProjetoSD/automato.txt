@@ -24,7 +24,12 @@ F   = { 1,2 }
 
 Palavras Testadas:
 
-{1212121=A palavra "1212121" contém simbolos não pertencentes ao conjunto de simbolos (alfabeto
+{=PALAVRA NÃO ACEITA PELO AUTOMATO
+ aa=PALAVRA CONTENDO CARACTERES NÃO INFORMADOS NA REGRA DE PRODUÇÃO.
+
+ a=PALAVRA CONTENDO CARACTERES NÃO INFORMADOS NA REGRA DE PRODUÇÃO.
+
+ s=A palavra "s" contém simbolos não pertencentes ao conjunto de simbolos (alfabeto
 Σ= { a
 b
 c })!}

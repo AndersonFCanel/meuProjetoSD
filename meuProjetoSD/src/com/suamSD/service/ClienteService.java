@@ -1,6 +1,8 @@
 package com.suamSD.service;
 
 import java.awt.Dimension;
+import java.awt.HeadlessException;
+import java.io.IOException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -22,6 +24,17 @@ public class ClienteService
      * MÉTODOS PARA ENTRADA DE DADOS
      ****************************************************************
      */
+	
+    public static AutomatoInterface retornaStub ( ) throws IOException, NotBoundException
+    { 
+	     // Obtendo referência do serviço de registro
+         Registry registro = LocateRegistry.getRegistry( MainClienteAutomato.ipServer, Util.PORTA );
+         
+         // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
+         AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
+	    
+         return stub;
+	}
 	
     /**
      * 
@@ -128,8 +141,8 @@ public class ClienteService
         
         // ENTRADA DA FUNÇÃO DE TRANSIÇAO
         public static String entraFuncaoTransicao( ) 
-        		throws InterruptedException, RemoteException, NotBoundException
-        {
+        		throws InterruptedException, NotBoundException, HeadlessException, IOException
+        { 
             String delta;
             boolean b = false;
             
@@ -157,14 +170,8 @@ public class ClienteService
                 if ( "?".equalsIgnoreCase( delta.trim( ) ) )
                 {
                 	 b = true;
-                	 
-                	// Obtendo referência do serviço de registro
-                     Registry registro = LocateRegistry.getRegistry( MainClienteAutomato.ipServer, Util.PORTA );
-
-                     // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
-                     AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
-                     
-                     JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( 'A' ) );
+       
+                	 JOptionPane.showMessageDialog( null, retornaStub( ).imprimirAutomatoCliente( 'A' ) );
 				}
             } 
             while ( b );
@@ -173,7 +180,7 @@ public class ClienteService
         }
         
         // ENTRADA DO ESTADO INICIAL
-        public static String entraEstIN( ) throws RemoteException, NotBoundException, InterruptedException
+        public static String entraEstIN( ) throws NotBoundException, InterruptedException, HeadlessException, IOException
         {
             boolean b = false;
             String  estadoInicial; 
@@ -202,14 +209,8 @@ public class ClienteService
                 {
                 	 b = true;
                 	 
-                	// Obtendo referência do serviço de registro
-                     Registry registro = LocateRegistry.getRegistry( MainClienteAutomato.ipServer, Util.PORTA );
-
-                     // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
-                     AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
-                     
-                     //Caracter que idenifica entradas globais de ambos os clientes
-                     JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( 'B' ) );
+                	   //Caracter que idenifica entradas globais de ambos os clientes
+                     JOptionPane.showMessageDialog( null, retornaStub( ).imprimirAutomatoCliente( 'B' ) );
 				}
                  
             } 
@@ -220,7 +221,7 @@ public class ClienteService
         
         // ENTRADA DO ELEMENTOS CONJUNTO DE ESTADOS FINAIS
         public static String entraCjtEstFinal( ) 
-        		throws RemoteException, NotBoundException, InterruptedException 
+        		throws NotBoundException, InterruptedException, HeadlessException, IOException 
         {
             boolean b = false;
             String  cjtEstFinal; 
@@ -251,15 +252,9 @@ public class ClienteService
                 if ( "?".trim( ).equalsIgnoreCase( cjtEstFinal.trim( ) ) )
                 {
                 	 b = true;
-                	 
-                	// Obtendo referência do serviço de registro
-                     Registry registro = LocateRegistry.getRegistry( MainClienteAutomato.ipServer, Util.PORTA );
-
-                     // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
-                     AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
                      
                      //Caracter que idenifica entradas globais de ambos os clientes
-                     JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( 'A' ) );
+                     JOptionPane.showMessageDialog( null, retornaStub( ).imprimirAutomatoCliente( 'A' ) );
 				}
             } 
             while ( b );
@@ -268,17 +263,12 @@ public class ClienteService
         } 
         
         //Pegando valores atuais no servidor
-        public static boolean valoresAtuais( String info, Character idUser ) throws RemoteException, NotBoundException
+        public static boolean valoresAtuais( String info, Character idUser ) throws NotBoundException, HeadlessException, IOException
         {
             if ( info.trim( ).equalsIgnoreCase( "?" ) ) 
             {
-                // Obtendo referência do serviço de registro
-                Registry registro = LocateRegistry.getRegistry( MainClienteAutomato.ipServer, Util.PORTA );
-
-                // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
-                AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
-                
-                JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( idUser ) );
+              
+                JOptionPane.showMessageDialog( null, retornaStub( ).imprimirAutomatoCliente( idUser ) );
                 
                 return false;
             }   
@@ -286,7 +276,7 @@ public class ClienteService
         }
         
         public static String entraPalavra( ) 
-        		throws InterruptedException, RemoteException, NotBoundException 
+        		throws InterruptedException, NotBoundException, IOException 
         {
             String  palavra;
             boolean b = false;
@@ -305,13 +295,7 @@ public class ClienteService
                     b = false;
                     JOptionPane.showMessageDialog( null, "Você saiu!", "WARNING", JOptionPane.WARNING_MESSAGE );
 
-                    // Obtendo referência do serviço de registro
-                    Registry registro = LocateRegistry.getRegistry( MainClienteAutomato.ipServer, Util.PORTA );
-
-                    // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
-                    AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
-                 
-                    stub.setMetetodoCorrente( 0 );; 
+                    retornaStub( ).setMetetodoCorrente( 0 );; 
 
                     //break;                    
                     //Util.interrompeThread ( ); 
@@ -321,14 +305,8 @@ public class ClienteService
                 {
                 	 b = true;
                 	 
-                	// Obtendo referência do serviço de registro
-                     Registry registro = LocateRegistry.getRegistry( MainClienteAutomato.ipServer, Util.PORTA );
-
-                     // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
-                     AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
-                     
                      //Caracter que idenifica entradas globais de ambos os clientes
-                      JOptionPane.showMessageDialog( null, stub.imprimirAutomatoCliente( 'B' ) );
+                     JOptionPane.showMessageDialog( null, retornaStub( ).imprimirAutomatoCliente( 'B' ) );
 
 				}
                 
