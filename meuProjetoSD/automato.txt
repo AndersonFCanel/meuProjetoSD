@@ -10,25 +10,20 @@ M = (Q, Σ, (δ: Q × Σ → Q), q0, F)
 
  ==>DADOS INFORMADOS <==
 Σ   = { a,b,c }
-Q   = { 1,2,3 }
+Q   = { 0,1,2 }
 δ   = 
 ESTADO PARTIDA:     Q
 CARACTER CONSUMIDO: Σ
 ESTADO DESTINO:     Q
-	[1, 2, 3, *, 1, *, *, *, *]
-	[a, b, c, *, b, *, *, *, *]
-	[2, 3, 1, *, 3, *, *, *, *]
-q0  = {1}
-F   = { 1,2 }
+	[0, 1, 2, *, 0, 1, *, *, *]
+	[a, b, c, *, b, a, *, *, *]
+	[1, 2, 0, *, 2, 1, *, *, *]
+q0  = { 0 }
+F   = { 0,1 }
 **************************************************
 
 Palavras Testadas:
 
-{e232e2e=A palavra "e232e2e" contém simbolos não pertencentes ao conjunto de simbolos (alfabeto
-Σ= { a
-b
-c })!
- wqwqwq=A palavra "wqwqwq" contém simbolos não pertencentes ao conjunto de simbolos (alfabeto
-Σ= { a
-b
-c })!}
+{=PALAVRA NÃO ACEITA PELO AUTOMATO
+ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=PALAVRA ACEITA PELO AUTOMATO
+ aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=PALAVRA ACEITA PELO AUTOMATO}

@@ -92,7 +92,7 @@ public class ClienteService
                                  + "não são permitidos elementos duplicados.\n\n"
                                  + "Tamanho permitido (Número de elementos possíveis):\n" 
                                  + "       Mínimo = 1(um)   elemento. \n"
-                                 + "       Máximo = 3(três) elementos.\n\n", "1,2,3");
+                                 + "       Máximo = 3(três) elementos.\n\n", "0,1,2");
                 
                 if ( estados == null)
                 {
@@ -153,8 +153,8 @@ public class ClienteService
                 							"Entre com as transiçãos de estado (δ: Q × Σ → Q):\n" +
                                             "Para ver o tutorial  novamente : 'i'\n"              +
                                             "Para sair : 's'\n"                                   +
-                                            "Para entradas defaut: 'd'\n"                         + 
-                                            "Para checar dados do autômato  digite '?'.\n\n" );
+                                            "Para entradas(Σ, Q, δ) defaut: 'd'\n"                         + 
+                                            "Para checar dados do autômato  digite '?'.\n\n" ,"d");
                 
                 if ( delta == null)
                 {
@@ -196,7 +196,7 @@ public class ClienteService
                 		+ "O estado inicial deve ser inserido na forma 'estado',\n"
                 		+ "sem vírgulas ou qualquer outro adereço,\n"
                 		+ "o estado inicial é único.\n"
-                        + "Para checar dados do autômato  digite '?'.\n\n" , "1");
+                        + "Para checar dados do autômato  digite '?'.\n\n" , "0");
 
 
                 if ( estadoInicial == null )
@@ -241,7 +241,7 @@ public class ClienteService
                                   + "não são permitidos elementos duplicados.\n\n"
                                   + "Tamanho permitido (Número de elementos possíveis):\n" 
                                   + "       Mínimo = 1(um)   elemento. \n"
-                                  + "       Máximo = 3(três) elementos.\n\n" ,"1,2");  
+                                  + "       Máximo = 3(três) elementos.\n\n" ,"0,1");  
                  
                 if ( cjtEstFinal == null )
                 {

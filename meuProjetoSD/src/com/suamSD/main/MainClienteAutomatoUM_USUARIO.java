@@ -19,7 +19,7 @@ import com.suamSD.service.ClienteService;
  * Cliente aplicação Java RMI
  *
  */
-public class MainClienteAutomato extends Thread 
+public class MainClienteAutomatoUM_USUARIO extends Thread 
 {
     public static String  ipServer;
     
@@ -53,7 +53,7 @@ public class MainClienteAutomato extends Thread
                 break;
 
             case 'B':
-                new Thread(t2).start();
+                //new Thread(t2).start();
                 break;
 
             default:
@@ -138,15 +138,27 @@ public class MainClienteAutomato extends Thread
                     }
                     while( !"OK".equals( requestIsValid ) );
                     System.out.println("Usuário 'A' efetuou entrada do alfabeto!");
-                    stub.setMetetodoCorrente( 2 );
-                    //Fim - passo 3 
+                   
                     
-                    System.out.println("Usuário 'A' aguarde usuário 'B' entrar com estados!");
-                    do 
+                    //Executando segundo método   - Passo 2
+                    do
                     {
-                    	
-                    } 
-                    while ( stub.getMetetodoCorrente( ) < 3 );
+                        entrada        = ClienteService.entraConjuntoEstado(        );
+                        requestIsValid = stub.setEstados( entrada                   );
+                                                  
+                        if( !"OK".equals( requestIsValid ) )
+                            JOptionPane.showMessageDialog( null, requestIsValid );
+                        else 
+                        {
+                            JOptionPane.showMessageDialog( null, "Entrada Verificada" );
+                           // stub.incrementaContaPasso( );
+                        }
+                        System.out.println( "PASSO CORRENTE: " + stub.getMetetodoCorrente( ) );
+                    }
+                    while( !"OK".equals( requestIsValid ) );
+                    System.out.println( "Usuário 'B' efetuou entrada de estados!" );
+                   
+                    
                     
                     
                     /**
@@ -171,7 +183,7 @@ public class MainClienteAutomato extends Thread
                         	   stub.setAlfabeto( "a,b,c" );
                         	   stub.setEstados( "0,1,2" );
                         	   stub.zeraContadorFuncTran( );
-                        	   String[ ] deltaTeste = new String[ ] {"0,a;1", "1,b;2", "2,c;0", "", "0,b;2", "","","","" };
+                        	   String[ ] deltaTeste = new String[ ] {"0,a;1", "1,b;2", "2,c;0", "", "0,b;2", "1,a;1","","","" };
                                for ( String string : deltaTeste ) 
                                {
                             	   requestIsValid  = stub.setRegra (string );
@@ -206,15 +218,27 @@ public class MainClienteAutomato extends Thread
                      while( !"OK".equals( requestIsValid ) );
                     //Fim passo - 3
                     System.out.println("Usuário 'A' efetuou entrada do cjt delta!");
-                    stub.setMetetodoCorrente( 4 );
+                   
                     
-                    System.out.println("Usuário 'A' aguarde usuário 'B' entrar com estado inicial!");
-                    do 
+                    
+                    //Executando Quarto Método  - Passo 4
+                    do
                     {
-                    	
-                    } 
-                    while ( stub.getMetetodoCorrente( ) < 5 );
-                    
+                        entrada         = ClienteService.entraEstIN   (              );
+                        requestIsValid = stub.setEstInicial          ( entrada      );
+                        
+                        if( !"OK".equals( requestIsValid ) )
+                            JOptionPane.showMessageDialog( null, requestIsValid );
+                        else 
+                        {
+                            JOptionPane.showMessageDialog( null, "Entrada Verificada" );
+                            //stub.incrementaContaPasso( );
+                        }
+                        System.out.println( "PASSO CORRENTE: " + stub.getMetetodoCorrente( ) );
+                    }
+                    while( !"OK".equals( requestIsValid ) );
+                    System.out.println("Usuário 'B' efetuou entrada de estado inicial!");
+          
                     
                     /**
                      * Execução do quinto método  - Passo 5
@@ -235,32 +259,52 @@ public class MainClienteAutomato extends Thread
                     }
                     while( !"OK".equals( requestIsValid ) );
                     System.out.println("Usuário 'A' efetuou entrada de estados finais!");
-                    stub.setMetetodoCorrente( 6 );
-                    
-                    System.out.println("Usuário 'A' aguarde usuário 'B' entrar com palavra!");
-                    do 
-                    {
-                    	
-                    } 
-                    while ( stub.getMetetodoCorrente( ) < 7 );
                     
                    
-                    ClienteService.info( stub.imprimirAutomatoCliente( 'A' ) ) ;
+                    do
+                    {
+                        entrada = ClienteService.entraPalavra ( );
+                        if ( entrada == null )
+                        {
+                      	  System.out.println( "Clinete encerrado!" );
+                      	  break;
+                        }
+                        requestIsValid = stub.checaAceitacaoPalavra( entrada );
+                                                  
+                        if( !"OK".equals( requestIsValid ) )
+                            JOptionPane.showMessageDialog( null, requestIsValid );
+                        else // implementar entrada igual a 0
+                        {
+                            JOptionPane.showMessageDialog( null, "Entrada Verificada" );
+                            //stub.incrementaContaPasso( );                     
+                        }
+                        System.out.println( "PASSO CORRENTE: " + stub.getMetetodoCorrente( ) + "\n"
+                         		+ "Palavra: " + entrada + " : =>>  " + requestIsValid);
+                    }
+                    while( !"OK".equals( requestIsValid ) );
+                    System.out.println( "Usuário 'B' entrou com palavra(s)" );
+                    stub.setMetetodoCorrente( 7 );
                     
-                    System.out.println( "\nENTRADAS::\n\n" + stub.imprimirAutomatoCliente( 'P' ) );
-                    
-                    /**
-                     * método responsável pela criação do arquivo (automato.txt)
-                     */
+                                  
+                    //método responsável pela criação do arquivo (automato.txt)
            			CriaArquivo f = new CriaArquivo( );
            			try 
            			{
            				f.criarArq( stub.imprimirAutomatoCliente( 'P' ) );
            			} 
-           			catch ( IOException e )
+           			catch( IOException e )
            			{
-           				e.printStackTrace();
+           				e.printStackTrace( );
            			}
+           			
+           		   ClienteService.info( stub.imprimirAutomatoCliente( 'B' ) ) ;
+                    
+                    
+                    ClienteService.info( stub.imprimirAutomatoCliente( 'A' ) ) ;
+                    
+                    System.out.println( "\nENTRADAS::\n\n" + stub.imprimirAutomatoCliente( 'P' ) );
+                    
+                  
                 }
                 catch ( RemoteException e ) 
                 {
@@ -294,177 +338,4 @@ public class MainClienteAutomato extends Thread
     };
  
     
-    private static Thread t2 = new Thread( new Thread( ) ) 
-    {
-        public void run( ) 
-        {
-            Thread.currentThread( ).setName( "CLIENTE_2" );
-            try
-            {
-                // Obtendo referência do serviço de registro
-                Registry registro = LocateRegistry.getRegistry( ipServer, Util.PORTA );
-
-                // Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
-                AutomatoInterface stub = (AutomatoInterface) registro.lookup( Util.NOMEOBJDIST );
-
-                System.out.println("\n*****************************************************");
-                System.out.println( "USUÁRIO: "    + stub.getIdentificaUsuario( )           );               
-                System.out.println( "ID: "         + Thread.currentThread( ).getId( )       );
-                System.out.println( "Nome: "       + Thread.currentThread( ).getName( )     );
-                System.out.println( "Prioridade: " + Thread.currentThread( ).getPriority( ) );
-                System.out.println( "Estado: "     + Thread.currentThread( ).getState( )    );
-                System.out.println("*****************************************************\n");
-                        
-                try 
-                {
-                        String requestIsValid;
-                        String entrada;
-                                               
-                        //Controle de execução //Próximo usuário será o C (Não existe na nossa aplição)
-                        //É setado um usuário inválido para impedir que o 2 cliente seja executado de forma duplicada.
-                        stub.setIdentificaUsuario( 'C' );
-                         
-                        //Método executado pelo Cliente A 
-                        // stub.setAlfabeto ( );  - Passo 1
-                       
-                        System.out.println("Usuário 'B' aguarde usuário 'A' entrar com alfabeto!");
-                        do 
-                        {
-                        	
-                        } 
-                        while ( stub.getMetetodoCorrente( ) < 1 );
-                        
-                        //Executando segundo método   - Passo 2
-                        do
-                        {
-                            entrada        = ClienteService.entraConjuntoEstado(        );
-                            requestIsValid = stub.setEstados( entrada                   );
-                                                      
-                            if( !"OK".equals( requestIsValid ) )
-                                JOptionPane.showMessageDialog( null, requestIsValid );
-                            else 
-                            {
-                                JOptionPane.showMessageDialog( null, "Entrada Verificada" );
-                               // stub.incrementaContaPasso( );
-                            }
-                            System.out.println( "PASSO CORRENTE: " + stub.getMetetodoCorrente( ) );
-                        }
-                        while( !"OK".equals( requestIsValid ) );
-                        System.out.println( "Usuário 'B' efetuou entrada de estados!" );
-                        stub.setMetetodoCorrente( 3 );
-                        
-                        
-                        //Método executado pelo Cliente A 
-                        // stub.setRegra ( );  - Passo 3
-                        
-                        System.out.println("Usuário 'B' aguarde usuário 'A' entrar com Delta!");
-                        do 
-                        {
-                        	
-                        } 
-                        while ( stub.getMetetodoCorrente( ) < 4 );
-                        
-                        
-                        //Executando Quarto Método  - Passo 4
-                        do
-                        {
-                            entrada         = ClienteService.entraEstIN   (              );
-                            requestIsValid = stub.setEstInicial          ( entrada      );
-                            
-                            if( !"OK".equals( requestIsValid ) )
-                                JOptionPane.showMessageDialog( null, requestIsValid );
-                            else 
-                            {
-                                JOptionPane.showMessageDialog( null, "Entrada Verificada" );
-                                //stub.incrementaContaPasso( );
-                            }
-                            System.out.println( "PASSO CORRENTE: " + stub.getMetetodoCorrente( ) );
-                        }
-                        while( !"OK".equals( requestIsValid ) );
-                        System.out.println("Usuário 'B' efetuou entrada de estado inicial!");
-                        stub.setMetetodoCorrente( 5 );
-                        
-                        
-                       //Método executado pelo Cliente A 
-                       //stub.setConjuntoEstadosFinais( );  - Passo 5
-                      
-                        //Executando Sexto Método  - Passo 6
-                        System.out.println("Usuário 'B' aguarde usuário 'A' entrar com estados finais!");
-                        do 
-                        {
-                        	
-                        } 
-                        while ( stub.getMetetodoCorrente( ) < 6 );
-                                           
-                       do
-                       {
-                           entrada = ClienteService.entraPalavra ( );
-                           if ( entrada == null )
-                           {
-                         	  System.out.println( "Clinete encerrado!" );
-                         	  break;
-                           }
-                           requestIsValid = stub.checaAceitacaoPalavra( entrada );
-                                                     
-                           if( !"OK".equals( requestIsValid ) )
-                               JOptionPane.showMessageDialog( null, requestIsValid );
-                           else // implementar entrada igual a 0
-                           {
-                               JOptionPane.showMessageDialog( null, "Entrada Verificada" );
-                               //stub.incrementaContaPasso( );                     
-                           }
-                           System.out.println( "PASSO CORRENTE: " + stub.getMetetodoCorrente( ) + "\n"
-                            		+ "Palavra: " + entrada + " : =>>  " + requestIsValid);
-                       }
-                       while( !"OK".equals( requestIsValid ) );
-                       System.out.println( "Usuário 'B' entrou com palavra(s)" );
-                       stub.setMetetodoCorrente( 7 );
-                       
-                                     
-                       //método responsável pela criação do arquivo (automato.txt)
-              			CriaArquivo f = new CriaArquivo( );
-              			try 
-              			{
-              				f.criarArq( stub.imprimirAutomatoCliente( 'P' ) );
-              			} 
-              			catch( IOException e )
-              			{
-              				e.printStackTrace( );
-              			}
-              			
-              		   ClienteService.info( stub.imprimirAutomatoCliente( 'B' ) ) ;
-               } 
-                catch ( RemoteException e ) 
-                {
-                	JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + e );
-                    stub.setIdentificaUsuario( 'B' );
-                    e.printStackTrace( );
-                } 
-                catch ( InterruptedException e ) 
-                {
-                	JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + e );
-                	stub.setIdentificaUsuario( 'B' );
-					e.printStackTrace( );
-				} 
-                catch (HeadlessException e) 
-                {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
-                catch (IOException e)
-                
-                {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
-                
-                 System.out.println( "Fim da execução do cliente_2!" );
-            } 
-            catch (RemoteException | NotBoundException ex) 
-            {
-            	JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + ex );
-                Logger.getLogger( MainClienteAutomato.class.getName( ) ).log( Level.SEVERE, null, ex );
-            }
-       }
-    };
 }

@@ -74,21 +74,19 @@ public class MainServidorAutomato
             registro.bind( Util.NOMEOBJDIST, stubAutomato );
             System.out.println("registro.bind: "+ Util.NOMEOBJDIST + " stubAutomato" );
    
-            
-            //String resposta;
            // boolean b = true;
             /*do 
             {
             	//Definindo a quantidade de usuários que irão utilizar o sistema.
-                resposta = JOptionPane.showInputDialog( null,
-                        "\nDeseja usar a aplicação com 1 ou dois clientes?\n"
-                        + "   UM cliente, digite 1 ou somente pressione OK,\n"
-                        + "   DOIS clientes, digite 2 e pressione OK.\n" );
-            	
-                if( resposta != null )
-            		resposta = resposta.trim( );
+                String[ ] options = new String[ ] {"1- Usuário", "2 - Usuários", "Cancelar" };
                 
-                if ( resposta == null )
+                Integer response = JOptionPane.showOptionDialog( null, "Selecione a quantidade de usuários:", "Configurando Usuários",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
+                        null, options, options[ 0  ] );
+                // response == 0 para "1";  1 para "2"; 2 para Escape/Cancel.
+                
+
+                if ( response == 2 ) 
                 {
                 	UnicastRemoteObject.unexportObject( automatoRemoto, true );
                     System.out.println                ( "unexportObject"     );
@@ -96,28 +94,31 @@ public class MainServidorAutomato
                
                     System.out.println("FINALIZANDO.....");
                     
-                	Util.interrompeThread( );;
+                	Util.interrompeThread( );
                 }
-                if ( "1".equals( resposta ) || resposta.isEmpty( ) )
+            
+                if ( response == 0 ) 
                 {
-                	b = false;
+                 	b = false;
                 	
                     stubAutomato.setIdentificaUsuario( 'A' );
                 	stubAutomato.setQtdUsuario( 1 );
                 	
                 	System.out.println( "\nOperando com 1 cliente apenas.\n" );
                 }
-                if ( "2".equals( resposta ) )
-                {
-                	b = false;
+                
+                if ( response == 1 ) 
+            	{
+            	    b = false;
                 	
                     stubAutomato.setIdentificaUsuario( 'A' );
                     stubAutomato.setQtdUsuario( 2 );
 
                 	System.out.println( "\nOperando com 2 clientes.\n" );
-                }
-                
-			} while ( b );*/
+            	}
+                              
+			} while ( b );
+			*/
             
             // Setando dois usuarios estaticamente
             stubAutomato.setIdentificaUsuario( 'A' );

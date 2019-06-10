@@ -197,6 +197,7 @@ public class AutomatoImplementsService implements AutomatoInterface
             z++;
         }
         
+        //Somente java 8+
         //conjuntodeSimbolos_Alfabeto = alfabeto.chars( ).mapToObj( c -> ( char ) c ).toArray( Character[ ]::new ); 
      
         if(  Util.OK.equals( responseValidAlf ) )
@@ -407,7 +408,7 @@ public class AutomatoImplementsService implements AutomatoInterface
         {
             estadoIni = ei;
             //estadoIni   = removeNulos            ( estadoIni );
-            estIniIMPRIME = "{" + estadoIni + "}";
+            estIniIMPRIME = "{ " + estadoIni + " }";
             estadoi = conjuntoDeEstadosTerminaisEnaoTerminais.indexOf( ei.trim( ) );
         }
         
@@ -461,31 +462,7 @@ public class AutomatoImplementsService implements AutomatoInterface
         estadosf                 = new int[ conjuntoEstadosTerminais.length( ) ];
         int  b                   = 0, 
         	 y                   = 0;
-                                 
-        //***********Sugestão de código Eclipse
-       /*
-        String [ ] conjuntoDeEstados          = conjuntoDeEstadosTerminaisEnaoTerminais.split( "," );
-        String [ ] conjuntoDeEstadosTerminais = conjuntoEstadosTerminais.split               ( "," );
-       
-        for (int i = 0; i < conjuntoDeEstados.length; i++) {
-            for ( String ef : conjuntoDeEstadosTerminais )
-            {
-                if ( conjuntoDeEstadosMap.get( y ).equals( ef.toString( ) ) )
-                {
-                    estadosf[ b ] = y;
-                    b++;
-                    break;
-                }
-            }
-            y++;  
-        }
-        
-        imprimirAutomato( alfabetoIMPRIME, conjuntoDeEstadosTerminaisIMPRIME, estadoPartida, 
-                          estadoDestino, le, estIniIMPRIME, conjEstTermIMPRIME );
-                          */
-        //****************
 
-        /*Meu código*/
         for ( Character ch : conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( ) ) 
         {
             for ( Character ch1 : conjuntoEstadosTerminais.toCharArray( ) )
@@ -518,39 +495,81 @@ public class AutomatoImplementsService implements AutomatoInterface
     public String checaAceitacaoPalavra( String palavraInserida ) 
     {
     	setMetetodoCorrente ( 6 );
-    	
-        String palavraS;
+    
         String responseValidaPalavra = Util.OK;
+        int    aceitacao = 0;
         
         do {
             int teste = 0;
-            palavraS = palavraInserida;
             
             // Variável reponsável por receber a validação da palavra informada pelo autmato
-            responseValidaPalavra = VerificaPalavra( palavraS, conjuntodeSimbolos_Alfabeto );
+            responseValidaPalavra = VerificaPalavra( palavraInserida, conjuntodeSimbolos_Alfabeto );
 
             if ( Util.OK.equals( responseValidaPalavra ) ) 
             {
-                char[ ] palavra = palavraS.toCharArray( );
-                int     estadoa = estadoi;
+                char[ ] palavra = palavraInserida.toCharArray( );
+                int     estadoAtual = estadoi;
+                boolean b = false;
 
-                for ( int p = 0; p < palavra.length; p++ ) 
+                forPal: for ( int p = 0; p < palavra.length; p++ ) 
                 {
                     for ( int k = 0; k < conjuntoFuncaoDeTransicaoDeEstados.length; k++ ) 
                     {
                         if( le[ k ] == '*' )
                         	continue;
-                            
-                        if ( ( palavra[ p ] == le[ k ]) && ( estadoPartida[ k ] == estadoa ) )
+                        
+                        if( palavra.length == aceitacao )
                         {
-                            estadoa = estadoDestino[ k ];
-                            break;
+                        	System.out.println("parou em: palavra.length == aceitacao");
+                        	//Checa se o estado atual pertence ao  cjt est fim
+                            for ( int g = 0; g < conjuntoEstadosTerminais.length( ); g++ )
+                            {
+                            	System.out.println("Teste estado FIM: estadoAtual: "+ estadoAtual );
+                                if ( estadoAtual == estadosf[ g ] && b )
+                                {
+                                    teste = 1;
+                                    break;
+                                }
+                                else
+                                {
+                                    teste = 0;
+                                }
+                            }
+                        	
+                        	break forPal;
+                        }
+                        
+                        System.out.println("\nP "+ p);
+                        System.out.println("K1 "+ k + "\n");
+                        
+                        System.out.println( "\n"+estadoPartida [ k ] );
+                        System.out.println( le		      [ k ] );
+                        System.out.println( estadoDestino [ k ] );
+                        System.out.println("Estado atual :: "+ estadoAtual);
+                        System.out.println("---\n");
+                        		
+                        if ( ( palavra[ p ] == le[ k ]) && ( estadoPartida[ k ] == estadoAtual ) )
+                        {	
+                        	b = true;
+                            estadoAtual = estadoDestino[ k ];
+                            System.out.println( "IF:  estadoAtual = estadoDestino[ k ]  true\n______" );
+                            aceitacao ++;
+                            continue;
+                            //break;
                         } 
+                        else
+                        {
+                        	b = false;
+                        	System.out.println( "IF:  estadoAtual = estadoDestino[ k ]  false\n______" );
+                        	continue;
+                        }
                     }
 
+                    //Checa se o estado atual pertence ao  cjt est fim
                     for ( int k = 0; k < conjuntoEstadosTerminais.length( ); k++ )
                     {
-                        if ( estadoa == estadosf[ k ] )
+                    	System.out.println("Teste estado FIM: estadoAtual: "+ estadoAtual );
+                        if ( estadoAtual == estadosf[ k ] && b )
                         {
                             teste = 1;
                             break;
@@ -575,7 +594,7 @@ public class AutomatoImplementsService implements AutomatoInterface
                 {
                     if ( ! ( elementoDelta.contains( d.toString( ) ) ) ) 
                     {
-                    	listaDePalavrasTestadas.put( palavraS , 
+                    	listaDePalavrasTestadas.put( palavraInserida , 
 				       			"PALAVRA CONTENDO CARACTERES NÃO INFORMADOS NA REGRA DE PRODUÇÃO.\n");
 				       	
 				       	return "PALAVRA CONTENDO CARACTERES NÃO INFORMADOS NA REGRA DE PRODUÇÃO.\n";	
@@ -584,21 +603,21 @@ public class AutomatoImplementsService implements AutomatoInterface
                 
                 if ( teste == 1 ) 
                 {
-                	 listaDePalavrasTestadas.put( palavraS , "PALAVRA ACEITA PELO AUTOMATO" );
-                     return  "PALAVRA ACEITA PELO AUTOMATO\n\n";
+                	 listaDePalavrasTestadas.put( palavraInserida , "PALAVRA ACEITA PELO AUTOMATO" );
+                     return  "A PALAVRA: " + palavraInserida + " -  É ACEITA PELO AUTOMATO\n\n";
                     // break;
                 }
                 else 
                 {
-                	listaDePalavrasTestadas.put( palavraS , "PALAVRA NÃO ACEITA PELO AUTOMATO" );
-                    return   "PALAVRA NÃO ACEITA PELO AUTOMATO\n\n";
+                	listaDePalavrasTestadas.put( palavraInserida , "PALAVRA NÃO ACEITA PELO AUTOMATO" );
+                    return   "A PALAVRA: " + palavraInserida + " -  NÃO É ACEITA PELO AUTOMATO\n\n";
                     // break;
                 }
             }
             else
             	return responseValidaPalavra;
         }
-        while ( !palavraS.equalsIgnoreCase( "s" ) );
+        while ( !palavraInserida.equalsIgnoreCase( "s" ) );
             
     }
 

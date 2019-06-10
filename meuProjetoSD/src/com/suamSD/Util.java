@@ -41,7 +41,7 @@ public class Util {
                         + "Para 127.0.0.1 'localhost', apenas clique OK!\n");
                 */
                 
-                String[ ] options = new String[ ] {"127.0.0.1", "10.0.200.16", "Cancel" };
+                String[ ] options = new String[ ] {"127.0.0.1", "10.0.200.16", "Cancelar" };
                 
                 Integer response = JOptionPane.showOptionDialog( null, "Selecione a localização do servidor:", "Configurando IP",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
