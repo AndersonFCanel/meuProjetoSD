@@ -41,7 +41,7 @@ public class Util {
                         + "Para 127.0.0.1 'localhost', apenas clique OK!\n");
                 */
                 
-                String[ ] options = new String[ ] {"127.0.0.1", "10.0.200.16", "Cancelar" };
+                String[ ] options = new String[ ] {"10.0.200.45", "10.0.200.16", "Cancelar" };
                 
                 Integer response = JOptionPane.showOptionDialog( null, "Selecione a localização do servidor:", "Configurando IP",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
@@ -63,13 +63,15 @@ public class Util {
             
                 if ( response == 0 ) 
                 {
-                	  //ip = "10.0.200.45";
-                	ip = "127.0.0.1";
+                	  ip = "10.0.200.45";
+                	//ip = "192.168.0.11";
                 }
                 
                 if ( response == 1 ) 
             	{
             	     ip = "10.0.200.8";
+                	//ip = "192.168.0.22";
+                	
             	}
                 
                 /*if( !PATTERN_IP.matcher( ip ).matches( ) && !( "".equals( ip ) ) )

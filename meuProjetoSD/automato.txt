@@ -15,15 +15,17 @@ Q   = { 0,1,2 }
 ESTADO PARTIDA:     Q
 CARACTER CONSUMIDO: Σ
 ESTADO DESTINO:     Q
-	[0, 1, 2, *, 0, 1, *, *, *]
-	[a, b, c, *, b, a, *, *, *]
-	[1, 2, 0, *, 2, 1, *, *, *]
+	[0, 1, 2, *, 0, *, *, *, *]
+	[a, b, c, *, b, *, *, *, *]
+	[1, 2, 0, *, 2, *, *, *, *]
 q0  = { 0 }
 F   = { 0,1 }
 **************************************************
 
 Palavras Testadas:
 
-{=PALAVRA NÃO ACEITA PELO AUTOMATO
- aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=PALAVRA ACEITA PELO AUTOMATO
- aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa=PALAVRA ACEITA PELO AUTOMATO}
+{abc=PALAVRA ACEITA PELO AUTOMATO
+ piru=A palavra "piru" contém simbolos não pertencentes ao conjunto de simbolos (alfabeto
+Σ= { a
+b
+c })!}
