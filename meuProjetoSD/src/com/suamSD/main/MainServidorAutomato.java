@@ -67,6 +67,7 @@ public class MainServidorAutomato
             System.out.println               ( "Objeto  stubAutomato exportado. "                                    );
             
             //Criando serviço de registro
+			//Código para startar RMI REGISTRY sem necessidade do cmd "start mriregistry" no prompt	
             Registry registro = LocateRegistry.createRegistry( Util.PORTA         );
             System.out.println( "LocateRegistry.createRegistry: " + Util.PORTA );
 
