@@ -144,7 +144,8 @@ public class MainClienteAutomato extends Thread
                     System.out.println("Usuário 'A' aguarde usuário 'B' entrar com estados!");
                     do 
                     {
-                    	
+                    	Thread.sleep( 1000 );
+                    	System.out.println(".");
                     } 
                     while ( stub.getMetetodoCorrente( ) < 3 );
                     
@@ -211,7 +212,8 @@ public class MainClienteAutomato extends Thread
                     System.out.println("Usuário 'A' aguarde usuário 'B' entrar com estado inicial!");
                     do 
                     {
-                    	
+                    	Thread.sleep( 1000 );
+                    	System.out.println(".");
                     } 
                     while ( stub.getMetetodoCorrente( ) < 5 );
                     
@@ -240,10 +242,10 @@ public class MainClienteAutomato extends Thread
                     System.out.println("Usuário 'A' aguarde usuário 'B' entrar com palavra!");
                     do 
                     {
-                    	
+                    	Thread.sleep( 1000 );
+                    	System.out.println(".");
                     } 
                     while ( stub.getMetetodoCorrente( ) < 7 );
-                    
                    
                     ClienteService.info( stub.imprimirAutomatoCliente( 'A' ) ) ;
                     
@@ -330,7 +332,8 @@ public class MainClienteAutomato extends Thread
                         System.out.println("Usuário 'B' aguarde usuário 'A' entrar com alfabeto!");
                         do 
                         {
-                        	
+                        	Thread.sleep( 1000 );
+                        	System.out.println(".");
                         } 
                         while ( stub.getMetetodoCorrente( ) < 1 );
                         
@@ -360,7 +363,8 @@ public class MainClienteAutomato extends Thread
                         System.out.println("Usuário 'B' aguarde usuário 'A' entrar com Delta!");
                         do 
                         {
-                        	
+                        	Thread.sleep( 1000 );
+                        	System.out.println(".");
                         } 
                         while ( stub.getMetetodoCorrente( ) < 4 );
                         
@@ -392,7 +396,8 @@ public class MainClienteAutomato extends Thread
                         System.out.println("Usuário 'B' aguarde usuário 'A' entrar com estados finais!");
                         do 
                         {
-                        	
+                        	Thread.sleep( 1000 );
+                        	System.out.println(".");
                         } 
                         while ( stub.getMetetodoCorrente( ) < 6 );
                                            

@@ -68,6 +68,7 @@ public class AutomatoImplementsService implements AutomatoInterface
      */
     public void setIdentificaUsuario( Character identificador )
     {
+    	System.out.println( "Idenditficação do usuário: " + identificador );
         identificaUsuario = identificador;
     }
     

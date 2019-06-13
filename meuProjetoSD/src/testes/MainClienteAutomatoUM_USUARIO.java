@@ -1,4 +1,4 @@
-package com.suamSD.main;
+package testes;
 
 import java.awt.HeadlessException;
 import java.io.IOException;
@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 import com.suamSD.AutomatoInterface;
 import com.suamSD.Util;
 import com.suamSD.gravadorArquivo.CriaArquivo;
+import com.suamSD.main.MainClienteAutomato;
 import com.suamSD.service.ClienteService;
 
 /**

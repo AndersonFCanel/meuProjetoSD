@@ -24,8 +24,9 @@ F   = { 0,1 }
 
 Palavras Testadas:
 
-{abc=PALAVRA ACEITA PELO AUTOMATO
- piru=A palavra "piru" contém simbolos não pertencentes ao conjunto de simbolos (alfabeto
+{=PALAVRA NÃO ACEITA PELO AUTOMATO
+ abc=PALAVRA ACEITA PELO AUTOMATO
+ 1461464141=A palavra "1461464141" contém simbolos não pertencentes ao conjunto de simbolos (alfabeto
 Σ= { a
 b
 c })!}
