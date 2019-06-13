@@ -26,7 +26,7 @@ public class MainClienteAutomato extends Thread
     public static void main ( String[ ] args ) 
     {
         ipServer = Util.defineIP( );
-    	
+        
         if ( ipServer == null )
         {
             System.out.println( "IP inválido" );
@@ -63,19 +63,19 @@ public class MainClienteAutomato extends Thread
         }
         catch ( RemoteException e ) 
         {
-        	JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + e );
+            JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + e );
             e.printStackTrace();
         } 
         catch ( NotBoundException e )
         {
-        	JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + e );
-        	e.printStackTrace( );
+            JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + e );
+            e.printStackTrace( );
         }
         catch ( InterruptedException e ) 
         {
-        	JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + e );
+            JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + e );
             e.printStackTrace( );
-		}
+        }
     }
 
     private static Thread t1 = new Thread( new Thread( ) ) 
@@ -102,7 +102,7 @@ public class MainClienteAutomato extends Thread
                 try 
                 {
                     /**
-                     * Variáveis para armazenar valores devolvidos( RESPONSE ) do servidor.
+                     * Variáveis para armazenar valores devolvidos( RESPONSE's ) do servidor.
                      */
                     String  entrada ;
                     String  requestIsValid;
@@ -116,11 +116,11 @@ public class MainClienteAutomato extends Thread
                      */
                     if ( stub.getQtdUsuario( ) == 2 ) 
                     {
-                    	stub.setIdentificaUsuario( 'B' );
-					}
+                        stub.setIdentificaUsuario( 'B' );
+                    }
                                         
                     /**
-                     * Execução do primeiro método  - Passo 1 - ConjuntoCaracteres_Alfabeto
+                     * Execução do primeiro método  - Passo 1 - entrarConjuntoCaracteres_Alfabeto
                      */
                     do
                     {
@@ -140,15 +140,15 @@ public class MainClienteAutomato extends Thread
                     System.out.println("Usuário 'A' efetuou entrada do alfabeto!");
                     stub.setMetetodoCorrente( 2 );
                     //Fim - passo 3 
-                    
+                                     
+                    //Trecho responsável por obrigar o usuário aguardar entrada de um outro usuário.
                     System.out.println("Usuário 'A' aguarde usuário 'B' entrar com estados!");
                     do 
                     {
-                    	Thread.sleep( 1000 );
-                    	System.out.println(".");
+                        Thread.sleep( 1000 );
+                        System.out.println(".");
                     } 
                     while ( stub.getMetetodoCorrente( ) < 3 );
-                    
                     
                     /**
                      * Execução do terceiro método  - Passo 3
@@ -162,37 +162,37 @@ public class MainClienteAutomato extends Thread
                     {   
                         while ( cont2 < cont1 )
                         {
-                   	       cont2 = stub.getContadorFuncTran  ( ) + 1;
-                   	    
-                   	       entrada = ClienteService.entraFuncaoTransicao( );
-                    	   
+                           cont2 = stub.getContadorFuncTran  ( ) + 1;
+                        
+                           entrada = ClienteService.entraFuncaoTransicao( );
+                           
                            //Entrada defaut para demonstração
                            if( "d".equals( entrada ) )
                            {
-                        	   stub.setAlfabeto( "a,b,c" );
-                        	   stub.setEstados( "0,1,2" );
-                        	   stub.zeraContadorFuncTran( );
-                        	   String[ ] deltaTeste = new String[ ] {"0,a;1", "1,b;2", "2,c;0", "", "0,b;2", "","","","" };
+                               stub.setAlfabeto( "a,b,c" );
+                               stub.setEstados( "0,1,2" );
+                               stub.zeraContadorFuncTran( );
+                               String[ ] deltaTeste = new String[ ] {"0,a;1", "1,b;2", "2,c;0", "", "0,b;2", "","","","" };
                                for ( String string : deltaTeste ) 
                                {
-                            	   requestIsValid  = stub.setRegra (string );
-                            	   System.out.println( "PASSO CORRENTE: " + ( stub.getMetetodoCorrente( ) + 1 ) + 
-                      			            "\nPosição função corrente: " + stub.getContadorFuncTran( ) + " de " +
-                      			         cont1 );	
-						       }
+                                   requestIsValid  = stub.setRegra (string );
+                                   System.out.println( "PASSO CORRENTE: " + ( stub.getMetetodoCorrente( ) + 1 ) + 
+                                            "\nPosição função corrente: " + stub.getContadorFuncTran( ) + " de " +
+                                         cont1 );   
+                               }
                                
                                if ( stub.getContadorFuncTran( ) == 9 ) 
-                        	   {
-                        		   requestIsValid = "OK";
-                        		   break;
-                        	   }
+                               {
+                                   requestIsValid = "OK";
+                                   break;
+                               }
                            }
                           
                            requestIsValid  = stub.setRegra ( entrada );
                                                                                         
                            if( !"OK".equals( requestIsValid ) ) 
                            {
-                           	cont2 = stub.getContadorFuncTran  ( );
+                            cont2 = stub.getContadorFuncTran  ( );
                                JOptionPane.showMessageDialog( null, requestIsValid );
                            }
                            else 
@@ -200,8 +200,8 @@ public class MainClienteAutomato extends Thread
                                JOptionPane.showMessageDialog( null, "Entrada Verificada" );                               
                            }
                            System.out.println( "PASSO CORRENTE: " + (stub.getMetetodoCorrente( ) ) + 
-           			            "\nPosição função corrente: " + stub.getContadorFuncTran( ) + " de " +
-           			         cont1 );
+                                "\nPosição função corrente: " + stub.getContadorFuncTran( ) + " de " +
+                             cont1 );
                         }
                      }
                      while( !"OK".equals( requestIsValid ) );
@@ -209,14 +209,14 @@ public class MainClienteAutomato extends Thread
                     System.out.println("Usuário 'A' efetuou entrada do cjt delta!");
                     stub.setMetetodoCorrente( 4 );
                     
+                    //Trecho responsável por obrigar o usuário aguardar entrada de um outro usuário.
                     System.out.println("Usuário 'A' aguarde usuário 'B' entrar com estado inicial!");
                     do 
                     {
-                    	Thread.sleep( 1000 );
-                    	System.out.println(".");
+                        Thread.sleep( 1000 );
+                        System.out.println(".");
                     } 
                     while ( stub.getMetetodoCorrente( ) < 5 );
-                    
                     
                     /**
                      * Execução do quinto método  - Passo 5
@@ -239,11 +239,12 @@ public class MainClienteAutomato extends Thread
                     System.out.println("Usuário 'A' efetuou entrada de estados finais!");
                     stub.setMetetodoCorrente( 6 );
                     
+                    //Trecho responsável por obrigar o usuário aguardar entrada de um outro usuário.
                     System.out.println("Usuário 'A' aguarde usuário 'B' entrar com palavra!");
                     do 
                     {
-                    	Thread.sleep( 1000 );
-                    	System.out.println(".");
+                        Thread.sleep( 1000 );
+                        System.out.println(".");
                     } 
                     while ( stub.getMetetodoCorrente( ) < 7 );
                    
@@ -254,15 +255,15 @@ public class MainClienteAutomato extends Thread
                     /**
                      * método responsável pela criação do arquivo (automato.txt)
                      */
-           			CriaArquivo f = new CriaArquivo( );
-           			try 
-           			{
-           				f.criarArq( stub.imprimirAutomatoCliente( 'P' ) );
-           			} 
-           			catch ( IOException e )
-           			{
-           				e.printStackTrace();
-           			}
+                    CriaArquivo f = new CriaArquivo( );
+                    try 
+                    {
+                        f.criarArq( stub.imprimirAutomatoCliente( 'P' ) );
+                    } 
+                    catch ( IOException e )
+                    {
+                        e.printStackTrace();
+                    }
                 }
                 catch ( RemoteException e ) 
                 {
@@ -272,24 +273,24 @@ public class MainClienteAutomato extends Thread
                 } 
                 catch (InterruptedException e) 
                 {
-                	stub.setIdentificaUsuario( 'A' );
-                	JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + e );
-                	e.printStackTrace();
-				}
+                    stub.setIdentificaUsuario( 'A' );
+                    JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + e );
+                    e.printStackTrace();
+                }
                 catch (HeadlessException e)
                 {
-					e.printStackTrace();
-				} 
+                    e.printStackTrace();
+                } 
                 catch (IOException e) 
                 {
-                  	e.printStackTrace();
-				}
+                    e.printStackTrace();
+                }
 
                 System.out.println( "Fim da execução do cliente_1!" );
             } 
             catch (RemoteException | NotBoundException ex) 
             {
-            	JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + ex );
+                JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + ex );
                 Logger.getLogger( MainClienteAutomato.class.getName( ) ).log( Level.SEVERE, null, ex );
             }
         }
@@ -327,13 +328,14 @@ public class MainClienteAutomato extends Thread
                         stub.setIdentificaUsuario( 'C' );
                          
                         //Método executado pelo Cliente A 
-                        // stub.setAlfabeto ( );  - Passo 1
+                        //stub.setAlfabeto( ); - Passo 1
                        
+                        //Trecho responsável por obrigar o usuário aguardar entrada de um outro usuário.
                         System.out.println("Usuário 'B' aguarde usuário 'A' entrar com alfabeto!");
                         do 
                         {
-                        	Thread.sleep( 1000 );
-                        	System.out.println(".");
+                            Thread.sleep( 1000 );
+                            System.out.println(".");
                         } 
                         while ( stub.getMetetodoCorrente( ) < 1 );
                         
@@ -358,13 +360,14 @@ public class MainClienteAutomato extends Thread
                         
                         
                         //Método executado pelo Cliente A 
-                        // stub.setRegra ( );  - Passo 3
+                        //stub.setRegra( ); - Passo 3
                         
+                        //Trecho responsável por obrigar o usuário aguardar entrada de um outro usuário.
                         System.out.println("Usuário 'B' aguarde usuário 'A' entrar com Delta!");
                         do 
                         {
-                        	Thread.sleep( 1000 );
-                        	System.out.println(".");
+                            Thread.sleep( 1000 );
+                            System.out.println(".");
                         } 
                         while ( stub.getMetetodoCorrente( ) < 4 );
                         
@@ -388,26 +391,26 @@ public class MainClienteAutomato extends Thread
                         System.out.println("Usuário 'B' efetuou entrada de estado inicial!");
                         stub.setMetetodoCorrente( 5 );
                         
-                        
                        //Método executado pelo Cliente A 
                        //stub.setConjuntoEstadosFinais( );  - Passo 5
-                      
-                        //Executando Sexto Método  - Passo 6
+                                          
+                        //Trecho responsável por obrigar o usuário aguardar entrada de um outro usuário.
                         System.out.println("Usuário 'B' aguarde usuário 'A' entrar com estados finais!");
                         do 
                         {
-                        	Thread.sleep( 1000 );
-                        	System.out.println(".");
+                            Thread.sleep( 1000 );
+                            System.out.println(".");
                         } 
                         while ( stub.getMetetodoCorrente( ) < 6 );
-                                           
-                       do
-                       {
+                        
+                        //Executação do Sexto Método - Passo 6 
+                        do
+                        {
                            entrada = ClienteService.entraPalavra ( );
                            if ( entrada == null )
                            {
-                         	  System.out.println( "Clinete encerrado!" );
-                         	  break;
+                              System.out.println( "Clinete encerrado!" );
+                              break;
                            }
                            requestIsValid = stub.checaAceitacaoPalavra( entrada );
                                                      
@@ -419,7 +422,7 @@ public class MainClienteAutomato extends Thread
                                //stub.incrementaContaPasso( );                     
                            }
                            System.out.println( "PASSO CORRENTE: " + stub.getMetetodoCorrente( ) + "\n"
-                            		+ "Palavra: " + entrada + " : =>>  " + requestIsValid);
+                                    + "Palavra: " + entrada + " : =>>  " + requestIsValid);
                        }
                        while( !"OK".equals( requestIsValid ) );
                        System.out.println( "Usuário 'B' entrou com palavra(s)" );
@@ -427,47 +430,47 @@ public class MainClienteAutomato extends Thread
                        
                                      
                        //método responsável pela criação do arquivo (automato.txt)
-              			CriaArquivo f = new CriaArquivo( );
-              			try 
-              			{
-              				f.criarArq( stub.imprimirAutomatoCliente( 'P' ) );
-              			} 
-              			catch( IOException e )
-              			{
-              				e.printStackTrace( );
-              			}
-              			
-              		   ClienteService.info( stub.imprimirAutomatoCliente( 'B' ) ) ;
+                        CriaArquivo f = new CriaArquivo( );
+                        try 
+                        {
+                            f.criarArq( stub.imprimirAutomatoCliente( 'P' ) );
+                        } 
+                        catch( IOException e )
+                        {
+                            e.printStackTrace( );
+                        }
+                        
+                       ClienteService.info( stub.imprimirAutomatoCliente( 'B' ) ) ;
                } 
                 catch ( RemoteException e ) 
                 {
-                	JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + e );
+                    JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + e );
                     stub.setIdentificaUsuario( 'B' );
                     e.printStackTrace( );
                 } 
                 catch ( InterruptedException e ) 
                 {
-                	JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + e );
-                	stub.setIdentificaUsuario( 'B' );
-					e.printStackTrace( );
-				} 
+                    JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + e );
+                    stub.setIdentificaUsuario( 'B' );
+                    e.printStackTrace( );
+                } 
                 catch (HeadlessException e) 
                 {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } 
                 catch (IOException e)
                 
                 {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } 
                 
                  System.out.println( "Fim da execução do cliente_2!" );
             } 
             catch (RemoteException | NotBoundException ex) 
             {
-            	JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + ex );
+                JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + ex );
                 Logger.getLogger( MainClienteAutomato.class.getName( ) ).log( Level.SEVERE, null, ex );
             }
        }
