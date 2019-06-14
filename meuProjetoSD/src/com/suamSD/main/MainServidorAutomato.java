@@ -28,28 +28,22 @@ public class MainServidorAutomato
     public static void main( String args[ ] ) 
     		throws InterruptedException
     {
-    	/*
-    	 try 
+     	String javaHome = System.getenv( "JAVA_HOME" );
+    	      
+    	String ipServer = null;
+    	
+    	try 
     	{
-			JOptionPane.showMessageDialog( null,  "O ip local é: " + InetAddress.getLocalHost( ).getHostAddress( ) + "\n"
-			                		+ "Para atribui-lo basta digitar no input a seguir." );
-		}
-    	catch (HeadlessException | UnknownHostException e1) 
+    		  JOptionPane.showMessageDialog( null,  "O ip local é: " + InetAddress.getLocalHost( ).getHostAddress( ) );
+    		  ipServer = InetAddress.getLocalHost( ).getHostAddress( );
+    	}
+    	catch ( HeadlessException | UnknownHostException e1 ) 
     	{
 			e1.printStackTrace();
-		}
-		*/
-    	
-        String ipServer = Util.defineIP( );
-        
-        if ( ipServer == null )
-        {
-            System.out.println( "IP inválido" );
+			System.out.println( "IP inválido" );
             Util.interrompeThread( );
-        }
-      
-        String javaHome = System.getenv( "JAVA_HOME" );
-      
+		}
+
         System.out.println( "Versão do JDK local: " + javaHome );
         
         try 
@@ -124,8 +118,7 @@ public class MainServidorAutomato
             // Setando dois usuarios estaticamente
             stubAutomato.setIdentificaUsuario( 'A' );
             stubAutomato.setQtdUsuario( 2 );
-            
-            
+
             int input ;
             do 
             {

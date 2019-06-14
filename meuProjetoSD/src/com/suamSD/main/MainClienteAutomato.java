@@ -57,7 +57,13 @@ public class MainClienteAutomato extends Thread
                 break;
 
             default:
-                Util.interrompeThread( );
+            	//Resetando a aplicação na terceira execução
+            	stub.setMetetodoCorrente ( 0   );
+            	stub.setIdentificaUsuario( 'A' );
+            	stub.setQtdUsuario       ( 2   );
+            	new Thread(t1).start( );
+            	
+                // Util.interrompeThread( );
                 break;
             }  
         }
@@ -107,6 +113,7 @@ public class MainClienteAutomato extends Thread
                     String  entrada ;
                     String  requestIsValid;
                     stub.zeraContaPasso( );
+                    int contador = 0;
                     
                     /**
                      * Caso no servidor tenha sido informado que a 
@@ -146,9 +153,10 @@ public class MainClienteAutomato extends Thread
                     do 
                     {
                         Thread.sleep( 1000 );
-                        System.out.println(".");
+                        System.out.println("... " + contador ++  + " segundos.");
                     } 
                     while ( stub.getMetetodoCorrente( ) < 3 );
+                    contador = 0;
                     
                     /**
                      * Execução do terceiro método  - Passo 3
@@ -214,9 +222,10 @@ public class MainClienteAutomato extends Thread
                     do 
                     {
                         Thread.sleep( 1000 );
-                        System.out.println(".");
+                        System.out.println("... " + contador ++  + " segundos.");
                     } 
                     while ( stub.getMetetodoCorrente( ) < 5 );
+                    contador = 0;
                     
                     /**
                      * Execução do quinto método  - Passo 5
@@ -244,9 +253,10 @@ public class MainClienteAutomato extends Thread
                     do 
                     {
                         Thread.sleep( 1000 );
-                        System.out.println(".");
+                        System.out.println("... " + contador ++  + " segundos.");
                     } 
                     while ( stub.getMetetodoCorrente( ) < 7 );
+                    contador = 0;
                    
                     ClienteService.info( stub.imprimirAutomatoCliente( 'A' ) ) ;
                     
@@ -322,6 +332,7 @@ public class MainClienteAutomato extends Thread
                 {
                         String requestIsValid;
                         String entrada;
+                        int contador = 0;
                                                
                         //Controle de execução //Próximo usuário será o C (Não existe na nossa aplição)
                         //É setado um usuário inválido para impedir que o 2 cliente seja executado de forma duplicada.
@@ -335,9 +346,10 @@ public class MainClienteAutomato extends Thread
                         do 
                         {
                             Thread.sleep( 1000 );
-                            System.out.println(".");
+                            System.out.println("... " + contador ++  + " segundos.");
                         } 
                         while ( stub.getMetetodoCorrente( ) < 1 );
+                        contador = 0;
                         
                         //Executando segundo método   - Passo 2
                         do
@@ -367,10 +379,10 @@ public class MainClienteAutomato extends Thread
                         do 
                         {
                             Thread.sleep( 1000 );
-                            System.out.println(".");
+                            System.out.println("... " + contador ++  + " segundos.");
                         } 
                         while ( stub.getMetetodoCorrente( ) < 4 );
-                        
+                        contador = 0;
                         
                         //Executando Quarto Método  - Passo 4
                         do
@@ -399,9 +411,10 @@ public class MainClienteAutomato extends Thread
                         do 
                         {
                             Thread.sleep( 1000 );
-                            System.out.println(".");
+                            System.out.println("... " + contador ++  + " segundos.");
                         } 
                         while ( stub.getMetetodoCorrente( ) < 6 );
+                        contador = 0;
                         
                         //Executação do Sexto Método - Passo 6 
                         do

@@ -1,6 +1,8 @@
 package com.suamSD;
 
+import java.awt.HeadlessException;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.regex.Pattern;
 
 import javax.swing.JOptionPane;
@@ -20,16 +22,16 @@ public class Util {
     public static final String OK          = "OK";
     public static final String NULL        = "*";
     
-    /*private static final Pattern PATTERN_IP = Pattern.compile(
+    private static final Pattern PATTERN_IP = Pattern.compile(
             "^(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.){3}([01]?\\d\\d?|2[0-4]\\d|25[0-5])$");
-    */
+    
     
     public static String defineIP( ) 
     {      
     	String ip = "";
     	boolean b = false;
     	
-    	/*do
+    	do
     	{
     		b = false;
     		try 
@@ -39,11 +41,10 @@ public class Util {
                 ip = JOptionPane.showInputDialog( null,
                         "Entre com o IP do servidor:\n "
                         + "Para 127.0.0.1 'localhost', apenas clique OK!\n");
-                */
                 
-                String[ ] options = new String[ ] {"10.0.200.45", "10.0.200.16", "Cancelar" };
+                /*String[ ] options = new String[ ] {"10.0.200.45", "10.0.200.16", "Cancelar" };
                 
-                Integer response = JOptionPane.showOptionDialog( null, "Selecione a localização do servidor:", "Configurando IP",
+                Integer response = JOptionPane.showOptionDialog( null, "Indique a localização do servidor:", "Configurando IP",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE,
                         null, options, options[ 0  ] );
                 // response == 0 para "10.0.200.45";  1 para "10.0.200.16"; 2 para Escape/Cancel.
@@ -72,9 +73,24 @@ public class Util {
             	     //ip = "10.0.200.8";
                 	ip = "192.168.0.22";
                 	
-            	}
+            	}*/
                 
-                /*if( !PATTERN_IP.matcher( ip ).matches( ) && !( "".equals( ip ) ) )
+                if( ip.isEmpty( ) )
+                {
+                	try 
+                	{
+                		  JOptionPane.showMessageDialog( null,  "O ip local é: " + InetAddress.getLocalHost( ).getHostAddress( ) );
+                		  ip = InetAddress.getLocalHost( ).getHostAddress( );
+                	}
+                	catch ( HeadlessException | UnknownHostException e1 ) 
+                	{
+            			e1.printStackTrace();
+            			System.out.println( "IP inválido" );
+                        Util.interrompeThread( );
+            		}
+                }
+                
+                if( !PATTERN_IP.matcher( ip ).matches( ) && !( "".equals( ip ) ) )
                 {
                 	 JOptionPane.showMessageDialog( null, "Formato inválido" );
                 	 b = true;
@@ -99,7 +115,7 @@ public class Util {
                 break;
             }
         }
-        */
+        
         
         JOptionPane.showMessageDialog( null, "O IP do servidorAutomato é: " + ip );
         System.out.println( "O IP do servidorAutomato é: "+ ip );
