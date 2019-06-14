@@ -77,11 +77,6 @@ public class MainClienteAutomato extends Thread
             JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + e );
             e.printStackTrace( );
         }
-        catch ( InterruptedException e ) 
-        {
-            JOptionPane.showMessageDialog( null, "Algo não saiu como o esperado: \n " + e );
-            e.printStackTrace( );
-        }
     }
 
     private static Thread t1 = new Thread( new Thread( ) ) 
