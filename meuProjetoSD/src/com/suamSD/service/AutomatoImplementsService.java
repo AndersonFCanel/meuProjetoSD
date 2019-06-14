@@ -155,10 +155,16 @@ public class AutomatoImplementsService implements AutomatoInterface
     //private static final Pattern PATTERN_ESTADOS    = Pattern.compile( "(^\\S+,\\S+$)|(^\\S+$)" );
     //private static final Pattern PATTERN_ALFBETO    = Pattern.compile( "(^\\S+,\\S+$)|(^\\S+$)" );
     
-    private static final Pattern PATTERN_DELTA      = Pattern.compile( "^\\S,\\S;\\S$"                       );
-    private static final Pattern PATTERN_ESTADOS    = Pattern.compile( "(^\\S,\\S$)|(^\\S$)|(^\\S,\\S,\\S$)" );
-    private static final Pattern PATTERN_ALFBETO    = Pattern.compile( "(^\\S,\\S$)|(^\\S$)|(^\\S,\\S,\\S$)" );
-    private static final Pattern PATTERN_ESTADO_INI = Pattern.compile( "(^\\S{1}$)" );
+    //
+    //private static final Pattern PATTERN_DELTA      = Pattern.compile( "^\\S,\\S;\\S$"                       );
+    //private static final Pattern PATTERN_ESTADOS    = Pattern.compile( "(^\\S,\\S$)|(^\\S$)|(^\\S,\\S,\\S$)" );
+    //private static final Pattern PATTERN_ALFBETO    = Pattern.compile( "(^\\S,\\S$)|(^\\S$)|(^\\S,\\S,\\S$)" );
+    //private static final Pattern PATTERN_ESTADO_INI = Pattern.compile( "(^\\S{1}$)" );
+    
+    private static final Pattern PATTERN_DELTA      = Pattern.compile( "^[0-9],[A-Za-z];[0-9]$"                       );
+    private static final Pattern PATTERN_ESTADOS    = Pattern.compile( "(^[0-9]$)|(^[0-9],[0-9]$)|(^[0-9],[0-9],[0-9]$)" );
+    private static final Pattern PATTERN_ALFBETO    = Pattern.compile( "(^[A-Za-z]$)|(^[A-Za-z],[A-Za-z]$)|(^[A-Za-z],[A-Za-z],[A-Za-z]$)" );
+    private static final Pattern PATTERN_ESTADO_INI = Pattern.compile( "(^[0-9]{1}$)" );
     
     private static HashMap<Integer, String> conjuntoDeEstadosMap   = new HashMap<Integer, String>( );
     private static HashMap<String, String> listaDePalavrasTestadas = new HashMap<String, String>( );
@@ -464,7 +470,7 @@ public class AutomatoImplementsService implements AutomatoInterface
         int  b                   = 0, 
         	 y                   = 0;
 
-        for ( Character ch : conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( ) ) 
+        for ( @SuppressWarnings("unused") Character ch : conjuntoDeEstadosTerminaisEnaoTerminais.toCharArray( ) ) 
         {
             for ( Character ch1 : conjuntoEstadosTerminais.toCharArray( ) )
             {

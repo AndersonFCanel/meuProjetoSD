@@ -79,7 +79,7 @@ public class Util {
                 {
                 	try 
                 	{
-                		  JOptionPane.showMessageDialog( null,  "O ip local é: " + InetAddress.getLocalHost( ).getHostAddress( ) );
+                		  //JOptionPane.showMessageDialog( null,  "O ip local é: " + InetAddress.getLocalHost( ).getHostAddress( ) );
                 		  ip = InetAddress.getLocalHost( ).getHostAddress( );
                 	}
                 	catch ( HeadlessException | UnknownHostException e1 ) 
@@ -117,7 +117,7 @@ public class Util {
         }
         
         
-        JOptionPane.showMessageDialog( null, "O IP do servidorAutomato é: " + ip );
+        JOptionPane.showMessageDialog( null, "O IP do servidorAutomato utilizado é: " + ip );
         System.out.println( "O IP do servidorAutomato é: "+ ip );
         
         return ip;

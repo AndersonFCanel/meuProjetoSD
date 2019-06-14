@@ -57,7 +57,7 @@ public class MainClienteAutomato extends Thread
                 break;
 
             default:
-            	//Resetando a aplicação na terceira execução
+            	//Resetando a aplicação a partir da terceira execução
             	stub.setMetetodoCorrente ( 0   );
             	stub.setIdentificaUsuario( 'A' );
             	stub.setQtdUsuario       ( 2   );
