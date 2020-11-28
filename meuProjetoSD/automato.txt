@@ -15,18 +15,16 @@ Q   = { 0,1,2 }
 ESTADO PARTIDA:     Q
 CARACTER CONSUMIDO: Σ
 ESTADO DESTINO:     Q
-	[0, 1, 2, *, 0, *, *, *, *]
-	[a, b, c, *, b, *, *, *, *]
-	[1, 2, 0, *, 2, *, *, *, *]
+	[0, 1, 2, *, 0, 1, *, *, *]
+	[a, b, c, *, b, a, *, *, *]
+	[1, 2, 0, *, 2, 1, *, *, *]
 q0  = { 0 }
 F   = { 0,1 }
 **************************************************
 
 Palavras Testadas:
 
-{ab=PALAVRA NÃO ACEITA PELO AUTOMATO
- abc=PALAVRA ACEITA PELO AUTOMATO
- :=A palavra ":" contém simbolos não pertencentes ao conjunto de simbolos (alfabeto
+{s=A palavra "s" contém simbolos não pertencentes ao conjunto de simbolos (alfabeto
 Σ= { a
 b
 c })!}
