@@ -80,15 +80,8 @@ public class FrontEndService {
 
 			if ("?".trim().equalsIgnoreCase(estados)) {
 				b = true;
-
-				// Obtendo referência do serviço de registro
-				Registry registro = LocateRegistry.getRegistry(MainClienteAutomato.ipServer, Util.PORTA);
-
-				// Procurando pelo objeto distribuído registrado previamente com o NOMEOBJDIST
-				AutomatoInterface stub = (AutomatoInterface) registro.lookup(Util.NOMEOBJDIST);
-
 				// Caracter que idenifica entradas globais de ambos os clientes
-				JOptionPane.showMessageDialog(null, stub.imprimirAutomatoCliente('A'));
+				JOptionPane.showMessageDialog(null, AutomatoTesteLocalMain.automato.imprimirAutomatoCliente('A'));
 			}
 
 		} while (b);
@@ -140,7 +133,7 @@ public class FrontEndService {
 			if ("?".equalsIgnoreCase(delta.trim())) {
 				b = true;
 
-				AutomatoTesteLocalMain.automato.imprimirAutomatoCliente('A');
+				JOptionPane.showMessageDialog( null, AutomatoTesteLocalMain.automato.imprimirAutomatoCliente('A') );;
 			}
 		} while (b);
 
@@ -172,7 +165,7 @@ public class FrontEndService {
 				b = true;
 
 				// Caracter que idenifica entradas globais de ambos os clientes
-				AutomatoTesteLocalMain.automato.imprimirAutomatoCliente('B');
+				JOptionPane.showMessageDialog( null, AutomatoTesteLocalMain.automato.imprimirAutomatoCliente('B') );
 			}
 
 		} while (b);
@@ -209,7 +202,7 @@ public class FrontEndService {
 				b = true;
 
 				// Caracter que idenifica entradas globais de ambos os clientes
-				AutomatoTesteLocalMain.automato.imprimirAutomatoCliente('A');
+				JOptionPane.showMessageDialog( null, AutomatoTesteLocalMain.automato.imprimirAutomatoCliente('A') );
 			}
 		} while (b);
 
@@ -221,7 +214,7 @@ public class FrontEndService {
 			throws NotBoundException, HeadlessException, IOException {
 		if (info.trim().equalsIgnoreCase("?")) {
 
-			AutomatoTesteLocalMain.automato.imprimirAutomatoCliente(idUser);
+			JOptionPane.showMessageDialog( null, AutomatoTesteLocalMain.automato.imprimirAutomatoCliente(idUser) );
 
 			return false;
 		}
@@ -256,14 +249,14 @@ public class FrontEndService {
 				b = true;
 
 				// Caracter que idenifica entradas globais de ambos os clientes
-				AutomatoTesteLocalMain.automato.imprimirAutomatoCliente('@');
+				JOptionPane.showMessageDialog( null, AutomatoTesteLocalMain.automato.imprimirAutomatoCliente('@') );
 			}
 
 			if ("??".trim().equals(palavra)) {
 				b = true;
 
 				// Caracter que idenifica entradas globais de ambos os clientes
-				AutomatoTesteLocalMain.automato.imprimirAutomatoCliente('B');
+				JOptionPane.showMessageDialog( null, AutomatoTesteLocalMain.automato.imprimirAutomatoCliente('B') );
 			}
 
 		} while (b);
